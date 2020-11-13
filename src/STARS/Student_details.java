@@ -1,15 +1,20 @@
 package stars;
 
-public class Student_details {
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Student_details implements FlatFileObject{
 
 	public String name;
 	public String matric_num;
 	public String gender;
-	public int AU;
+	public String AU;
 	public String nationality;
 	public String[] CourseRegistered;
 	
-	public Student_details(String name, String matric_num, String gender, int AU, String nationality, String[] CourseRegistered)
+	/*public Student_details(String name, String matric_num, String gender, int AU, String nationality, String[] CourseRegistered)
 	{
 		this.name = name;
 		this.matric_num = matric_num;
@@ -17,13 +22,36 @@ public class Student_details {
 		this.AU = AU;
 		this.nationality = nationality;
 		this.CourseRegistered = CourseRegistered;
+	}*/
+	public Student_details() {}
+
+	public String toFlatFileString() {
+		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality) ;
+	}
+	@Override
+	public void fromFlatFileString(String s) {
+		ArrayList<String> array = new ArrayList<String>( Arrays.asList(s.split("\\|")) );
+		this.name = array.get(0);
+		this.matric_num = array.get(1);
+		this.gender = array.get(2);
+		this.AU = array.get(3);
+		this.nationality = array.get(4);
+		//this.CourseRegistered = CourseRegistered;
+		
 	}
 
+	public static List<String> getFields()
+	{
+		ArrayList<String> list = new ArrayList<String>();
+		for(Field f : User.class.getDeclaredFields())
+		{
+			list.add(f.getName());
+		}
+		return list;
+	}
 
 	public String[] getCourseRegistered() {
 		return CourseRegistered;
-		
-		
 	}
 
 	public String getName() {
@@ -51,11 +79,13 @@ public class Student_details {
 	}
 
 	public int getAU() {
-		return AU;
+		int i=0;
+		i= Integer.parseInt(AU)
+		return i;
 	}
 
-	public void setAU(int aU) {
-		AU = aU;
+	public int setAU(int a) {
+		return a;
 	}
 
 	public String getNationality() {
@@ -68,5 +98,8 @@ public class Student_details {
 
 	public void setCourseRegistered(String[] courseRegistered) {
 		CourseRegistered = courseRegistered;
+	}
+	public static void main(String[] args) {
+		
 	}
 }

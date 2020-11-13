@@ -8,10 +8,13 @@ public class StarsMain {
 	
 	Console console = System.console();
 	UserDatabase users;
+	UserDatabase students;
 	
 	StarsMain() throws IOException
 	{
 		users = new UserDatabase("Users.txt");
+		students = new UserDatabase("Student.txt");
+		
 	}
 
 	
