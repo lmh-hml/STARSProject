@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class User_details implements FlatFileObject {
+public class User_details implements FlatFileObject 
+{
 	
 	//private final static List<String> fields = Arrays.asList( "username", "password", "email", "accountType", "id" );
 	
