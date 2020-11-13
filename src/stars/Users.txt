@@ -1,0 +1,7 @@
+Melvin|mrXqROdfZGvKUcJzB6kauoge5KpcNIvILkTxQGR4PNk=$aBViaV0j2vQqv0ZUoK5oFbauU5UiMX0jElPU87p3xoo=|Melvin6@e.ntu.edu.sg|Admin|Melvin6|
+Thrish|Nyd5sVQsoGiadufjuBm8+lJVNyPSwoxPeVjCM7TDW2Y=$atltcK9YaSHt4jDw61bjXLOKuqyo5Jt8skMBSOYCVGA=|Thrish6@e.ntu.edu.sg|Student|Thrish6|
+John|ImMxET3oRbUVq1p6ppq8L/vd9KyZEAFPIfnftB5ICOQ=$AVWWXDBtheBjGGSlvuCLbeHygMqiwCiu0WdqUr46b04=|John4@e.ntu.edu.sg|Admin|John4|
+Tim|x2OGWn/qU9z6IbIwijR2KxNO7LkBi5/E1394oSLVB1g=$s+8VVjcjpavhGZkuTzpKi7c1JYcUQAU8/or3Zelp64g=|Tim3@e.ntu.edu.sg|Student|Tim3|
+Jane|JGso9Ey6ACOQlY21LONOsdEtGB3riGp7UWqePHUJlJk=$78fooUg2N0/bSb85t4daK2ECdI/moL/0mC/77P1gQO8=|Jane4@e.ntu.edu.sg|Admin|Jane4|
+Nekosamachan|OP/FUFv+gVrMisC30O5yv7NQelourhEnxPrSVMmHWlo=$OL7pQ8GkAm/n8vKo9TxZva8zPdnZMVVwDoijbNU3Upw=|Nekosamachan12@e.ntu.edu.sg|Student|Nekosamachan12|
+Jimmy|pPESPCjDiXZ0RyxSKXYbG6tcRD1rF8QKSqVR3JilOmU=$dvr/It1wza5PhDMSXYChk2TK+7jXpaPJ17Ui9WWNT+Q=|Jimmy5@e.ntu.edu.sg|Admin|Jimmy5|
