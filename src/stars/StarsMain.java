@@ -11,6 +11,7 @@ public class StarsMain {
 	
 	Console console = System.console();
 	UserDatabase users;
+	StudentDatabase students;
 	
 	
 	LocalDate accessPeriodStart = LocalDate.of(2020, 12, 1);

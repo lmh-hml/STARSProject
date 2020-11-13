@@ -29,6 +29,8 @@ public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
 		return student;
 	}
 
+	
+	
 	public static void main(String args[])
 	{
 		try {
@@ -54,9 +56,9 @@ public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
 				System.out.println(students.get(n).toFlatFileString());
 			}
 			
-			students.writeFile("D:/Eclipse/STARS/src/stars/Users2.txt");
+			students.writeFile("D:/Eclipse/STARS/src/stars/Students.txt");
 
-			StudentDatabase student2 = new StudentDatabase("D:/Eclipse/STARS/src/stars/Users2.txt");
+			StudentDatabase student2 = new StudentDatabase("D:/Eclipse/STARS/src/stars/Students.txt");
 			for( Student_details s : student2.getContents())
 			{
 				System.out.println(s.toFlatFileString());
