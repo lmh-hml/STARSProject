@@ -49,7 +49,8 @@ public abstract class  FlatFileDatabase <K, T extends FlatFileObject>{
 				s = item.toFlatFileString();
 				out.println(s);
 			}
-			out.close();
+		
+		out.close();
 	}
 
 
