@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class User implements FlatFileObject {
+public class User_details implements FlatFileObject {
 	
 	//private final static List<String> fields = Arrays.asList( "username", "password", "email", "accountType", "id" );
 	
@@ -15,7 +15,7 @@ public class User implements FlatFileObject {
 	private String accountType= "nil";
 	private String id = "nil";
 	
-	public User() 
+	public User_details() 
 	{
 	}
 
@@ -36,7 +36,7 @@ public class User implements FlatFileObject {
 	public static List<String> getFields()
 	{
 		ArrayList<String> list = new ArrayList<String>();
-		for(Field f : User.class.getDeclaredFields())
+		for(Field f : User_details.class.getDeclaredFields())
 		{
 			list.add(f.getName());
 		}

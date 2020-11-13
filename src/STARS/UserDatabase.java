@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class UserDatabase extends FlatFileDatabase<String, User>{
+public class UserDatabase extends FlatFileDatabase<String, User_details>{
 
 	public UserDatabase() {}
 	public UserDatabase(String filename) throws IOException {
@@ -15,12 +15,12 @@ public class UserDatabase extends FlatFileDatabase<String, User>{
 
 
 	@Override
-	public void add(User obj) {
+	public void add(User_details obj) {
 		hashmap.put(obj.getUsername(), obj);
 	}
 	@Override
-	public User parseLine(String line) {		
-		User user = new User();
+	public User_details parseLine(String line) {		
+		User_details user = new User_details();
 		user.fromFlatFileString(line);
 		return user;
 	}
