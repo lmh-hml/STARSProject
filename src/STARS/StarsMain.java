@@ -2,12 +2,20 @@ package stars;
 import java.awt.desktop.UserSessionEvent;
 import java.io.Console;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.UUID;
 
 public class StarsMain {
 	
 	Console console = System.console();
 	UserDatabase users;
+	LocalDate accessPeriodStart = LocalDate.of(2020, 12, 1);
+	LocalDate accessPeriodEnd = LocalDate.of(2020, 12, 31);;
+	LocalTime access_time_start = LocalTime.of(9, 0);
+	LocalTime access_time_end = LocalTime.of(23,  59);
+	
 	
 	StarsMain() throws IOException
 	{
@@ -15,12 +23,12 @@ public class StarsMain {
 	}
 
 	
-	User logIn()
+	User_details logIn()
 	{
 		console.printf("Welcome to STARS.\n");
 		
 		boolean username_correct = false;
-		User user = null;
+		User_details user = null;
 		
 		while(username_correct == false )
 		{
@@ -61,12 +69,29 @@ public class StarsMain {
 		System.out.println("Logging off...");
 	}
 	
+	
+	public LocalDate[] getAccessPeriod()
+	{
+		return new LocalDate[] {accessPeriodStart, accessPeriodEnd };
+	}
+	
+	public void setAccessPeriodStartDate(LocalDate date)
+	{
+		accessPeriodStart = date;
+	}
+	
+	public void setAccessPeriodEndDate(LocalDate date)
+	{
+		accessPeriodEnd = date;
+	}
+	
+	
 	public static void main(String args[])
 	{
 	
 		try {
 			StarsMain stars = new StarsMain();
-			User user = stars.logIn();
+			User_details user = stars.logIn();
 			if(user == null)
 			{
 				System.out.println("Unable to find user account");
