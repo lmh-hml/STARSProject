@@ -3,7 +3,7 @@ package stars;
 //COMMENT
 
 public class Student_details {
-
+//
 	public String name;
 	public String matric_num;
 	public String gender;
