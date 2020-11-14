@@ -8,15 +8,19 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
+
+import javax.mail.MessagingException;
+
 import stars.exception.*;
 
 public class StarsMain {
 	
 	Console console = System.console();
 	Scanner scanner = new Scanner(System.in);
+	
 	UserDatabase users;
 	StudentDatabase students;
-	
+	StarsNotifier notifier;
 	
 	LocalDate accessPeriodStart = LocalDate.of(2020, 12, 1);
 	LocalDate accessPeriodEnd = LocalDate.of(2020, 12, 31);;
@@ -232,7 +236,10 @@ public class StarsMain {
 
 		}
 		
-		
+		notifier = StarsNotifier.getNotificationMethod("Email");
+		notifier.setRecipient(user);
+		notifier.sendNotification("Hey", "Test");
+		System.out.println("Notification sent!");
 		logOut();
 	}
 	
