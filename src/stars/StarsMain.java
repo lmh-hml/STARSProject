@@ -26,13 +26,13 @@ public class StarsMain {
 	
 	private final String studentOptions = "1. Add course\n"
 			+ "2. Drop course\n"
-			+ "Check/Print Courses Registered\n"
+			+ "3.Check/Print Courses Registered\n"
 			+ "4. Check vacancies available\n"
 			+ "5. Change Index Number of course\n"
 			+ "6. Swap index with another student\n"
 			+ "7. Show options\n"
 			+ "0. Quit";
-	
+
 	private final String adminOptions = "1.Edit student access period\n"
 			+ "2.Add a student (name, matric number, gender, nationality, etc)\n"
 			+ "3.Add/Update a course (course code, school, its index numbers and vacancy)."
@@ -85,9 +85,6 @@ public class StarsMain {
 		return user;
 	}
 
-
-	
-	
 	void logOut()
 	{
 		System.out.println("Logging off...");
@@ -103,14 +100,11 @@ public class StarsMain {
 	{
 		accessPeriodStart = date;
 	}
-	
+
 	public void setAccessPeriodEndDate(LocalDate date)
 	{
 		accessPeriodEnd = date;
 	}
-	
-	
-	
 	
 	
 	public Student_details getStudentDetails(User_details user) throws IdNotFoundException
@@ -121,91 +115,38 @@ public class StarsMain {
 	}
 	
 	
-	
-	
-	
-	
-	public static void main(String args[])
+	public void run() throws IdNotFoundException
 	{
-	
-		try {
-			StarsMain stars = new StarsMain();
-			User_details user = stars.logIn();			
+		User_details user = logIn();			
+		
+		
+		if(user == null)
+		{
+			System.out.println("Unable to find user account");
+		}
+		else
+		{
 			
-			
-			if(user == null)
+			switch(user.getAccountType())
 			{
-				System.out.println("Unable to find user account");
-			}
-			else
-			{
-				
-				switch(user.getAccountType())
-				{
-				
-				case "Student":
-				{
-					Student_details student = stars.getStudentDetails(user);
-					System.out.format("Welcome to STARS Students, %s !\n", student.getName());
-					System.out.print(stars.studentOptions);
-					System.out.format("Please enter an option: ");
-
-				   
-					boolean loopInput = false;
-					boolean quit = false;
-					while( loopInput || !quit )
-					{
-						
-						System.out.format("Please enter an option: ");
-						int input  = -1;
-						try {  input = stars.scanner.nextInt(); } 
-						catch(InputMismatchException e) {System.out.println("Please enter a proper input"); stars.scanner.nextLine();}
-						
-						switch( input )
-						{
-						
-						case 1: {}break;
-						
-						case 2: {}break;
-						
-						case 3: {}break;
-						
-						case 4: {}break;
-						
-						case 5: {}break;
-						
-						case 6: {} break;
-						
-						case 7: {System.out.print(stars.studentOptions);}
-						
-						case 0: { quit = true; } break;
-						
-						default: 
-						{ 
-							System.out.println("Please enter a number among options provided.");
-							loopInput = true;
-						}
-						}//end switch
-						if(quit)break;
-					}
-					
-					
-					
 			
-				}break;
+			case "Student":
+			{
+				Student_details student = getStudentDetails(user);
+				System.out.format("Welcome to STARS Students, %s !\n", student.getName());
+				System.out.print(studentOptions);
+				System.out.format("Please enter an option: ");
 
-				case "Admin":
+			   
+				boolean loopInput = false;
+				boolean quit = false;
+				while( loopInput || !quit )
 				{
-					System.out.format("Welcome to STARS Admin, %s !\n", user.getUsername());
-					System.out.print(stars.adminOptions);
-					System.out.format("Please enter an option: ");
 					
-					boolean loopInput = false;
-					boolean quit = false;
 					System.out.format("Please enter an option: ");
 					int input  = -1;
-					try {  input = stars.scanner.nextInt(); } 
-					catch(InputMismatchException e) {System.out.println("Please enter a proper input"); stars.scanner.nextLine();}
+					try {  input = scanner.nextInt(); } 
+					catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();}
 					
 					switch( input )
 					{
@@ -222,7 +163,7 @@ public class StarsMain {
 					
 					case 6: {} break;
 					
-					case 7: {System.out.print(stars.adminOptions);}
+					case 7: {System.out.print(studentOptions);}
 					
 					case 0: { quit = true; } break;
 					
@@ -233,20 +174,75 @@ public class StarsMain {
 					}
 					}//end switch
 					if(quit)break;
-				}break;
-
-
-				default:
-				{
-					System.out.println(user.getAccountType());
 				}
 				
-				}//end switch
+				
+				
+		
+			}break;
 
+			case "Admin":
+			{
+				System.out.format("Welcome to STARS Admin, %s !\n", user.getUsername());
+				System.out.print(adminOptions);
+				System.out.format("Please enter an option: ");
+				
+				boolean loopInput = false;
+				boolean quit = false;
+				System.out.format("Please enter an option: ");
+				int input  = -1;
+				try {  input = scanner.nextInt(); } 
+				catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();}
+				
+				switch( input )
+				{
+				
+				case 1: {}break;
+				
+				case 2: {}break;
+				
+				case 3: {}break;
+				
+				case 4: {}break;
+				
+				case 5: {}break;
+				
+				case 6: {} break;
+				
+				case 7: {System.out.print(this.adminOptions);}
+				
+				case 0: { quit = true; } break;
+				
+				default: 
+				{ 
+					System.out.println("Please enter a number among options provided.");
+					loopInput = true;
+				}
+				}//end switch
+				if(quit)break;
+			}break;
+
+
+			default:
+			{
+				System.out.println(user.getAccountType());
 			}
 			
-			
-			stars.logOut();
+			}//end switch
+
+		}
+		
+		
+		logOut();
+	}
+	
+	
+	public static void main(String args[])
+	{
+	
+		try {
+			StarsMain stars = new StarsMain();
+			stars.run();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
