@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,11 @@ public abstract class  FlatFileDatabase <K, T extends FlatFileObject>{
 	protected HashMap<K,T> hashmap = new HashMap<K,T>();
 	protected List<String> flatFileFormat;
 
+	
+	/**
+	 * Adds an object of type T into the database.
+	 * @param obj
+	 */
 	public abstract void add( T obj);
 	public void remove(K key) 
 	{
@@ -29,6 +35,19 @@ public abstract class  FlatFileDatabase <K, T extends FlatFileObject>{
 	{
 		return hashmap.values();
 	}
+
+	public List<String> printContents()
+	{
+		List<String> s = new ArrayList<String>();
+		for( FlatFileObject obj : this.getContents() )
+		{
+			s.add(obj.toFlatFileString());
+		}
+		return s;
+	}
+	
+	
+	
 	
 	public void openFile(String fileName) throws IOException
 	{

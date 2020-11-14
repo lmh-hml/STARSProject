@@ -24,5 +24,14 @@ public class UserDatabase extends FlatFileDatabase<String, User_details>{
 		user.fromFlatFileString(line);
 		return user;
 	}
+	
+	public User_details getById(String id)
+	{
+		for( User_details user : this.getContents())
+		{
+			if(user.getId() == id) return user;
+		}
+		return null;
+	}
 
 }

@@ -16,8 +16,7 @@ public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
 
 	@Override
 	public void add(Student_details obj) {
-		// TODO Auto-generated method stub
-		this.hashmap.put(obj.getName(), obj);
+		this.hashmap.put(obj.getId(), obj);
 	}
 
 	@Override
@@ -27,6 +26,12 @@ public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
 		student.fromFlatFileString(line);
 		this.add(student);
 		return student;
+	}
+	
+	
+	public Student_details getByID(String id )
+	{
+		return this.get(id);
 	}
 
 	
@@ -53,7 +58,7 @@ public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
 				students.add(student);
 				
 
-				System.out.println(students.get(n).toFlatFileString());
+				System.out.println(students.get(student.getId()).toFlatFileString());
 			}
 			
 			students.writeFile("D:/Eclipse/STARS/src/stars/Students.txt");

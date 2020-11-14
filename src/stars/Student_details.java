@@ -15,17 +15,9 @@ public class Student_details implements FlatFileObject{
 	public String nationality = "";
 	private String id = "";
 	public List<String> courseRegistered = new ArrayList<>();
-
+	public List<String> courseWaitlist = new ArrayList<>();
 	
-	/*public Student_details(String name, String matric_num, String gender, int AU, String nationality, String[] CourseRegistered)
-	{
-		this.name = name;
-		this.matric_num = matric_num;
-		this.gender = gender;
-		this.AU = AU;
-		this.nationality = nationality;
-		this.CourseRegistered = CourseRegistered;
-	}*/
+
 	public Student_details() {}
 
 	public String toFlatFileString() {
@@ -37,6 +29,7 @@ public class Student_details implements FlatFileObject{
 		}
 		
 		String courses = courseRegistered.toString();
+		String waitlist = courseRegistered.toString();
 		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality, id, s ) ;
 	}
 	@Override
