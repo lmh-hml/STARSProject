@@ -40,7 +40,7 @@ public class StarsMain {
 	private final String adminOptions = "1.Edit student access period\n"
 			+ "2.Add a student (name, matric number, gender, nationality, etc)\n"
 			+ "3.Add/Update a course (course code, school, its index numbers and vacancy)."
-			+ "Check available slot for an index number (vacancy in a class)\n"
+			+ "4.Check available slot for an index number (vacancy in a class)\n"
 			+ "5.Print student list by index number.\n"
 			+ "6.Print student list by course [ print only student’s name, gender and nationality ]\n"
 			+ "7. Show options\n"
@@ -111,13 +111,7 @@ public class StarsMain {
 	}
 	
 	
-	public Student_details getStudentDetails(User_details user) throws IdNotFoundException
-	{
-		Student_details ret =  students.getByID(user.getId());
-		if(ret == null) throw new IdNotFoundException("Unable to find student details assocated with this user %s account!", user.getUsername());
-		return ret;
-	}
-	
+
 	
 	public void run() throws IdNotFoundException
 	{
@@ -136,7 +130,7 @@ public class StarsMain {
 			
 			case "Student":
 			{
-				Student_details student = getStudentDetails(user);
+				Student_details student = students.get(user.getId());
 				System.out.format("Welcome to STARS Students, %s !\n", student.getName());
 				System.out.print(studentOptions);
 				System.out.format("Please enter an option: ");

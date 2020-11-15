@@ -19,6 +19,8 @@ public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
 		this.hashmap.put(obj.getId(), obj);
 	}
 
+
+
 	@Override
 	public Student_details parseLine(String line) {
 		// TODO Auto-generated method stub
@@ -28,11 +30,6 @@ public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
 		return student;
 	}
 	
-	
-	public Student_details getByID(String id )
-	{
-		return this.get(id);
-	}
 
 	
 	

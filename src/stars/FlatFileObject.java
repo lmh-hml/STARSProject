@@ -2,12 +2,37 @@ package stars;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * An interface implemented by objects that can
+ * be written to and read from files in flat file format.
+ * @author Lai Minghui
+ * @version 1.0
+ * @since 2020/11/14
+ *
+ */
 public interface FlatFileObject {
 	
+	/**The delimter that separate columns in the flat file*/
 	public final static String delimiter = "|";
 	
+	/**
+	 * @return Returns the flat file representation of the object.
+	 */
 	public abstract String toFlatFileString();
+	
+	/**
+	 * Initializes this object using a line read from a flat file.
+	 * @param s A line from a flat file.
+	 */
 	public abstract void fromFlatFileString(String s);
+	
+	/**
+	 * Combines string representations of objects passed into the method into
+	 * a flat file string that can be written to a flat file.
+	 * @param args A series of objects to be written into a flat file string
+	 * @return A flat file string where each column is the string representation of the objects in args, in the order
+	 * that they are passed in.
+	 */
 	public static String buildFlatFileString(Object... args)
 	{
 		String s = "";
