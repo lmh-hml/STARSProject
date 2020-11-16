@@ -182,9 +182,7 @@ public class StarsMain {
 
 			case "Admin":
 			{
-				
-				adminProgram.run(user);
-				
+				adminProgram.run(user);	
 			}break;
 
 

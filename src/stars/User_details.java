@@ -125,4 +125,9 @@ public class User_details implements FlatFileObject
 		this.id = id;
 	}
 
+	@Override
+	public String getDatabaseId() {
+		return this.id;
+	}
+
 }

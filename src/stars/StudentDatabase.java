@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
+public class StudentDatabase extends FlatFileDatabase<Student_details>{
 
 	public StudentDatabase(String fileName) throws IOException {
 		openFile(fileName);
@@ -14,19 +14,12 @@ public class StudentDatabase extends FlatFileDatabase<String, Student_details>{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void add(Student_details obj) {
-		this.hashmap.put(obj.getId(), obj);
-	}
-
-
 
 	@Override
 	public Student_details parseLine(String line) {
 		// TODO Auto-generated method stub
 		Student_details student = new Student_details();
 		student.fromFlatFileString(line);
-		this.add(student);
 		return student;
 	}
 	

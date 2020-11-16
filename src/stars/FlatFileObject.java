@@ -25,6 +25,13 @@ public interface FlatFileObject {
 	 * @param s A line from a flat file.
 	 */
 	public abstract void fromFlatFileString(String s);
+
+	/**
+	 * Gets the id of this flat file object used to index it in a flat file database
+	 * @return The id of the flat file object 
+	 */
+	public String getDatabaseId();
+	
 	
 	/**
 	 * Combines string representations of objects passed into the method into
@@ -43,4 +50,6 @@ public interface FlatFileObject {
 		return s;
 	}
 
+	
+	
 }

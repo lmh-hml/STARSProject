@@ -15,7 +15,7 @@ import java.util.Arrays;
  * @version 1.0
  * @since 2020/11/14
  */
-public class UserDatabase extends FlatFileDatabase<String, User_details>{
+public class UserDatabase extends FlatFileDatabase<User_details>{
 
 	/**
 	 * Default constructor.
@@ -41,9 +41,9 @@ public class UserDatabase extends FlatFileDatabase<String, User_details>{
 	 */
 	@Override
 	public void add(User_details obj) {
-		String key = obj.getUsername();
+		String key = obj.getId();
 		if( key == "" || key == null)return;
-		hashmap.put(key, obj);
+		hashmap.put(obj.getDatabaseId(), obj);
 	}
 	
 	

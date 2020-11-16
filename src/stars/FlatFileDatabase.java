@@ -26,23 +26,29 @@ import java.util.List;
  * @param <K> The type of key used to retrieve items from this database.
  * @param <T> A class that implements FlatFileObject
  */
-public abstract class  FlatFileDatabase <K, T extends FlatFileObject>{
+public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 	
-	protected HashMap<K,T> hashmap = new HashMap<K,T>();
+	protected HashMap<String,T> hashmap = new HashMap<>();
 	protected List<String> flatFileFormat;
 
 	
 	/**
 	 * Adds an object of type T into the database.
 	 * @param obj The object to be added into database
+	 * @param key The key for the object to be indexed
 	 */
-	public abstract void add( T obj);
+	public void add( T obj)
+	{
+		String id = obj.getDatabaseId();
+		if(id == ""|| id == null)return;
+		this.hashmap.put(obj.getDatabaseId(), obj);
+	}
 	
 	/**
 	 * Removes an object indexed by the key from the database
 	 * @param key Key of object to be removed.
 	 */
-	public void remove(K key) 
+	public void remove(String key) 
 	{
 		hashmap.remove(key);
 	};
@@ -52,7 +58,7 @@ public abstract class  FlatFileDatabase <K, T extends FlatFileObject>{
 	 * @param key Key of object to be retrieved.
 	 * @return The object indexed by the key, or null if it is not in the database.
 	 */
-	public T get(K key) 
+	public T get(String key) 
 	{
 		return hashmap.get(key);
 	};
