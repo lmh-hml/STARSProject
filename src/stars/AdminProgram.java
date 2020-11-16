@@ -15,6 +15,7 @@ public class AdminProgram
     private String Student_Database_dir = "Students.txt";//"D:/Eclipse/STARS/src/stars/Students.txt"
     public final static String delimiter = "|";
     private StarsDatabase starsDatabase;
+    private String default_password = "password" ;
     //public CourseManager courseManager;
     private Scanner sc = new Scanner(System.in);//you will need to delete this later
     
@@ -31,7 +32,7 @@ public class AdminProgram
     {
     }
     
-    AdminProgram(StarsDatabase StarDatabase)//CourseManger CourseManager, UserDatabase UserDatabase, Scanner sc)
+    AdminProgram(StarsDatabase StarDatabase)//CourseManger CourseManager, Scanner sc)
     {
         //courseManager = CourseManager;
     	starsDatabase = StarDatabase;
@@ -162,7 +163,6 @@ public class AdminProgram
      */
     void AddaStudent()
     {
-    	boolean illegal_input = false;
     	
     	Student_details new_student = new Student_details();
     	User_details new_user = new User_details();
@@ -341,5 +341,6 @@ public class AdminProgram
 		AdminProgram Admin = new AdminProgram(exampleDatabase);
 		User_details user = new User_details();
     	Admin.run(user);
+    	exampleDatabase.writeDatabaseFiles();//hello
     }
 }
