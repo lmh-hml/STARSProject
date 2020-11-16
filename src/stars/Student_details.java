@@ -38,15 +38,20 @@ public class Student_details implements FlatFileObject{
 
 	public String toFlatFileString() {
 		
-		String s = "";
+		String coursesString = "";
 		for( String course : courseRegistered)
 		{
-			s += course + ',';
+			coursesString += course + ',';
 		}
+	
 		
-		String courses = courseRegistered.toString();
-		String waitlist = courseRegistered.toString();
-		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality, id, s ) ;
+		String waitlistString = "";
+		for( String course : courseWaitlist)
+		{
+			waitlistString += course + ',';
+		}
+
+		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality, id, coursesString, waitlistString ) ;
 	}
 	
 	@Override
