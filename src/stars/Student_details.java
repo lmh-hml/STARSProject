@@ -69,10 +69,6 @@ public class Student_details implements FlatFileObject{
 			this.addCourse(item);
 		}
 		
-		for(String item: array.get(7).split("\\,"))
-		{
-			this.addCourse(item);
-		}
 		
 	}
 

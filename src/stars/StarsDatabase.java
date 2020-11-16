@@ -5,11 +5,22 @@ import java.util.Collection;
 
 public class StarsDatabase {
 	
-	
+	/**
+	 * Default filename of flat file for students 
+	 */
 	private static String studentFile = "Students.txt";
+	/**
+	 * Default filename of flat file for users
+	 */
 	private static String userFile = "Users.txt";
 	
+	/**
+	 * Member UserDatabase object
+	 */
 	private UserDatabase userDatabase;
+	/**
+	 * Member StudentDatabase object.
+	 */
 	private StudentDatabase studentDatabase;
 
 	public StarsDatabase() {
@@ -23,16 +34,30 @@ public class StarsDatabase {
 	}
 
 	
+	/**
+	 * Adds a User_details object to the database.
+	 * @param user User_details object to be added
+	 */
 	void addUser(User_details user)
 	{
 		userDatabase.add(user);
 	}
 	
+	/**
+	 * Gets a user from the database by its id.
+	 * @param id The user's id.
+	 * @return The User_details object that associated with the id.
+	 */
 	User_details getUser(String id)
 	{
 		return userDatabase.get(id);
 	}
 	
+	/**
+	 * Gets the user in the database associated with the username.
+	 * @param username Username of the user to be retrieved.
+	 * @return The User_detail object associated with the username
+	 */
 	User_details getUserByUsername(String username)
 	{
 		User_details user = null;
@@ -47,15 +72,33 @@ public class StarsDatabase {
 		return user;
 	}
 	
+	/**
+	 * Gets all the users stored in the database.
+	 * @return A collection view of all the users registered in the database.
+	 */
 	Collection<User_details> getAllUsers()
 	{
 		return this.userDatabase.getContents();
 	}
 	
+	//TODO: Remove after updating the programs to use StarsDatabase only
+	UserDatabase getUserDatabase()
+	{
+		return userDatabase;
+	}
+	
+	
+	/**
+	 * 
+	 * @param id
+	 */
 	void removeUser(String id)
 	{
 		userDatabase.remove(id);
 	}
+
+	
+	
 	
 	/**
 	 * Adds an instance of Student_details object to the database
@@ -82,9 +125,14 @@ public class StarsDatabase {
 		return student;
 	}
 	
-	Collection<Student_details> getAllStudent()
+	Collection<Student_details> getAllStudents()
 	{
 		return this.studentDatabase.getContents();
+	}
+	
+	StudentDatabase getStudentDatabase()
+	{
+		return studentDatabase;
 	}
 	
 	Student_details getStudentByEmail(String email)
@@ -140,7 +188,7 @@ public class StarsDatabase {
 		
 		
 		
-		for(Student_details std : stars.getAllStudent())
+		for(Student_details std : stars.getAllStudents())
 		{
 			System.out.println(std.toFlatFileString());
 		}

@@ -18,11 +18,10 @@ public class StarsMain {
 	Console console = System.console();
 	Scanner scanner = new Scanner(System.in);
 	
-	UserDatabase users;
-	StudentDatabase students;
+	StarsDatabase starsDatabase = new StarsDatabase();
 	StarsNotifier notifier;
 	
-	AdminProgram adminProgram = new AdminProgram(users, students);	
+	AdminProgram adminProgram = new AdminProgram( starsDatabase.getUserDatabase(), starsDatabase.getStudentDatabase());	
 	LocalDate accessPeriodStart = LocalDate.of(2020, 12, 1);
 	LocalDate accessPeriodEnd = LocalDate.of(2020, 12, 31);;
 	LocalTime access_time_start = LocalTime.of(9, 0);
@@ -50,8 +49,6 @@ public class StarsMain {
 	
 	StarsMain() throws IOException
 	{
-		users = new UserDatabase("Users.txt");
-		students = new StudentDatabase("Students.txt");
 	}
 
 	
@@ -65,11 +62,10 @@ public class StarsMain {
 		{
 			System.out.println("Please enter your username: ");
 			String input_username = scanner.nextLine();
-			user = users.get(input_username);
+			user = starsDatabase.getUserByUsername(input_username);
 			if(user == null)
 			{
 				System.out.println("Username is incorrect or does not exist.");
-				System.out.println(users.printContents());
 			}
 		}
 		
@@ -131,7 +127,7 @@ public class StarsMain {
 			
 			case "Student":
 			{
-				Student_details student = students.get(user.getId());
+				Student_details student = starsDatabase.getStudent(user);
 				System.out.format("Welcome to STARS Students, %s !\n", student.getName());
 				System.out.print(studentOptions);
 				System.out.format("Please enter an option: ");
@@ -195,10 +191,11 @@ public class StarsMain {
 
 		}
 		
-		notifier = StarsNotifier.getNotificationMethod("Email");
-		notifier.setRecipient("laim0012@e.ntu.edu.sg");
-		notifier.sendNotification("Hey", "Test");
-		System.out.println("Notification sent!");
+//		notifier = StarsNotifier.getNotificationMethod("Email");
+//		notifier.setRecipient("laim0012@e.ntu.edu.sg");
+//		notifier.sendNotification("Hey", "Test");
+//		System.out.println("Notification sent!");
+
 		logOut();
 	}
 	
