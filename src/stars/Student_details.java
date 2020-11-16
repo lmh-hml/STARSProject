@@ -69,6 +69,11 @@ public class Student_details implements FlatFileObject{
 			this.addCourse(item);
 		}
 		
+		for(String item: array.get(7).split("\\,"))
+		{
+			this.addCourse(item);
+		}
+		
 	}
 
 	/**
@@ -189,6 +194,26 @@ public class Student_details implements FlatFileObject{
 	 */
 	public void setCourseWaitlist(List<String> courseWaitlist) {
 		this.courseWaitlist = courseWaitlist;
+	}
+	
+	/**
+	 * Adds a course to the waitlist of this student
+	 * @param courses The courses to be added to this student's waitlist
+	 */
+	public void addWaitlist(String... courses ) {
+		for(String s: courses)
+		{
+			courseWaitlist.add(s);
+		}
+	}
+	
+	/**
+	 * Removes the specified course from the waitlist of this student.
+	 * @param course name of course to be removed
+	 */
+	public void removeFromWaitlist(String course)
+	{
+		courseWaitlist.remove(course);
 	}
 
 
