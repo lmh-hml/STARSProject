@@ -1,9 +1,1 @@
-Jack|12345678890|M|0|odd|12345678890| | |
-Jim|370368|M/F||Signaporean|Jim3|Melvin, Thrish, John, Tim, Jim, Nekosamachan, Jimmy,| |
-Jimmy|617280|M/F||Signaporean|Jimmy5|Melvin, Thrish, John, Tim, Jim, Nekosamachan, Jimmy,| |
-Mai|1234567|F|0|Singaporean|Mai3| | |
-Tim|370368|M/F||Signaporean|Tim3|Melvin, Thrish, John, Tim, Jim, Nekosamachan, Jimmy,| |
-Melvin|740736|M/F||Signaporean|Melvin6|Melvin, Thrish, John, Tim, Jim, Nekosamachan, Jimmy,| |
-Thrish|740736|M/F||Signaporean|Thrish6|Melvin, Thrish, John, Tim, Jim, Nekosamachan, Jimmy,| |
-Nekosamachan|1481472|M/F||Signaporean|Nekosamachan12|Melvin, Thrish, John, Tim, Jim, Nekosamachan, Jimmy,| |
-John|493824|M/F||Signaporean|John4|Melvin, Thrish, John, Tim, Jim, Nekosamachan, Jimmy,| |
+Jack|1234567890|M|0|Singapor|1234567890| | |

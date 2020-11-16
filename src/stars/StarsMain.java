@@ -127,14 +127,22 @@ public class StarsMain {
 			
 			case "Student":
 			{
+				boolean loopInput = false;
+				boolean quit = false;
+				
 				Student_details student = starsDatabase.getStudent(user);
+				if(student == null)
+				{
+					System.out.println("Unable to find an account asociated with this user. Please contact adminstrator for assistance.");
+					quit = true;
+					break;
+				}
 				System.out.format("Welcome to STARS Students, %s !\n", student.getName());
 				System.out.print(studentOptions);
 				System.out.format("Please enter an option: ");
 
 			   
-				boolean loopInput = false;
-				boolean quit = false;
+
 				while( loopInput || !quit )
 				{
 					
@@ -195,9 +203,11 @@ public class StarsMain {
 //		notifier.setRecipient("laim0012@e.ntu.edu.sg");
 //		notifier.sendNotification("Hey", "Test");
 //		System.out.println("Notification sent!");
-
-		starsDatabase.writeDatabaseFiles();
 		logOut();
+		starsDatabase.writeDatabaseFiles();
+		System.out.println("Goodbye!");
+
+		
 	}
 	
 	

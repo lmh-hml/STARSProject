@@ -6,12 +6,19 @@ import java.util.Arrays;
 
 public class StudentDatabase extends FlatFileDatabase<Student_details>{
 
+	/**
+	 * Initializes this database with the flat file specified in fileName
+	 * @param fileName A file containing student details in flat file format.
+	 * @throws IOException
+	 */
 	public StudentDatabase(String fileName) throws IOException {
 		openFile(fileName);
 	}
 
+	/**
+	 * Default contructor of this object.
+	 */
 	public StudentDatabase() {
-		// TODO Auto-generated constructor stub
 	}
 
 

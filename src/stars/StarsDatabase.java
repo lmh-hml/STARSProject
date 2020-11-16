@@ -3,6 +3,13 @@ package stars;
 import java.io.IOException;
 import java.util.Collection;
 
+/**
+ * A class that serves as intermediary between the databases that contains user and student information, and programs that access
+ * the data in those databases.
+ * Methods provided by this class are capable of accessing and modifying databases' contents.
+ * @author Work
+ *
+ */
 public class StarsDatabase {
 	
 	/**
@@ -23,6 +30,9 @@ public class StarsDatabase {
 	 */
 	private StudentDatabase studentDatabase;
 
+	/**
+	 * Default contructorof StarsDatabase.
+	 */
 	public StarsDatabase() {
 		try {
 			userDatabase = new UserDatabase(userFile);
@@ -119,22 +129,32 @@ public class StarsDatabase {
 		return studentDatabase.get(id);
 	}
 
+	/**
+	 * Get the student details associated with a user
+	 * THis method returns null if no such student_details object is found.
+	 * @param user The user_details to be looked up
+	 * @return The student_details object associated with the user-details object.
+	 */
 	Student_details getStudent(User_details user)
 	{
 		Student_details student = studentDatabase.get(user.getId());
 		return student;
 	}
 	
+	/**
+	 * Gets a collection view of all the students in this database.
+	 * @return A collection view of all the student_details objects stored in this database.
+	 */
 	Collection<Student_details> getAllStudents()
 	{
 		return this.studentDatabase.getContents();
 	}
 	
-	StudentDatabase getStudentDatabase()
-	{
-		return studentDatabase;
-	}
-	
+	/**
+	 * Retrieves a student's details associated with the email.
+	 * @param email Email of the student 
+	 * @return The Student_details object associated with the email. Null if no such object is found.
+	 */
 	Student_details getStudentByEmail(String email)
 	{
 		Student_details student = null;
@@ -148,6 +168,11 @@ public class StarsDatabase {
 		return student;
 	}
 	
+	/**
+	 * Get the student associated with the username.
+	 * @param username username of the student
+	 * @return The Student_details object associated with the username. Null if no suh object is found.
+	 */
 	Student_details getStudentByUsername(String username)
 	{
 		Student_details student = null;
@@ -161,22 +186,43 @@ public class StarsDatabase {
 		return student;
 	}
 		
+	/**
+	 * Removes a student with the id from the database.
+	 * @param id The id of the Student_details object to be removed.
+	 */
 	void removeStudent(String id)
 	{
 		studentDatabase.remove(id);
 	}
 	
+	/**
+	 * Updates the database with the current contents of this instance of StarsDatabase.
+	 */
 	void writeDatabaseFiles()
 	{
+		System.out.println("Beginning writing to files!");
+
 		try {
-			studentDatabase.writeFile(studentFile);
-			userDatabase.writeFile(userFile);
+			saveStudents();
+			saveUsers();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		System.out.println("Finished Writing to files!");
 	}
+	
+	void saveStudents() throws IOException
+	{
+		studentDatabase.writeFile(studentFile);
+	}
+	
+	void saveUsers() throws IOException
+	{
+		userDatabase.writeFile(userFile);
+	}
+	
+
 
 
 	public static void main(String args[])
