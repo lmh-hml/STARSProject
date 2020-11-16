@@ -36,27 +36,45 @@ public class Student_details implements FlatFileObject{
 	public Student_details() {}
 
 
+	/**
+	 * Returns flat file string representation of this student object
+	 * @return Flat file string representation of this object
+	 */
 	public String toFlatFileString() {
 		
 		String coursesString = "";
-		for( String course : courseRegistered)
+		if(courseRegistered.isEmpty()) coursesString += " ";
+		else
 		{
-			coursesString += course + ',';
+			for( String course : courseRegistered)
+			{
+				coursesString += course + ',';
+			}
+		
 		}
-	
+
 		
 		String waitlistString = "";
-		for( String course : courseWaitlist)
+		if(courseWaitlist.isEmpty()) waitlistString += " ";
+		else
 		{
-			waitlistString += course + ',';
+			for( String course : courseWaitlist)
+			{
+				waitlistString += course + ',';
+			}
 		}
 
 		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality, id, coursesString, waitlistString ) ;
 	}
 	
+	/**
+	 * Initializes this object with a flat file string read from a flat file.
+	 * This method does nothing if the flat file string has insufficient columns to initialize this object.
+	 */
 	@Override
 	public void fromFlatFileString(String s) {
 		ArrayList<String> array = new ArrayList<String>( Arrays.asList(s.split("\\|")) );
+		if(array.size()<8)return;
 		this.name = array.get(0);
 		this.matric_num = array.get(1);
 		this.gender = array.get(2);
@@ -64,12 +82,21 @@ public class Student_details implements FlatFileObject{
 		this.nationality = array.get(4);
 		this.id  = array.get(5);
 		
-		for(String item: array.get(6).split("\\,"))
+		if(!array.get(6).equals(" "))
 		{
-			this.addCourse(item);
+			for(String item: array.get(6).split("\\,"))
+			{
+				this.addCourse(item);
+			}
 		}
 		
-		
+		if(!array.get(7).equals(" "))
+		{
+			for(String item: array.get(7).split("\\,"))
+			{
+				this.addCourse(item);
+			}
+		}
 	}
 
 	/**
@@ -89,7 +116,7 @@ public class Student_details implements FlatFileObject{
 
 	/**
 	 * Sets this Student's name
-	 * @param name
+	 * @param name Name of the student
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -137,7 +164,7 @@ public class Student_details implements FlatFileObject{
 
 	/**
 	 * Sets this student's AU
-	 * @param aU
+	 * @param aU Academic units of this student
 	 */
 	public void setAU(String aU) {
 		AU = aU;
@@ -168,14 +195,11 @@ public class Student_details implements FlatFileObject{
 
 	/**
 	 * Set this student's id
-	 * @param Student's Id
+	 * @param id tudent's Id
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
-
-
-
 
 	/**
 	 * @return the courseWaitlist
@@ -183,7 +207,6 @@ public class Student_details implements FlatFileObject{
 	public List<String> getCourseWaitlist() {
 		return courseWaitlist;
 	}
-
 
 	/**
 	 * @param courseWaitlist the courseWaitlist to set
@@ -211,7 +234,6 @@ public class Student_details implements FlatFileObject{
 	{
 		courseWaitlist.remove(course);
 	}
-
 
 	/**
 	 * Add the courses' names to the list of courses registered by this student.

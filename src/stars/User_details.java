@@ -50,9 +50,11 @@ public class User_details implements FlatFileObject
 
 	/**
 	 * Initializes this object with a string read from a flat file.
+	 * This method does nothing if there are not enough columns in the flat file string to initialize this object.
 	 */
 	public void fromFlatFileString(String s) {
-		ArrayList<String> array = new ArrayList<String>( Arrays.asList(s.split("\\|")) );			
+		ArrayList<String> array = new ArrayList<String>( Arrays.asList(s.split("\\|")) );
+		if(array.size()<5)return;
 		this.username = array.get(0);
 		this.password = array.get(1);
 		this.email = array.get(2);
@@ -80,7 +82,7 @@ public class User_details implements FlatFileObject
 		return username;
 	}
 	
-	/**@return Set this user's username*/
+	/**@param username Set this user's username*/
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -90,7 +92,7 @@ public class User_details implements FlatFileObject
 		return password;
 	}
 
-	/**@return Set this user's password. Before setting, a plaintext password should be hashed.*/
+	/**@param Set this user's password. Before setting, a plaintext password should be hashed.*/
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -110,7 +112,7 @@ public class User_details implements FlatFileObject
 		return accountType;
 	}
 
-	/**@return Set this user's account type, either "student" or "admin"/
+	/**@return Set this user's account type, either "student" or "admin"*/
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
 	}

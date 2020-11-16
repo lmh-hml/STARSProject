@@ -15,7 +15,7 @@ public interface FlatFileObject {
 	/**The delimter that separate columns in the flat file*/
 	public final static String delimiter = "|";
 	
-	/**
+	/**Returns the flat file string representation of the object.
 	 * @return Returns the flat file representation of the object.
 	 */
 	public abstract String toFlatFileString();

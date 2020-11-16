@@ -89,8 +89,8 @@ public class StarsDatabase {
 	
 	
 	/**
-	 * 
-	 * @param id
+	 * Removes user with the specified id from the database.
+	 * @param id Id of specified user.
 	 */
 	void removeUser(String id)
 	{

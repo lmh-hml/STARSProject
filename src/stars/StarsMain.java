@@ -21,7 +21,7 @@ public class StarsMain {
 	StarsDatabase starsDatabase = new StarsDatabase();
 	StarsNotifier notifier;
 	
-	AdminProgram adminProgram = new AdminProgram( starsDatabase.getUserDatabase(), starsDatabase.getStudentDatabase());	
+	AdminProgram adminProgram = new AdminProgram( starsDatabase);	
 	LocalDate accessPeriodStart = LocalDate.of(2020, 12, 1);
 	LocalDate accessPeriodEnd = LocalDate.of(2020, 12, 31);;
 	LocalTime access_time_start = LocalTime.of(9, 0);
@@ -196,6 +196,7 @@ public class StarsMain {
 //		notifier.sendNotification("Hey", "Test");
 //		System.out.println("Notification sent!");
 
+		starsDatabase.writeDatabaseFiles();
 		logOut();
 	}
 	

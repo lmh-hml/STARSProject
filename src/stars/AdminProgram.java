@@ -16,6 +16,7 @@ public class AdminProgram
     public final static String delimiter = "|";
     private StarsDatabase starsDatabase;
     private String default_password = "password" ;
+    private String hashed_default_password = PasswordMaker.generatePasswordHash(default_password);
     //public CourseManager courseManager;
     private Scanner sc = new Scanner(System.in);//you will need to delete this later
     
@@ -193,10 +194,7 @@ public class AdminProgram
         String nationality = sc.nextLine();
         new_student.setNationality(nationality);
         
-        System.out.println("Enter the id");
-        String id = sc.nextLine();
-        new_student.setId(id);
-        
+        new_student.setId(matric);
         
         //this part will update the user info, as userName and password.
         System.out.println("Enter the UserName");
@@ -204,11 +202,9 @@ public class AdminProgram
         new_user.setUsername(userName);
         
         System.out.println("The password is setted to default");
-        new_user.setPassword(default_password);
-        
-        System.out.println("Enter the email");
-        String email = sc.nextLine();
-        new_user.setEmail(email);
+        new_user.setPassword(hashed_default_password);
+
+        new_user.setEmail(userName + "@e.ntu.edu.sg");
         
         String accountType = "";
         do {
@@ -221,7 +217,7 @@ public class AdminProgram
         new_user.setAccountType(accountType);
         
         //the id is entered before, so just set it here
-        new_user.setId(id);
+        new_user.setId(matric);
         
         String write = "n";
         do {
@@ -231,7 +227,10 @@ public class AdminProgram
             if(write!="y" || write!="n")continue;
             
         }while(false);
-        if(write=="n")return;
+        if(write=="n")
+        {
+        	System.out.println("Your inputs are not saved.");
+        }
         
         starsDatabase.addUser(new_user);
         starsDatabase.addStudent(new_student);
@@ -242,7 +241,7 @@ public class AdminProgram
      * This function deletes the student from the database and rewrites the database 
      * 
      */
-    public void deletStudent()
+    public void deleteStudent()
     {
     	//cause id is the key.
     	System.out.println("Enter the id");
