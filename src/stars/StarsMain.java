@@ -22,6 +22,7 @@ public class StarsMain {
 	StudentDatabase students;
 	StarsNotifier notifier;
 	
+	AdminProgram adminProgram = new AdminProgram(users, students);	
 	LocalDate accessPeriodStart = LocalDate.of(2020, 12, 1);
 	LocalDate accessPeriodEnd = LocalDate.of(2020, 12, 31);;
 	LocalTime access_time_start = LocalTime.of(9, 0);
@@ -181,43 +182,9 @@ public class StarsMain {
 
 			case "Admin":
 			{
-				System.out.format("Welcome to STARS Admin, %s !\n", user.getUsername());
-				System.out.print(adminOptions);
-				System.out.format("Please enter an option: ");
 				
-				boolean loopInput = false;
-				boolean quit = false;
-				System.out.format("Please enter an option: ");
-				int input  = -1;
-				try {  input = scanner.nextInt(); } 
-				catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();}
+				adminProgram.run(user);
 				
-				switch( input )
-				{
-				
-				case 1: {}break;
-				
-				case 2: {}break;
-				
-				case 3: {}break;
-				
-				case 4: {}break;
-				
-				case 5: {}break;
-				
-				case 6: {} break;
-				
-				case 7: {System.out.print(this.adminOptions);}
-				
-				case 0: { quit = true; } break;
-				
-				default: 
-				{ 
-					System.out.println("Please enter a number among options provided.");
-					loopInput = true;
-				}
-				}//end switch
-				if(quit)break;
 			}break;
 
 
@@ -231,7 +198,7 @@ public class StarsMain {
 		}
 		
 		notifier = StarsNotifier.getNotificationMethod("Email");
-		notifier.setRecipient(user);
+		notifier.setRecipient("laim0012@e.ntu.edu.sg");
 		notifier.sendNotification("Hey", "Test");
 		System.out.println("Notification sent!");
 		logOut();

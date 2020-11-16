@@ -17,14 +17,22 @@ public class AdminProgram
     private Scanner sc = new Scanner(System.in);//you will need to delete this later
     private UserDatabase userDatabase;
     private StudentDatabase  studentDatabase;
+    
+	private final String adminOptions = "1.Edit student access period\n"
+			+ "2.Add a student (name, matric number, gender, nationality, etc)\n"
+			+ "3.Add/Update a course (course code, school, its index numbers and vacancy).\n"
+			+ "4.Check available slot for an index number (vacancy in a class)\n"
+			+ "5.Print student list by index number.\n"
+			+ "6.Print student list by course [ print only student’s name, gender and nationality ]\n"
+			+ "7. Show options\n"
+			+ "0. Quit\n";
 
     AdminProgram()//used for testing
     {
     }
     
-    AdminProgram(StarsMain Main, UserDatabase UserDatabase, StudentDatabase StudentDatabase)//CourseManger CourseManager, UserDatabase UserDatabase, Scanner sc)
+    AdminProgram( UserDatabase UserDatabase, StudentDatabase StudentDatabase)//CourseManger CourseManager, UserDatabase UserDatabase, Scanner sc)
     {
-        main = Main;
         //courseManager = CourseManager;
         userDatabase = UserDatabase;
         studentDatabase = StudentDatabase;
@@ -129,22 +137,23 @@ public class AdminProgram
 	     String time_end_str = time_end.toString();
          
 	     //writting to file
-	     PrintWriter out = null;
+	    PrintWriter out = null;
 		try {
-			out = new PrintWriter(new FileWriter("report.txt"));
+			out = new PrintWriter(new FileWriter("Settings.txt"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	     out.println(date_start_str);
-	     out.println(time_start_str);
-	     out.println(date_end_str);
-	     out.println(time_end_str);
-	     out.close();
+		
+		String accessperiodString = "accessPeriod"+"|"+date_start_str + '|'+ time_start_str + '|'+ date_end_str+'|'+time_end_str+'|';
+		
+		out.println(accessperiodString);
+		out.close();
 
 	     //you will also need to write the thing to a file
 	     System.out.println("Access Period has been setted");
-        
+	     
+
     }
 
     void AddaStudent()
@@ -177,13 +186,76 @@ public class AdminProgram
         student.setId(id);
         
         studentDatabase.add(student);
+        try {
+        	studentDatabase.writeFile("D:/Eclipse/STARS/src/stars/Students.txt");
+        }catch(Exception e)
+        {
+        	System.out.println("Error occurs when Admin Program tries to rewrite student database to add a new student");
+        	e.printStackTrace();
+        	return;
+        }
+        
     }
     
-    void update_A_Course()
+    void updateCourse()
     {
     	
     }
 
+    void run(User_details user)
+    {
+    	
+    	Scanner scanner= this.sc;
+    	
+    	System.out.format("Welcome to STARS Admin, %s !\n", user.getUsername());
+		System.out.print(adminOptions);
+		System.out.format("Please enter an option: ");
+			
+		boolean loopInput = false;
+		boolean quit = false;
+		while( loopInput || !quit )
+		{
+			System.out.format("Please enter an option: ");
+			int input  = -1;
+			try {  input = scanner.nextInt(); scanner.nextLine(); } 
+			catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();}
+		
+			switch( input )
+			{
+
+			case 1: {
+				EditAccessPeriod();
+			}break;
+
+			case 2: {
+				AddaStudent();
+			}break;
+
+			case 3: {
+				updateCourse();
+			}break;
+
+			case 4: {}break;
+
+			case 5: {}break;
+
+			case 6: {} break;
+
+			case 7: {System.out.print(this.adminOptions);}
+
+			case 0: { quit = true; } break;
+
+			default: 
+			{ 
+				System.out.println("Please enter a number among options provided.");
+				loopInput = true;
+			}
+			}//end switch
+			if(quit)return;
+		}
+    }
+    
+    
 /*
     void CheckAvailableSlot(int index)
     {
@@ -207,6 +279,11 @@ public class AdminProgram
     public static void main(String args[])
     {
 		AdminProgram Admin = new AdminProgram();
-    	Admin.AddaStudent();
+    	//Admin.AddaStudent();
+		
+		User_details user = new User_details();
+		user.setUsername("Admin");
+		
+    	Admin.run(user);
     }
 }
