@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A class that reads, stores and write data from from to a flat file.
@@ -72,7 +73,17 @@ public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 	{
 		return hashmap.values();
 	}
-
+	
+	/**
+	 * Return the set view of the keys stored in this database.
+	 * @return Returns the set view of keys stored in this database
+	 */
+	public Set<String> getKeys()
+	{
+		return this.hashmap.keySet();
+	}
+	
+	
 	/**
 	 * Returns a list of strings, each string being a flat file representation
 	 * of a value stored in the database.

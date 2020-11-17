@@ -49,7 +49,5 @@ public interface FlatFileObject {
 		}
 		return s;
 	}
-
-	
 	
 }
