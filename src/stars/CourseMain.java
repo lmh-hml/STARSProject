@@ -5,7 +5,6 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Date;
 
-import stars.Index_details.IndexClass;
 
 
 public class CourseMain {
@@ -16,25 +15,45 @@ public class CourseMain {
 		CourseDatabase courses = new CourseDatabase();
 		IndexDatabase indexes = new IndexDatabase();
 		try {
-			courses.openFile("courses.txt");
+			courses.openFile("Courses.txt");
 			indexes.openFile("Indexes.txt");
+			
+			LocalTime start = LocalTime.of(8, 30);
+			LocalTime end = LocalTime.of(9, 30);
+
+			
 			
 			Index_details index = new Index_details();
 			index.setIndexCode("10122");
 			index.setCapacity(10);
-			Index_details.IndexClass indexClass = new Index_details.IndexClass("LEC","SE1",LocalTime.now(), LocalTime.now(),DayOfWeek.MONDAY,"LectureTheatre");
-			index.addIndexClass(indexClass);
-			indexes.add(index);
 			
-			for(Index_details c :indexes.getContents())
-			{
-				System.out.println(c.toFlatFileString());
-			}
+			Course algorithms = new Course("CE2001", "Algorithms", 3);
+			Index_details algo1  = new Index_details();
+			algo1.setCourseCode(algorithms.getcoursecode());
+			algo1.setCapacity(10);
+			algo1.setIndexCode("10019");
 			
-			Course course = new Course("CE2001","Algorithms",3);
-			course.addIndexName(index.getIndexCode());
+			IndexClass indexClass = new IndexClass();
+			indexClass.setType(IndexClassType.Lecture);
+			indexClass.setGroup("CE2");
+			indexClass.setDay(DayOfWeek.FRIDAY);
+			indexClass.setStartTime(start);
+			indexClass.setEndTime(end);
+			indexClass.setVenue("LT10");
+			algo1.addIndexClass(indexClass);
+			indexes.add(algo1);
+			courses.add(algorithms);
+						
 
-			indexes.writeFile("Indexes.txt");
+			System.out.println(algo1.toFlatFileString());
+			
+			Index_details index2 = new Index_details();
+			index2.fromFlatFileString(algo1.toFlatFileString());
+			System.out.println(index2.toFlatFileString());
+
+
+			//indexes.writeFile("Indexes.txt");
+			//courses.writeFile("Courses.txt");
 
 			
 		} catch (IOException e) {

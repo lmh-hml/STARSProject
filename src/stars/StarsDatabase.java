@@ -31,7 +31,7 @@ public class StarsDatabase {
 	private StudentDatabase studentDatabase;
 
 	/**
-	 * Default contructorof StarsDatabase.
+	 * Default contructor of StarsDatabase.
 	 */
 	public StarsDatabase() {
 		try {

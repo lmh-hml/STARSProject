@@ -1,120 +1,30 @@
 package stars;
 
+import java.lang.instrument.UnmodifiableClassException;
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import stars.FlatFileObject;
 
-public class Index_details implements stars.FlatFileObject{
-	
+public class Index_details implements stars.FlatFileObject{		
+
 	private String indexCode = "";
 	private String courseCode = "";
+	private int capacity=0;
+
 	private ArrayList<IndexClass> classes = new ArrayList<>();
 	private ArrayList<String> registered = new ArrayList<>();
 	private ArrayList<String> waitlist = new ArrayList<>();
-	private int capacity;
 	
-	public static class IndexClass
-	{
-		private final static String delimiter= "\\-";
-		private String type = "";
-		private String group = "";
-		private LocalTime startTime;
-		private LocalTime endTime;
-		private DayOfWeek day;
-		private String venue;
-		
-		IndexClass(String type, String group, LocalTime start, LocalTime end, DayOfWeek day, String venue)
-		{
-			this.type =type;
-			this.group = group;
-			this.startTime = start;this.endTime =end;
-			this.day = day;
-			this.venue = venue;
-			
-		};
-		IndexClass(){};
-		
-		public String toFlatFileString()
-		{
-			String s = "";
-			s += type.toString() + '-';
-			s += group.toString() + '-';
-			s += startTime.toString()+'-';
-			s+= endTime.toString() + '-';
-			s+= day.toString() + '-';
-			s+= venue.toString();
-			return s;		
-		}
-	
-		public void fromFlatFileString(String s)
-		{
-			String[] array = s.split("\\-");
-			type = array[0];
-			group = array[1];
-			startTime = LocalTime.parse(array[2]);
-			endTime = LocalTime.parse(array[3]);
-			day = DayOfWeek.valueOf(array[4]);
-			venue = array[5];
-		}
-		
-		public DayOfWeek getDay()
-		{
-			return this.day;
-		}
-		
-		public ArrayList<LocalTime> getTime()
-		{
-			ArrayList<LocalTime> result = new ArrayList<LocalTime>();
-			result.add(startTime);
-			result.add(endTime);
-			return result;
-		}
-		
-		/**
-	     * Used to determine if two classes gets clash
-	     * But you will need to confirm that both course happens on the same Day beforehand
-	     * 
-	     * a clash return true, otherwise false
-	     * @param start1
-	     * @param end1
-	     * @param start2
-	     * @param end2
-	     * @return
-	     */
-	    public boolean clash(IndexClass otherClass)
-	    {
-	    	DayOfWeek day1 = this.day;
-	    	DayOfWeek day2 = otherClass.getDay();
-	    	if(day1!=day2)
-	    	{
-	    		return false;
-	    	}
-	    	LocalTime start1 = this.startTime;
-	    	LocalTime end1 = this.endTime;
-	    	LocalTime start2 = otherClass.getTime().get(0);
-	    	LocalTime end2 = otherClass.getTime().get(1);
-	    	if(start1.compareTo(start2)<0)//start1 before start2
-	    	{
-	    		if(end1.compareTo(start2)>=0)
-	    			return true;
-	    		else
-	    			return false;
-	    	}else {
-	    		//start1 is after start2
-	    		if(start1.compareTo(end2)<0)
-	    			return true;
-	    		else
-	    			return false;
-	    	}
-	    }
-		
-	}
-	
+	/**Number of fields in this class that should be read/written to flat file**/
+	private static final int NumFields = 6;
 	
 
 	public Index_details() {
@@ -126,37 +36,31 @@ public class Index_details implements stars.FlatFileObject{
 		String s = "";
 		s += indexCode + delimiter;
 		s += courseCode + delimiter;
-		
+		s += capacity + delimiter;
 		for(IndexClass c : classes)
 		{
 			s += c.toFlatFileString() + ',';
 		}
 		s += delimiter;
 		
-		for(String str : registered)
-		{
-			s +=  str + ',';
-		}
-		s += delimiter;
-		
-		for(String str : waitlist)
-		{
-			s +=  str + ',';
-		}
-		s += delimiter;
+		s += FlatFileObject.listToFlatFileString(registered);
+		s += FlatFileObject.listToFlatFileString(waitlist);
+
 		
 		return s;
 	
 	}
 
 	@Override
-	public void fromFlatFileString(String s) {
-		String[] array = s.split(delimiter);
+	public boolean fromFlatFileString(String s) {
+		String[] array = s.split(regexDelimiter);
+		if(array.length < NumFields )return false;
 		
 		indexCode = array[0];
 		courseCode = array[1];
+		capacity = Integer.parseInt(array[2]);
 		
-		String[] classes_array = array[2].split(IndexClass.delimiter);
+		String[] classes_array = array[3].split("\\,");
 		for( String str : classes_array)
 		{
 			IndexClass indexClass = new IndexClass();
@@ -164,17 +68,18 @@ public class Index_details implements stars.FlatFileObject{
 			this.classes.add(indexClass);
 		}
 		
-		String[] registered_array = array[3].split("\\,");
+		String[] registered_array = array[4].split("\\,");
 		for( String str : registered_array)
 		{
 			this.registered.add(str);
 		}
 		
-		String[] waitlist_array = array[4].split("\\,");
+		String[] waitlist_array = array[5].split("\\,");
 		for( String str : waitlist_array)
 		{
 			this.waitlist.add(str);
 		}		
+		return true;
 	}
 
 	@Override
@@ -194,11 +99,17 @@ public class Index_details implements stars.FlatFileObject{
 	{
 		return classes;
 	}
-	public void setCourseCode(String courseCode) { this.courseCode = courseCode;}
-	public String getCourseCode() { return this.courseCode;}
+
+	public void setCourseCode(String courseCode)
+	{ this.courseCode = courseCode;}
+	public String getCourseCode() 
+	{ return this.courseCode;}
 
 	public void setCapacity( int cap ) {this.capacity  =cap;}
 	public int getCapacity() { return this.capacity;}
+	public int getVacancy()	{	return this.capacity - this.registered.size();}
+
+	
 	
 	public boolean registerStudent(String studentName)
 	{
@@ -212,10 +123,13 @@ public class Index_details implements stars.FlatFileObject{
 			return false;
 		}
 	}
-
-	public void removeFromRegistered(String studentName) 
+	public boolean registerStudent(Student_details student) 
+	{ return registerStudent(student.getName());}	
+	public boolean removeFromRegistered(String studentName) 
 	{
-		this.registered.remove(studentName);
+		boolean success = this.registered.remove(studentName);
+		return success;
+		
 	}
 	
 	public boolean addStudentToWaitlist(String studentName)
@@ -231,22 +145,19 @@ public class Index_details implements stars.FlatFileObject{
 		}
 
 	}
-
-	public void removeFromWaitlist(String studentName)
+	public boolean addStudentToWaitlist(Student_details student) 
+	{ return addStudentToWaitlist(student.getName());}
+	public boolean removeFromWaitlist(String studentName)
 	{
-		this.waitlist.remove(studentName);
+		boolean success = this.registered.remove(studentName);
+		return success;
 	}
 	
-	public int getVacancy()
-	{
-		return this.capacity - this.registered.size();
-	}
 	
 	public boolean isRegistered(String studentName)
 	{
 		return registered.contains(studentName);
-	}
-	
+	}	
 	public boolean isWaiting(String studentName)
 	{
 		return waitlist.contains(studentName);
@@ -264,7 +175,7 @@ public class Index_details implements stars.FlatFileObject{
 	
 	public Object[] getIndexClasses()
 	{
-		return classes.toArray();
+		return this.classes.toArray();
 	}
 	
 	
@@ -275,25 +186,21 @@ public class Index_details implements stars.FlatFileObject{
 		index.setIndexCode("abc");
 		index.setCapacity(1);
 		{
-		Index_details.IndexClass c = new IndexClass("Lec","SE1",LocalTime.now(), LocalTime.now(),DayOfWeek.FRIDAY,"lab4s");
-		index.addIndexClass(c);
+			IndexClass c = new IndexClass("Lecture","SE1",LocalTime.now(), LocalTime.now(),DayOfWeek.FRIDAY,"lab4s");
+			index.addIndexClass(c);
 		}
 		index.registerStudent("Jack");
 		index.addStudentToWaitlist("Jim");
 		
-		Index_details.IndexClass c2 = (IndexClass) index.getIndexClasses()[0];
+		IndexClass c2 = (IndexClass) index.getIndexClasses()[0];
 
 		String s = c2.toFlatFileString();
 		System.out.println(c2.toFlatFileString());
 
 		
-		Index_details.IndexClass c3 =new IndexClass(); 
+		IndexClass c3 =new IndexClass(); 
 		c3.fromFlatFileString(s);
 		System.out.println(index.toFlatFileString());
-
-		
-		
-		
 	}
 
 }

@@ -14,6 +14,7 @@ public interface FlatFileObject {
 	
 	/**The delimter that separate columns in the flat file*/
 	public final static String delimiter = "|";
+	public final static String regexDelimiter = "\\"+delimiter;
 	
 	/**Returns the flat file string representation of the object.
 	 * @return Returns the flat file representation of the object.
@@ -24,7 +25,7 @@ public interface FlatFileObject {
 	 * Initializes this object using a line read from a flat file.
 	 * @param s A line from a flat file.
 	 */
-	public abstract void fromFlatFileString(String s);
+	public abstract boolean fromFlatFileString(String s);
 
 	/**
 	 * Gets the id of this flat file object used to index it in a flat file database
@@ -47,6 +48,19 @@ public interface FlatFileObject {
 		{
 			s += o.toString() + delimiter;
 		}
+		return s;
+	}
+	
+	public static String listToFlatFileString(List list)
+	{
+		if(list.isEmpty()) { return " |";}
+		
+		String s = "";
+		for(Object str : list)
+		{
+			s +=  str.toString() + ',';
+		}
+		s += delimiter;
 		return s;
 	}
 	

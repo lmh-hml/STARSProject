@@ -34,6 +34,9 @@ public class User_details implements FlatFileObject
 	/**Id of this user **/
 	private String id = "";
 
+	/**Number of fields in this class that should be read/written to flat file**/
+	private static final int NumFields= 5;
+	
 	/*
 	 * Base constructor.
 	 */
@@ -52,14 +55,15 @@ public class User_details implements FlatFileObject
 	 * Initializes this object with a string read from a flat file.
 	 * This method does nothing if there are not enough columns in the flat file string to initialize this object.
 	 */
-	public void fromFlatFileString(String s) {
+	public boolean fromFlatFileString(String s) {
 		ArrayList<String> array = new ArrayList<String>( Arrays.asList(s.split("\\|")) );
-		if(array.size()<5)return;
+		if(array.size()<NumFields)return false;
 		this.username = array.get(0);
 		this.password = array.get(1);
 		this.email = array.get(2);
 		this.accountType = array.get(3);
 		this.id = array.get(4);
+		return true;
 	}
 
 //	/**

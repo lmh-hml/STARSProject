@@ -31,6 +31,8 @@ public class Student_details implements FlatFileObject{
 	private List<String> courseRegistered = new ArrayList<>();
 	/**Courses that this student is in the waitlist for.*/
 	private List<String> courseWaitlist = new ArrayList<>();
+	/**Number of fields in this class that should be read/written to flat file**/
+	private static final int NumFields = 8;
 	
 	/**Default constructor*/
 	public Student_details() {}
@@ -70,11 +72,12 @@ public class Student_details implements FlatFileObject{
 	/**
 	 * Initializes this object with a flat file string read from a flat file.
 	 * This method does nothing if the flat file string has insufficient columns to initialize this object.
+	 * @return 
 	 */
 	@Override
-	public void fromFlatFileString(String s) {
+	public boolean fromFlatFileString(String s) {
 		ArrayList<String> array = new ArrayList<String>( Arrays.asList(s.split("\\|")) );
-		if(array.size()<8)return;
+		if(array.size()<NumFields)return false;
 		this.name = array.get(0);
 		this.matric_num = array.get(1);
 		this.gender = array.get(2);
@@ -97,6 +100,7 @@ public class Student_details implements FlatFileObject{
 				this.addCourse(item);
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -263,7 +267,10 @@ public class Student_details implements FlatFileObject{
 		courseRegistered = courses;
 	}
 
-
+	/**
+	 * Returns the value of this flat file object's id in the database
+	 * @return The string id used to index this object in a flatfile database.
+	 */
 	@Override
 	public String getDatabaseId() {
 		return this.id;

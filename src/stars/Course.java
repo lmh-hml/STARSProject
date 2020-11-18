@@ -17,7 +17,8 @@ public class Course implements FlatFileObject
     private String courseName;
     private int AU;
     private ArrayList<String> indexes = new ArrayList<>();
-
+	/**Number of fields in this class that should be read/written to flat file**/
+    private final static int NumFields = 4;
 
 	public Course(String code, String name, int AU) 
 	{
@@ -62,16 +63,13 @@ public class Course implements FlatFileObject
 	@Override
 	public String toFlatFileString() {
 		String courseStr = FlatFileObject.buildFlatFileString(courseCode, courseName, AU);
-		for( String i : indexes)
-		{
-			courseStr += i + ',';
-		}
-		courseStr += delimiter;
+		courseStr += FlatFileObject.listToFlatFileString(indexes);
 		return courseStr;
 	}	
 	@Override
-	public void fromFlatFileString(String s) {
+	public boolean fromFlatFileString(String s) {
 		String[] array = s.split("\\|");
+		if(array.length< NumFields)return false;
 		this.courseCode = array[0];
 		this.courseName = array[1];
 		this.AU = Integer.valueOf(array[2]);
@@ -81,6 +79,7 @@ public class Course implements FlatFileObject
 		{
 			this.indexes.add(str);
 		}	
+		return true;
 	}
 	@Override
 	public String getDatabaseId() {
@@ -98,7 +97,6 @@ public class Course implements FlatFileObject
 		c2.fromFlatFileString(s);
 		System.out.println(s);
 		System.out.println(c2.toFlatFileString());
-		
 	}
 
 }
