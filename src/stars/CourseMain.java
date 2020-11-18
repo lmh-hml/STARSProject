@@ -1,11 +1,11 @@
-package course2;
+package stars;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Date;
 
-import course2.Index_details.IndexClass;
+import stars.Index_details.IndexClass;
 
 
 public class CourseMain {
@@ -25,13 +25,11 @@ public class CourseMain {
 			Index_details.IndexClass indexClass = new IndexClass("LEC","SE1",LocalTime.now(), LocalTime.now(),DayOfWeek.MONDAY,"LectureTheatre");
 			index.addIndexClass(indexClass);
 			indexes.add(index);
-		
 			
 			for(Index_details c :indexes.getContents())
 			{
 				System.out.println(c.toFlatFileString());
 			}
-			
 			
 			Course course = new Course("CE2001","Algorithms",3);
 			course.addIndexName(index.getIndexCode());

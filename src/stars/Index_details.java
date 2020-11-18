@@ -1,4 +1,4 @@
-package course2;
+package stars;
 
 import java.sql.Time;
 import java.time.DayOfWeek;
@@ -61,6 +61,57 @@ public class Index_details implements stars.FlatFileObject{
 			day = DayOfWeek.valueOf(array[4]);
 			venue = array[5];
 		}
+		
+		public DayOfWeek getDay()
+		{
+			return this.day;
+		}
+		
+		public ArrayList<LocalTime> getTime()
+		{
+			ArrayList<LocalTime> result = new ArrayList<LocalTime>();
+			result.add(startTime);
+			result.add(endTime);
+			return result;
+		}
+		
+		/**
+	     * Used to determine if two classes gets clash
+	     * But you will need to confirm that both course happens on the same Day beforehand
+	     * 
+	     * a clash return true, otherwise false
+	     * @param start1
+	     * @param end1
+	     * @param start2
+	     * @param end2
+	     * @return
+	     */
+	    public boolean clash(IndexClass otherClass)
+	    {
+	    	DayOfWeek day1 = this.day;
+	    	DayOfWeek day2 = otherClass.getDay();
+	    	if(day1!=day2)
+	    	{
+	    		return false;
+	    	}
+	    	LocalTime start1 = this.startTime;
+	    	LocalTime end1 = this.endTime;
+	    	LocalTime start2 = otherClass.getTime().get(0);
+	    	LocalTime end2 = otherClass.getTime().get(1);
+	    	if(start1.compareTo(start2)<0)//start1 before start2
+	    	{
+	    		if(end1.compareTo(start2)>=0)
+	    			return true;
+	    		else
+	    			return false;
+	    	}else {
+	    		//start1 is after start2
+	    		if(start1.compareTo(end2)<0)
+	    			return true;
+	    		else
+	    			return false;
+	    	}
+	    }
 		
 	}
 	
@@ -138,6 +189,10 @@ public class Index_details implements stars.FlatFileObject{
 	public void addIndexClass(IndexClass c)
 	{
 		this.classes.add(c);
+	}
+	public ArrayList<IndexClass> getIndexClass()
+	{
+		return classes;
 	}
 	public void setCourseCode(String courseCode) { this.courseCode = courseCode;}
 	public String getCourseCode() { return this.courseCode;}

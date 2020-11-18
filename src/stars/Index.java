@@ -1,41 +1,46 @@
 package stars;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class Index {
-	private String name;
-	private int vacancy;
-	private ArrayList<String> studentsRegistered;
-	
-	public Index(String name,int vacancy) {
-		this.name=name;
-		this.vacancy=vacancy;
-		this.studentsRegistered= new ArrayList<String>();
-	}
-	
-	public void PrintStudentList() {
-		for (int i=0;i<studentsRegistered.size();i++) {
-			System.out.println(studentsRegistered.get(i));
-		}
-	}
+public class index {
+	private String index;
+	private String Name;
+	private int Vacancy;
 
+	private ArrayList<String> StudentsRegistered;
 	
+	public index(String index,String name) {
+		this.index=index;		
+		this.Name=name;
+	}
+	public String getName() {return Name;}
+	
+	public void  PrintStudentList() {
+		String[] n = Name.split(" ");
+        for (String a : n) 
+            System.out.println(a);
+		
+	}
 	
 	public Boolean CheckVacancy() {
 		if (Vacancy>0) {
 			return true;
 		}
-		else 
-		{
+		else {
 			return false;
 		}
 	}
 	
 	public void SetIndex(String newindex) {
-		this.name = newindex;
+		Name = newindex;
 	}
+	
+	public String GetIndex() {
+		return index;
+	}
+	
+	public String addName(String name) {
+		Name=name;
+		return Name;}
 
-	
-	
 }
