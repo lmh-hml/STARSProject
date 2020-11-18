@@ -2,14 +2,14 @@ package stars;
 
 import java.util.ArrayList;
 
-public class index {
+public class Index {
 	private String index;
 	private String Name;
 	private int Vacancy;
 
 	private ArrayList<String> StudentsRegistered;
 	
-	public index(String index,String name) {
+	public Index(String index,String name) {
 		this.index=index;		
 		this.Name=name;
 	}

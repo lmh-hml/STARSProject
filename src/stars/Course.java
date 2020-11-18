@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/course/Course.java
-package course;
-=======
 package stars;
->>>>>>> 11.18.Admin:src/stars/Course.java
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

@@ -6,7 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/peng/Downloads/STARSProject-main (3)/STARSProject-main/activation-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/peng/Downloads/STARSProject-main (3)/STARSProject-main/javax.mail.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse/STARS/activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse/STARS/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

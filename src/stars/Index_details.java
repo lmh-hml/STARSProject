@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/course/Index_details.java
-package course;
-=======
 package stars;
->>>>>>> 11.18.Admin:src/stars/Index_details.java
 
 import java.sql.Time;
 import java.time.DayOfWeek;
