@@ -19,8 +19,8 @@ public class CourseManager{
 
 	public static final String SEPARATOR = "|";
 
-	final String courseFile = "src\\studentCourse\\courses.txt";
-	final String indexFile = "src\\studentCourse\\namelist";
+	final String courseFile = "Courses.txt";
+	final String indexFile = "Indexes.txt";
 	
 	private CourseDatabase courses = new CourseDatabase();
 	private IndexDatabase  indexes = new IndexDatabase();
@@ -167,4 +167,23 @@ public class CourseManager{
 			}
 		}
 
+		public static void main(String args[])
+		{
+			CourseManager cm= new CourseManager();
+			for( Course c :cm.getAllCourses())
+			{
+				System.out.println(c.toFlatFileString());
+			}
+			for( Index_details c :cm.getAllIndexes())
+			{
+				System.out.println(c.toFlatFileString());
+			}
+			Index_details i1 = cm.getIndex("10019");
+			Course c1 = cm.getCourse("CE2001");
+			
+			System.out.println(cm.getCourse(i1.getCourseCode()).toFlatFileString());
+
+
+
+		}
 }	  

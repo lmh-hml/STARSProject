@@ -52,8 +52,8 @@ public class CourseMain {
 			System.out.println(index2.toFlatFileString());
 
 
-			//indexes.writeFile("Indexes.txt");
-			//courses.writeFile("Courses.txt");
+			indexes.writeFile("Indexes.txt");
+			courses.writeFile("Courses.txt");
 
 			
 		} catch (IOException e) {
