@@ -15,6 +15,7 @@ import stars.exception.*;
 
 public class StarsMain {
 	
+	
 	Console console = System.console();
 	Scanner scanner = new Scanner(System.in);
 	
@@ -42,7 +43,7 @@ public class StarsMain {
 			+ "3.Add/Update a course (course code, school, its index numbers and vacancy)."
 			+ "4.Check available slot for an index number (vacancy in a class)\n"
 			+ "5.Print student list by index number.\n"
-			+ "6.Print student list by course [ print only student’s name, gender and nationality ]\n"
+			+ "6.Print student list by course [ print only studentï¿½s name, gender and nationality ]\n"
 			+ "7. Show options\n"
 			+ "0. Quit";
 	
