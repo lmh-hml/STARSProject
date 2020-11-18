@@ -1,4 +1,4 @@
-package course2;
+package course;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,13 +12,11 @@ import stars.FlatFileObject;
 
 public class Course implements FlatFileObject
 {
-	private String IndexDelimiter = "\\$";
     private String courseCode;
     private String courseName;
     private int AU;
     private ArrayList<String> indexes = new ArrayList<>();
-   
-    private static final String courseFile = "src\\studentCourse\\courses.txt";
+
 
 	public Course(String code, String name, int AU) 
 	{

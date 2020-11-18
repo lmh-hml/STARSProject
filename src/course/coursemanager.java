@@ -1,4 +1,4 @@
-package course2;
+package course;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;

@@ -1,4 +1,4 @@
-package course2;
+package course;
 
 import stars.FlatFileDatabase;
 import stars.FlatFileObject;

@@ -1,4 +1,4 @@
-package course2;
+package course;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -22,7 +22,7 @@ public class CourseMain {
 			Index_details index = new Index_details();
 			index.setIndexCode("10122");
 			index.setCapacity(10);
-			Index_details.IndexClass indexClass = new IndexClass("LEC","SE1",LocalTime.now(), LocalTime.now(),DayOfWeek.MONDAY,"LectureTheatre");
+			Index_details.IndexClass indexClass = new course.Index_details.IndexClass("LEC","SE1",LocalTime.now(), LocalTime.now(),DayOfWeek.MONDAY,"LectureTheatre");
 			index.addIndexClass(indexClass);
 			indexes.add(index);
 		
