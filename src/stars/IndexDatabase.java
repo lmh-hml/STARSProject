@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/course/IndexDatabase.java
 package course;
+=======
+package stars;
+>>>>>>> 11.18.Admin:src/stars/IndexDatabase.java
 
 import stars.FlatFileDatabase;
 

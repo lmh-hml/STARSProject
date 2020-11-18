@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/course/CourseDatabase.java
 package course;
+=======
+package stars;
+>>>>>>> 11.18.Admin:src/stars/CourseDatabase.java
 
 import stars.FlatFileDatabase;
 import stars.FlatFileObject;

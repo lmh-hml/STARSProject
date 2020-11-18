@@ -1,8 +1,13 @@
+<<<<<<< HEAD:src/course/Course.java
 package course;
+=======
+package stars;
+>>>>>>> 11.18.Admin:src/stars/Course.java
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -28,9 +33,23 @@ public class Course implements FlatFileObject
 	
 	
 	public String getcoursecode() {return courseCode;}
+	public void setcoursecode(String courseCode) {this.courseCode = courseCode;}
 	public String getcourseName() {return courseName;}
+	public void setcourseName(String courseName) {this.courseName = courseName;}
 	public int getAU() {return AU;}
 	public void   setAU(int au) { this.AU = au;}
+	
+	
+	public ArrayList<String> getIndexName()
+	{
+		ArrayList<String> copy = new ArrayList<String>(); 
+		for(String str : this.indexes) {
+		    copy.add(str);
+		}
+		return copy;
+	}
+	
+	
 	
 	public void addIndexName(String index)
 	{
