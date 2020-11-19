@@ -273,7 +273,7 @@ public class Student_details implements FlatFileObject{
 	 */
 	@Override
 	public String getDatabaseId() {
-		return this.id;
+		return this.matric_num;
 	}
 
 

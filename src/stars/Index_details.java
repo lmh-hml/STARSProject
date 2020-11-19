@@ -50,7 +50,6 @@ public class Index_details implements stars.FlatFileObject{
 		return s;
 	
 	}
-
 	@Override
 	public boolean fromFlatFileString(String s) {
 		String[] array = s.split(regexDelimiter);
@@ -81,7 +80,6 @@ public class Index_details implements stars.FlatFileObject{
 		}		
 		return true;
 	}
-
 	@Override
 	public String getDatabaseId() {
 		return this.indexCode;
@@ -93,6 +91,7 @@ public class Index_details implements stars.FlatFileObject{
 	public void setIndexCode(String s) { this.indexCode = s;}	
 	public void addIndexClass(IndexClass c)
 	{
+		c.setIndexCode(this.indexCode);
 		this.classes.add(c);
 	}
 	public ArrayList<IndexClass> getIndexClass()
@@ -183,10 +182,10 @@ public class Index_details implements stars.FlatFileObject{
 	{
 		
 		Index_details index = new Index_details();
-		index.setIndexCode("abc");
+		index.setIndexCode("10019");
 		index.setCapacity(1);
 		{
-			IndexClass c = new IndexClass("Lecture","SE1",LocalTime.now(), LocalTime.now(),DayOfWeek.FRIDAY,"lab4s");
+			IndexClass c = new IndexClass("LEC","SE1",LocalTime.of(8, 30), LocalTime.of(9,30),DayOfWeek.FRIDAY,"lab4");
 			index.addIndexClass(c);
 		}
 		index.registerStudent("Jack");
@@ -200,7 +199,7 @@ public class Index_details implements stars.FlatFileObject{
 		
 		IndexClass c3 =new IndexClass(); 
 		c3.fromFlatFileString(s);
-		System.out.println(index.toFlatFileString());
+		System.out.println(c3.toFlatFileString());
 	}
 
 }

@@ -1,1 +1,4 @@
-CE2001|Algorithms|3| |
+CE3001|Advance_Computer_Architecture|3| |
+CE2001|Algorithm|3| |
+CE2002|Object_Oriented_Programming|3| |
+CE2005|Operating_Systems|3| |

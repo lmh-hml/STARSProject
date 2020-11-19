@@ -133,7 +133,7 @@ public class User_details implements FlatFileObject
 
 	@Override
 	public String getDatabaseId() {
-		return this.id;
+		return this.username;
 	}
 
 }

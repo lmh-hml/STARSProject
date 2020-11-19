@@ -1,12 +1,11 @@
 package stars;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-enum IndexClassType { Lecture, Tutorial, Lab};
-
+enum IndexClassType { LEC, TUT, LAB;}
 public class IndexClass implements FlatFileObject
 {
 	public final static String delimiter= "\\-";
@@ -16,7 +15,9 @@ public class IndexClass implements FlatFileObject
 	private LocalTime endTime = LocalTime.MIN;;
 	private DayOfWeek day = DayOfWeek.MONDAY;
 	private String venue = " ";
+	private String indexCode = " ";
 	/**Number of fields in this class that should be read/written to flat file**/
+	private final static int NumFields = 7;
 	
 	IndexClass(String type, String group, LocalTime start, LocalTime end, DayOfWeek day, String venue)
 	{
@@ -25,7 +26,6 @@ public class IndexClass implements FlatFileObject
 		this.startTime = start;this.endTime =end;
 		this.day = day;
 		this.venue = venue;
-		
 	};
 	IndexClass(){};
 	
@@ -40,7 +40,7 @@ public class IndexClass implements FlatFileObject
 	 */
 	public void setType(IndexClassType classType) 
 	{
-			this.type = classType.toString();
+		this.type = classType.toString();
 	}		
 	/**
 	 * Sets the class type of this index class
@@ -56,7 +56,7 @@ public class IndexClass implements FlatFileObject
 		}
 		catch(IllegalArgumentException e)
 		{
-			System.err.format("No such class type exists among:"+IndexClassType.values()+'\n');
+			System.err.format("Argument %s is not one of : %s \n'", classType, Arrays.toString(IndexClassType.values()));
 		}
 
 	}
@@ -94,6 +94,8 @@ public class IndexClass implements FlatFileObject
 	public String getVenue() { return this.venue;}
 	public void setVenue(String venue) { this.venue = venue;}
 	
+	public String getIndexCode() { return this.indexCode;}
+	public void setIndexCode(String indexCode) {  this.indexCode = indexCode;}
 	
 	/**
      * Used to determine if two classes gets clash
@@ -141,19 +143,21 @@ public class IndexClass implements FlatFileObject
 		s += startTime.toString()+'-';
 		s+= endTime.toString() + '-';
 		s+= day.toString() + '-';
-		s+= venue.toString();
+		s+= venue.toString() + '-';
+		s+= indexCode + '-';
 		return s;		
 	}
 	public boolean fromFlatFileString(String s)
 	{
 		String[] array = s.split("\\-");
-		if(array.length<6)return false;
+		if(array.length<NumFields)return false;
 		this.setType(array[0]);
 		group = array[1];
 		startTime = LocalTime.parse(array[2]);
 		endTime = LocalTime.parse(array[3]);
 		day = DayOfWeek.valueOf(array[4]);
 		venue = array[5];
+		indexCode = array[6];
 		return true;
 	}	
 	@Override
@@ -168,7 +172,7 @@ public class IndexClass implements FlatFileObject
 		IndexClass indexClass = new IndexClass();
 		System.out.println(indexClass.toFlatFileString());
 		
-		indexClass.setType(IndexClassType.Lecture);
+		indexClass.setType(IndexClassType.LEC);
 		indexClass.setGroup("SE2");
 		indexClass.setDay(DayOfWeek.FRIDAY);
 		indexClass.setStartTime(LocalTime.of(8, 30));

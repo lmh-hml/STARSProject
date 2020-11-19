@@ -3,57 +3,92 @@ package stars;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Scanner;
 
 
 
 public class CourseMain {
+	static Scanner scanner  = new Scanner(System.in);
+
+	
+	static Course createCourse()
+	{
+		Course course = new Course();
+		System.out.println("Course_code Course_name AU");
+		String s = scanner.nextLine();
+		String[] sa = s.split("\\ ");
+		course.setcoursecode(sa[0]);
+		course.setcourseName(sa[1]);
+		course.setAU(Integer.parseInt(sa[2]));
+		return course;
+	}
+
+	static Index_details  createIndex()
+	{
+		Index_details index  = new Index_details();
+		System.out.println("Index_code Course_code Cap");
+		String s = scanner.nextLine();
+		String[] sa = s.split("\\ ");
+		index.setIndexCode(sa[0]);
+		index.setCourseCode(sa[1]);
+		index.setCapacity(Integer.parseInt(sa[2]));
+		return index;
+	}
+	
+	static IndexClass createClass()
+	{
+		IndexClass ic = new IndexClass();
+		System.out.println("Group Type Day startTime endTime venue");
+		String s = scanner.nextLine();
+		if(s=="0")return null;
+		String[] sa = s.split("\\ ");
+		
+		ic.setGroup(sa[0]);
+		ic.setType(sa[1].toUpperCase());
+		ic.setDay(DayOfWeek.valueOf(sa[2].toUpperCase()));
+		ic.setStartTime(LocalTime.parse(sa[3]));
+		ic.setEndTime(LocalTime.parse(sa[4]));
+		ic.setVenue(sa[5]);
+		return ic;
+	}
+	
+	
+	
+	
 	
 	public static void main(String args[])
 	{
-		
+
 		CourseDatabase courses = new CourseDatabase();
 		IndexDatabase indexes = new IndexDatabase();
+		
+		
 		try {
 			courses.openFile("Courses.txt");
 			indexes.openFile("Indexes.txt");
 			
-			LocalTime start = LocalTime.of(8, 30);
-			LocalTime end = LocalTime.of(9, 30);
-
+			for(int i = 0; i< 4; i++)
+			{
+				Index_details index = createIndex();
+				for(int j = 0; j<4;j++)
+				{
+					IndexClass c = createClass();
+					if(c==null)continue;
+					index.addIndexClass(c);
+				}
+				indexes.add(index);
+				System.out.println(index.toFlatFileString());
+			}
+		
 			
 			
-			Index_details index = new Index_details();
-			index.setIndexCode("10122");
-			index.setCapacity(10);
 			
-			Course algorithms = new Course("CE2001", "Algorithms", 3);
-			Index_details algo1  = new Index_details();
-			algo1.setCourseCode(algorithms.getcoursecode());
-			algo1.setCapacity(10);
-			algo1.setIndexCode("10019");
-			
-			IndexClass indexClass = new IndexClass();
-			indexClass.setType(IndexClassType.Lecture);
-			indexClass.setGroup("CE2");
-			indexClass.setDay(DayOfWeek.FRIDAY);
-			indexClass.setStartTime(start);
-			indexClass.setEndTime(end);
-			indexClass.setVenue("LT10");
-			algo1.addIndexClass(indexClass);
-			indexes.add(algo1);
-			courses.add(algorithms);
-						
-
-			System.out.println(algo1.toFlatFileString());
-			
-			Index_details index2 = new Index_details();
-			index2.fromFlatFileString(algo1.toFlatFileString());
-			System.out.println(index2.toFlatFileString());
 
 
 			indexes.writeFile("Indexes.txt");
-			courses.writeFile("Courses.txt");
+			//courses.writeFile("Courses.txt");
 
 			
 		} catch (IOException e) {
