@@ -181,11 +181,16 @@ public class CourseManager{
 	 * @param courseCode Course code of the target course.
 	 * @return The AU of the course if the course exists, otherwise -1.
 	 */
-	public int getAU(String courseCode)
+	public int getCourseAU(String courseCode)
 	{
-		Course course = this.courses.get(courseCode);
+		Course course = courses.get(courseCode);
 		if(course==null)return -1;
 		return course.getAU();
+	}
+	
+	public int getIndexAU(Index_details index)
+	{
+		return getCourseAU( index.getCourseCode());
 	}
 
 	/**

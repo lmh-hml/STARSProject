@@ -158,10 +158,7 @@ public class AdminProgram
 
     }
     
-    
-    
-    
-    
+      
 
     /**
      * This function adds a student

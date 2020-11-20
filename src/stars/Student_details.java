@@ -16,19 +16,19 @@ import java.util.List;
 public class Student_details implements FlatFileObject{
 
 	/**Name of the student*/
-	private String name="";
+	private String name=EmptyString;
 	/**Matriculation number of the student*/
-	private String matric_num = "";
+	private String matric_num = EmptyString;
 	/**Student's gender*/
-	private String gender = "";
+	private String gender = EmptyString;
 	/**Student's AU.*/
 	private int AU = 0;
 	/**Student's nationality*/
-	private String nationality = "";
+	private String nationality = EmptyString;
 	/**Study year of this student**/
 	private int studyYear = 0;
 	/**Email of this student**/
-	private String userName = "";
+	private String userName = EmptyString;
 	/**Courses registered by this student*/
 	private List<String> courseRegistered = new ArrayList<>();
 	/**Courses that this student is in the waitlist for.*/
@@ -70,16 +70,16 @@ public class Student_details implements FlatFileObject{
 		this.userName = array.get(6);
 		
 		String registeredData = array.get(7);
-		if(!registeredData.equals(" "))
+		if(!registeredData.equals(EmptyString))
 		{
 			for(String item: registeredData.split("\\,"))
 			{
-				this.addCourse(item);
+				this.addIndex(item);
 			}
 		}
 		
 		String waitlistData = array.get(8);
-		if(!waitlistData.equals(" "))
+		if(!waitlistData.equals(EmptyString))
 		{
 			for(String item: waitlistData.split("\\,"))
 			{
@@ -246,8 +246,8 @@ public class Student_details implements FlatFileObject{
 	 * Add the courses' names to the list of courses registered by this student.
 	 * @param courses Names of courses to be added
 	 */
-	public void addCourse(String... courses ) {
-		for(String s: courses)
+	public void addIndex(String... indexCodes ) {
+		for(String s: indexCodes)
 		{
 			courseRegistered.add(s);
 		}
@@ -257,9 +257,9 @@ public class Student_details implements FlatFileObject{
 	 * Removes the specified course from the courses registered by this student.
 	 * @param course name of course to be removed
 	 */
-	public void removeCourse(String course)
+	public void removeIndex(String indexCode)
 	{
-		courseRegistered.remove(course);
+		courseRegistered.remove(indexCode);
 	}
 
 	/**

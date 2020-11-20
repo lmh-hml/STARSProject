@@ -21,16 +21,16 @@ public class User_details implements FlatFileObject
 {
 
 	/**Username of this user **/
-	private String username = "";
+	private String username = EmptyString;
 	
 	/**Hashed password of this user **/
-	private String password = "";
+	private String password = EmptyString;
 	
 	/**Email of this user **/
-	private String email = "";
+	private String email = EmptyString;
 	
 	/**Account type of this user **/
-	private String accountType= "";
+	private String accountType= EmptyString;
 
 	/**Number of fields in this class that should be read/written to flat file**/
 	private static final int NumFields= 4;

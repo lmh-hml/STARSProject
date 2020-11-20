@@ -26,6 +26,10 @@ public class StudentProgram
 		this.notifier = notifier;
 	}
 	
+	public void setCurrentStudent(Student_details student)
+	{
+		currentUser = student;
+	}
 	
 	public void run(Student_details student)
 	{
@@ -99,101 +103,109 @@ public class StudentProgram
 		
 		
 	}
-	
+
 	
 	//Method to register a index of course for the student
 	public void addIndex(String indexCode) {
+		
 		//check if student in other index of same course
 		Index_details index = courseManager.getIndex(indexCode);
 		indexCode = index.getIndexCode();
 		Course course  = courseManager.getCourse(index.getCourseCode());
 		
-		if (index.isRegistered(currentUser.getName())== true) {
-			System.out.println("Already in course");
+		if (index==null) {
+			System.out.format("Index %s does not exist.\n", indexCode);
+		}
+		else if (index.isRegistered(currentUser.getName())== true) 
+		{
+			System.out.format("Student is already in index %s!\n", indexCode);
 		}
 		else if ( currentUser.getAU()+ course.getAU() >20) {
-			System.out.println("Amount of AU exceeds maximum AU");
-		}
-		else if (courseManager.getAllIndexes().contains(index)==false) {
-			System.out.println("Index does not exist");
+			System.out.println("Student's cuurent amount of AU exceeds maximum AU");
 		}
 		else {
 			currentUser.setAU(currentUser.getAU()+ course.getAU() );
 			int vacancy = courseManager.getVacancy(indexCode);
 			System.out.format("There were %d slots left in this index %s\n", vacancy, index.getCourseCode() );
 			if (vacancy==0) {
-				currentUser.getCourseWaitlist().add(indexCode); //not using setcoursewaitlist
-				index.addStudentToWaitlist(currentUser.getName()); //add student to waitlist
-				System.out.println("Course added to waitlist");
+				currentUser.addWaitlist(indexCode);//not using setcoursewaitlist
+				index.addStudentToWaitlist(currentUser); //add student to waitlist
+				System.out.format("Added Index %s to registered list.", index.getCourseCode());
 			}
 			else {
-				System.out.format("There were %d slots left in this index %s\n", index.getVacancy(), index.getCourseCode() );
 				index.registerStudent(currentUser); //add student to course
+				currentUser.addIndex(index.getIndexCode());
 				System.out.format("There are %d slots left in this index %s\n", index.getVacancy(), index.getCourseCode() );
 			}
-			starsDatabase.writeDatabaseFiles();
 		}
 	}
 	
 	//Method to drop a course for the student
 	public void dropIndex(String indexCode) {
 		Index_details index = courseManager.getIndex(indexCode);
-		currentUser.removeCourse(indexCode);
-		int newAU = currentUser.getAU() - courseManager.getAU(indexCode); //shouldn't this be add ?
+		currentUser.removeIndex(indexCode);
+		
+		int newAU = currentUser.getAU() - courseManager.getIndexAU(index); //shouldn't this be add ?
 		currentUser.setAU(newAU);
 		courseManager.removeStudentFromIndex(indexCode, currentUser);
 		
 		if (index.getWaitingStudents().length!=0) {
-			Student_details newstudent;
-			newstudent = starsDatabase.getStudentByUsername(index.getWaitingStudents()[0]);//first out student
+			Student_details newstudent = starsDatabase.getStudentByUsername(index.getWaitingStudents()[0]);//first out student
 			if(newstudent!= null)
 			{
 				index.removeFromWaitlist(newstudent.getName()); //remove first out student from course waitlist
-				newstudent.getCourseWaitlist().remove(index);//remove first out course from student waitlist
+				newstudent.removeFromWaitlist(indexCode);;//remove first out course from student waitlist
 				index.registerStudent(newstudent); //add student name to course
-				newstudent.addCourse(indexCode);
+				newstudent.addIndex(indexCode);
 			}
-			//write back to student file
 		}
-		else {
-			; //vacancy of course ++ (Already handled by index class)
-		}
-		starsDatabase.writeDatabaseFiles();
-
-
 	}
 	
-	//Method to print all registered courses for the student
+	/**
+	 * Prints the specifiedindex and the classes under it.
+	 * @param indexCode The code of the index.
+	 */
+	public void printIndex(String indexCode)
+	{
+		Index_details index = courseManager.getIndex(indexCode);
+		if(index==null)
+		{
+			System.err.println("Specified Index with code %s does not exist.");
+			return;
+		}
+		System.out.println(index+": ");
+		System.out.println("\t"+courseManager.getLab(indexCode));
+		System.out.println("\t"+courseManager.getLectures(indexCode)+" ");
+		System.out.println("\t"+courseManager.getTut(indexCode));  
+	}
+	
+	/**
+	 * Prints the indexes the student is registered in and waiting for.
+	 */
 	public void CheckAndPrintRegistered() {
-		System.out.println("Courses currently registered in: ");
+		System.out.format("Courses currently registered in: %d courses.\n", currentUser.getCourseRegistered().size());
 		for (String indexCode : currentUser.getCourseRegistered())
 		{
-			System.out.print(indexCode+" ");
-			System.out.print(courseManager.getAU(indexCode)+" ");
-			System.out.print(courseManager.getLab(indexCode)+" ");
-			System.out.print(courseManager.getLectures(indexCode)+" ");
-			System.out.println(courseManager.getTut(indexCode));  //print using coursemanager for each i
+			if(indexCode == FlatFileObject.EmptyString)continue;
+			printIndex(indexCode);
 		}
 		
-		System.out.println("Courses currently waiting in: ");
+		System.out.format("Courses currently waiting for: %d courses.\n",currentUser.getCourseWaitlist().size());
 		for (String indexCode : currentUser.getCourseWaitlist())
 		{
-			System.out.print(indexCode+" ");
-			System.out.print(courseManager.getAU(indexCode)+" ");
-			System.out.print(courseManager.getLab(indexCode)+" ");
-			System.out.print(courseManager.getLectures(indexCode)+" ");
-			System.out.println(courseManager.getTut(indexCode));  //print using coursemanager for each i
+			if(indexCode == FlatFileObject.EmptyString)continue;
+			printIndex(indexCode);
 		}
 	}
 	
-	//Method to check the vacancies of a course index
+	/**Method to check the vacancies of a course index**/
 	public void CheckVacancies(String indexCode) {
 		Index_details index = courseManager.getIndex(indexCode);
 		if (index == null) {
-			System.out.println("Index does not exist");
+			System.out.format("Specified index with code %s does not exist\n",indexCode);
 		}
 		else {
-			System.out.println("Number of vacancy : "+index.getVacancy());
+			System.out.format("%s: Number of vacancies left: %d\n"+indexCode, index.getVacancy());
 		}
 	}
 	
@@ -228,10 +240,10 @@ public class StudentProgram
 			System.out.println("New student not in course"); //else if newstudent not in stuindex
 		}
 		else {
-			currentUser.removeCourse(userindex);
-			currentUser.addCourse(stuindex);
-			newstudent.removeCourse(stuindex);
-			newstudent.addCourse(userindex);
+			currentUser.removeIndex(userindex);
+			currentUser.addIndex(stuindex);
+			newstudent.removeIndex(stuindex);
+			newstudent.addIndex(userindex);
 			courseManager.removeStudentFromIndex(userindex, currentUser);  //swap names of students from both courses
 			courseManager.addStudentToIndex(stuindex, currentUser);
 			courseManager.addStudentToIndex(userindex, newstudent);
@@ -241,4 +253,15 @@ public class StudentProgram
 		}
 	}
 	
+
+
+	public void printStudentDetails(Student_details student)
+	{
+		System.out.format("Student Name: %s\n", student.getName());
+		System.out.format("Matric Number: %s\n", student.getMatric_num());
+		System.out.format("Study year: %d\n", student.getStudyYear());
+		System.out.format("Gender: %s\n", student.getGender());
+		System.out.format("Nationality: %s\n", student.getNationality());
+		System.out.format("Total AU of registered courses:  %d\n", student.getAU());
+	}
 }

@@ -30,9 +30,8 @@ public class IndexClass implements FlatFileObject
 	IndexClass(){};
 	
 	/**
-	 * @return the type
+	 * @return the lesson type of this class (Lecture, Tutorial or Lab)
 	 */
-	
 	public String getTypeStr() { return this.type;}
 	public IndexClassType getType() { return IndexClassType.valueOf(type);}
 	/**
@@ -161,7 +160,12 @@ public class IndexClass implements FlatFileObject
 		return true;
 	}	
 	@Override
+	public String toString()
+	{
+		return String.format("%s %s, %s to %s at %s", type, group, startTime, endTime, venue);
+	}
 	
+	@Override	
 	public String getDatabaseId() {
 		return this.group;
 	}

@@ -15,6 +15,7 @@ public interface FlatFileObject {
 	/**The delimter that separate columns in the flat file*/
 	public final static String delimiter = "|";
 	public final static String regexDelimiter = "\\"+delimiter;
+	public final static String EmptyString = " ";
 	
 	/**Returns the flat file string representation of the object.
 	 * @return Returns the flat file representation of the object.
@@ -53,7 +54,7 @@ public interface FlatFileObject {
 	
 	public static String listToFlatFileString(List list)
 	{
-		if(list.isEmpty()) { return " |";}
+		if(list.isEmpty()) { return EmptyString;}
 		
 		String s = "";
 		for(Object str : list)

@@ -83,6 +83,10 @@ public class Index_details implements stars.FlatFileObject{
 		}		
 		return true;
 	}
+	public String toString()
+	{
+		return String.format("Index Code: %s, Total capacity: %d", indexCode, capacity);
+	}
 	@Override
 	public String getDatabaseId() {
 		return this.indexCode;
@@ -172,12 +176,12 @@ public class Index_details implements stars.FlatFileObject{
 	
 	public String[] getWaitingStudents()
 	{
-		return  (String[]) waitlist.toArray();
+		return  waitlist.toArray(new String[waitlist.size()]);
 	}
 	
-	public Object[] getIndexClasses()
+	public IndexClass[] getIndexClasses()
 	{
-		return this.classes.toArray();
+		return this.classes.toArray(new IndexClass[this.classes.size()]);
 	}
 	
 	
