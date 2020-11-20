@@ -2,7 +2,8 @@ package stars;
 import java.util.*;
 
 
-public class StudentProgram{
+public class StudentProgram
+{
 	private Student_details currentUser;
 	private CourseManager courseManager;
 	private StarsDatabase starsDatabase;

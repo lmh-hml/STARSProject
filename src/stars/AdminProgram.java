@@ -174,7 +174,7 @@ public class AdminProgram
     	Student_details new_student = new Student_details();
     	User_details new_user = new User_details();
     	
-    	new_student.setAU("0");
+    	new_student.setAU(0);
         System.out.println("Adding a new student");
         //String name, String matric, String gender, String nationality
         

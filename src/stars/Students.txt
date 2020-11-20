@@ -1,7 +1,0 @@
-Jim|370368|M/F|0|Signaporean|Jim3|Melvin,Thrish,John,Tim,Jim,Nekosamachan,Jimmy,|
-Jimmy|617280|M/F|0|Signaporean|Jimmy5|Melvin,Thrish,John,Tim,Jim,Nekosamachan,Jimmy,|
-Tim|370368|M/F|0|Signaporean|Tim3|Melvin,Thrish,John,Tim,Jim,Nekosamachan,Jimmy,|
-Melvin|740736|M/F|0|Signaporean|Melvin6|Melvin,Thrish,John,Tim,Jim,Nekosamachan,Jimmy,|
-Nekosamachan|1481472|M/F|0|Signaporean|Nekosamachan12|Melvin,Thrish,John,Tim,Jim,Nekosamachan,Jimmy,|
-John|493824|M/F|0|Signaporean|John4|Melvin,Thrish,John,Tim,Jim,Nekosamachan,Jimmy,|
-Thrish|740736|M/F|0|Signaporean|Thrish6|Melvin,Thrish,John,Tim,Jim,Nekosamachan,Jimmy,|

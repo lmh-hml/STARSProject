@@ -93,13 +93,6 @@ public class StarsDatabase {
 		return this.userDatabase.getContents();
 	}
 	
-	//TODO: Remove after updating the programs to use StarsDatabase only
-	UserDatabase getUserDatabase()
-	{
-		return userDatabase;
-	}
-	
-	
 	/**
 	 * Removes user with the specified id from the database.
 	 * @param id Id of specified user.
@@ -109,9 +102,6 @@ public class StarsDatabase {
 		userDatabase.remove(id);
 	}
 
-	
-	
-	
 	/**
 	 * Adds an instance of Student_details object to the database
 	 * @param student A Student_details object to be added to database.

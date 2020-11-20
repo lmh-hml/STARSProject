@@ -14,6 +14,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import stars.FlatFileDatabase;
 import stars.FlatFileObject;
+import stars.exception.NotFoundInDatabaseException;
 
 public class CourseManager{
 
@@ -46,11 +47,17 @@ public class CourseManager{
 	}
 	
 	
-	
+	/**
+	 * Add the specified index to the course with the specified course code.
+	 * @param index IndexCode of the specified index.
+	 * @param courseCode CourseCode of the specified index.
+	 */
 	public void addIndex(Index_details index, String courseCode)
 	{
 		this.indexes.add(index.getIndexCode(),index);
-		this.courses.get(courseCode).addIndexName(index.getIndexCode());
+		Course course;
+		course = this.courses.get(courseCode);
+		course.addIndexName(index.getIndexCode());
 	}
 	public void removeIndex( String indexCode)
 	{

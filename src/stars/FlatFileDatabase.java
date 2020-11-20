@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import stars.exception.NotFoundInDatabaseException;
+
 /**
  * A class that reads, stores and write data from from to a flat file.
  * This class only stores and performs operations with objects that implements 
@@ -59,10 +61,12 @@ public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 	 * Retrieves the object indexed by key.
 	 * @param key Key of object to be retrieved.
 	 * @return The object indexed by the key, or null if it is not in the database.
+	 * @throws NotFoundInDatabaseException 
 	 */
 	public T get(String key) 
 	{
-		return hashmap.get(key);
+		T obj = hashmap.get(key);
+		return obj;
 	};
 	
 	/**
