@@ -63,7 +63,7 @@ public class Course implements FlatFileObject
 	@Override
 	public String toFlatFileString() {
 		String courseStr = FlatFileObject.buildFlatFileString(courseCode, courseName, AU);
-		courseStr += FlatFileObject.listToFlatFileString(indexes);
+		courseStr += FlatFileObject.collectionToFlatFileString(indexes);
 		return courseStr;
 	}	
 	@Override

@@ -74,6 +74,7 @@ public class Student_details implements FlatFileObject{
 		{
 			for(String item: registeredData.split("\\,"))
 			{
+				if(item.equals(EmptyString))continue;
 				this.addIndex(item);
 			}
 		}
@@ -83,6 +84,7 @@ public class Student_details implements FlatFileObject{
 		{
 			for(String item: waitlistData.split("\\,"))
 			{
+				if(item.equals(EmptyString))continue;
 				this.addWaitlist(item);
 			}
 		}

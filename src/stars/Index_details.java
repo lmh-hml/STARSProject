@@ -9,7 +9,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import stars.FlatFileObject;
 
@@ -22,9 +24,9 @@ public class Index_details implements stars.FlatFileObject{
 	/**A list containing the different classes (lectures, lab, tutorials) of this index.**/
 	private ArrayList<IndexClass> classes = new ArrayList<>();
 	/**A list containing the Matriculation number of students registered in this index.**/
-	private ArrayList<String> registered = new ArrayList<>();
+	private Set<String> registered = new LinkedHashSet<>();
 	/**A list containing the Matriculation number of students waiting in this index.**/
-	private ArrayList<String> waitlist = new ArrayList<>();
+	private Set<String> waitlist = new LinkedHashSet<>();
 	
 	/**Number of fields in this class that should be read/written to flat file**/
 	private static final int NumFields = 6;
@@ -68,17 +70,8 @@ public class Index_details implements stars.FlatFileObject{
 			this.classes.add(indexClass);
 		}
 		
-		String[] registered_array = array[4].split("\\,");
-		for( String str : registered_array)
-		{
-			this.registered.add(str);
-		}
-		
-		String[] waitlist_array = array[5].split("\\,");
-		for( String str : waitlist_array)
-		{
-			this.waitlist.add(str);
-		}		
+		FlatFileObject.flatFileStringToCollection(array[4], registered);		
+		FlatFileObject.flatFileStringToCollection(array[5], waitlist);		
 		return true;
 	}
 	public String toString()
@@ -89,9 +82,7 @@ public class Index_details implements stars.FlatFileObject{
 	public String getDatabaseId() {
 		return this.indexCode;
 	}
-
-	
-	
+		
 	public String getIndexCode() { return this.indexCode;}
 	public void setIndexCode(String s) { this.indexCode = s;}	
 	public void addIndexClass(IndexClass c)
@@ -112,14 +103,12 @@ public class Index_details implements stars.FlatFileObject{
 	public void setCapacity( int cap ) {this.capacity  =cap;}
 	public int getCapacity() { return this.capacity;}
 	public int getVacancy()	{	return this.capacity - this.registered.size();}
-
 	
-	
-	public boolean registerStudent(String studentName)
+	public boolean registerStudent(String matricNum)
 	{
 		if(this.getVacancy() > 0)
 		{
-			this.registered.add(studentName);
+			this.registered.add(matricNum);
 			return true;
 		}
 		else
@@ -128,19 +117,19 @@ public class Index_details implements stars.FlatFileObject{
 		}
 	}
 	public boolean registerStudent(Student_details student) 
-	{ return registerStudent(student.getName());}	
-	public boolean removeFromRegistered(String studentName) 
+	{ return registerStudent(student.getMatric_num());}	
+	public boolean removeFromRegistered(String matricNum) 
 	{
-		boolean success = this.registered.remove(studentName);
+		boolean success = this.registered.remove(matricNum);
 		return success;
 		
 	}
 	
-	public boolean addStudentToWaitlist(String studentName)
+	public boolean addStudentToWaitlist(String matricNum)
 	{
 		if(this.getVacancy() == 0)
 		{
-			this.waitlist.add(studentName);
+			this.waitlist.add(matricNum);
 			return true;
 		}
 		else
@@ -150,31 +139,35 @@ public class Index_details implements stars.FlatFileObject{
 
 	}
 	public boolean addStudentToWaitlist(Student_details student) 
-	{ return addStudentToWaitlist(student.getName());}
-	public boolean removeFromWaitlist(String studentName)
+	{ return addStudentToWaitlist(student.getMatric_num());}
+	public boolean removeFromWaitlist(String matricNum)
 	{
-		boolean success = this.registered.remove(studentName);
+		boolean success = this.registered.remove(matricNum);
 		return success;
 	}
-	
-	
-	public boolean isRegistered(String studentName)
+	public String  getFirstWaitingStudent()
 	{
-		return registered.contains(studentName);
+		if(waitlist.isEmpty())return null;
+		return waitlist.iterator().next();
+	}
+	
+	public boolean isRegistered(String matricNum)
+	{
+		return registered.contains(matricNum);
 	}	
-	public boolean isWaiting(String studentName)
+	public boolean isWaiting(String matricNum)
 	{
-		return waitlist.contains(studentName);
+		return waitlist.contains(matricNum);
 	}
 	
-	public List<String> getRegisteredStudents()
+	public Set<String> getRegisteredStudents()
 	{
-		return  registered.subList(0, registered.size());
+		return  Collections.unmodifiableSet(this.registered);
 	}
 	
-	public String[] getWaitingStudents()
+	public Set<String> getWaitingStudents()
 	{
-		return  waitlist.toArray(new String[waitlist.size()]);
+		return Collections.unmodifiableSet(this.waitlist);
 	}
 	
 	public IndexClass[] getIndexClasses()

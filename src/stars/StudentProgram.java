@@ -128,7 +128,7 @@ public class StudentProgram
 			System.out.format("There were %d slots left in this index %s\n", vacancy, index.getCourseCode() );
 			if (vacancy==0) {
 				addStudentindexWaitlist(currentUser, index);
-				System.out.format("Added Index %s to waitlist.", index.getCourseCode());
+				System.out.format("Added Index %s to waitlist.\n", index.getIndexCode());
 			}
 			else {
 				addStudentIndexRegistered(currentUser, index);
@@ -144,8 +144,8 @@ public class StudentProgram
 		
 		removeStudentFromIndexRegistered(currentUser,index);
 		
-		if (index.getWaitingStudents().length!=0) {
-			Student_details newstudent = starsDatabase.getStudentByUsername(index.getWaitingStudents()[0]);//first out student
+		if (index.getWaitingStudents().size()!=0) {
+			Student_details newstudent = starsDatabase.getStudentByUsername(index.getFirstWaitingStudent());//first out student
 			if(newstudent!= null)
 			{
 				index.removeFromWaitlist(newstudent.getName()); //remove first out student from course waitlist
@@ -243,7 +243,7 @@ public class StudentProgram
 	 * Prints the indexes the student is registered in and waiting for.
 	 */
 	public void printRegisteredIndexes(Student_details student) {
-		System.out.format("Courses currently registered in: %d courses.\n", student.getIndexRegistered().size());
+		System.out.format("%s: Courses currently registered in: %d courses.\n", student.getName(),student.getIndexRegistered().size());
 		for (String indexCode : student.getIndexRegistered())
 		{
 			if(indexCode == FlatFileObject.EmptyString)continue;
@@ -270,6 +270,7 @@ public class StudentProgram
 	public void addStudentIndexRegistered(Student_details student, Index_details index)
 	{
 		if(isStudentRegistered(student, index))return;
+		if(index.getVacancy()==0)return;
 		student.addIndex(index.getIndexCode());
 		index.registerStudent(student.getMatric_num());
 		student.setAU(student.getAU()+courseManager.getIndexAU(index));
@@ -293,7 +294,6 @@ public class StudentProgram
 		student.removeFromWaitlist(index.getCourseCode());
 		index.removeFromWaitlist(student.getMatric_num());
 	}
-
 	public boolean swapIndex(Student_details student1, String index1, Student_details student2, String index2)
 	{
 		Index_details userIndex = courseManager.getIndex(index1);

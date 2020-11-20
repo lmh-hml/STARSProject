@@ -65,5 +65,14 @@ public interface FlatFileObject {
 		s += delimiter;
 		return s;
 	}
-	
+
+	public static void flatFileStringToCollection(String str, Collection<String> collection)
+	{
+		String[] waitlist_array = str.split("\\,");
+		for( String item : waitlist_array)
+		{
+			if(item.equals(EmptyString))continue;
+			collection.add(str);
+		}		
+	}
 }
