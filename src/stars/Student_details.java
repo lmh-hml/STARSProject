@@ -22,17 +22,19 @@ public class Student_details implements FlatFileObject{
 	/**Student's gender*/
 	private String gender = "";
 	/**Student's AU.*/
-	private String AU = "";
+	private int AU = 0;
 	/**Student's nationality*/
 	private String nationality = "";
-	/**Id of this particular student_details instance*/
-	private String id = "";
+	/**Study year of this student**/
+	private int studyYear = 0;
+	/**Email of this student**/
+	private String userName = "";
 	/**Courses registered by this student*/
 	private List<String> courseRegistered = new ArrayList<>();
 	/**Courses that this student is in the waitlist for.*/
 	private List<String> courseWaitlist = new ArrayList<>();
 	/**Number of fields in this class that should be read/written to flat file**/
-	private static final int NumFields = 8;
+	private static final int NumFields = 9;
 	
 	/**Default constructor*/
 	public Student_details() {}
@@ -44,29 +46,10 @@ public class Student_details implements FlatFileObject{
 	 */
 	public String toFlatFileString() {
 		
-		String coursesString = "";
-		if(courseRegistered.isEmpty()) coursesString += " ";
-		else
-		{
-			for( String course : courseRegistered)
-			{
-				coursesString += course + ',';
-			}
-		
-		}
+		String coursesString = FlatFileObject.listToFlatFileString(courseRegistered);
+		String waitlistString = FlatFileObject.listToFlatFileString(courseWaitlist);
 
-		
-		String waitlistString = "";
-		if(courseWaitlist.isEmpty()) waitlistString += " ";
-		else
-		{
-			for( String course : courseWaitlist)
-			{
-				waitlistString += course + ',';
-			}
-		}
-
-		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality, id, coursesString, waitlistString ) ;
+		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality,studyYear ,userName, coursesString, waitlistString ) ;
 	}
 	
 	/**
@@ -81,23 +64,26 @@ public class Student_details implements FlatFileObject{
 		this.name = array.get(0);
 		this.matric_num = array.get(1);
 		this.gender = array.get(2);
-		this.AU = array.get(3);
+		this.AU = Integer.parseInt(array.get(3));
 		this.nationality = array.get(4);
-		this.id  = array.get(5);
+		this.studyYear = Integer.parseInt(array.get(5));
+		this.userName = array.get(6);
 		
-		if(!array.get(6).equals(" "))
+		String registeredData = array.get(7);
+		if(!registeredData.equals(" "))
 		{
-			for(String item: array.get(6).split("\\,"))
+			for(String item: registeredData.split("\\,"))
 			{
 				this.addCourse(item);
 			}
 		}
 		
-		if(!array.get(7).equals(" "))
+		String waitlistData = array.get(8);
+		if(!waitlistData.equals(" "))
 		{
-			for(String item: array.get(7).split("\\,"))
+			for(String item: waitlistData.split("\\,"))
 			{
-				this.addCourse(item);
+				this.addWaitlist(item);
 			}
 		}
 		return true;
@@ -162,16 +148,16 @@ public class Student_details implements FlatFileObject{
 	 * Returns this student's AU
 	 * @return String representation of this student'AU
 	 */
-	public String getAU() {
+	public int getAU() {
 		return AU;
 	}
 
 	/**
 	 * Sets this student's AU
-	 * @param aU Academic units of this student
+	 * @param i Academic units of this student
 	 */
-	public void setAU(String aU) {
-		AU = aU;
+	public void setAU(int i) {
+		AU = i;
 	}
 
 	/**
@@ -191,19 +177,36 @@ public class Student_details implements FlatFileObject{
 	}
 	
 	/**
-	 * @return Student's id
+	 * @return the studyYear
 	 */
-	public String getId() {
-		return id;
+	public int getStudyYear() {
+		return studyYear;
 	}
 
+
 	/**
-	 * Set this student's id
-	 * @param id tudent's Id
+	 * @param studyYear the studyYear to set
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public void setStudyYear(int studyYear) {
+		this.studyYear = studyYear;
 	}
+
+
+	/**
+	 * @return the userName
+	 */
+	public String getUserName() {
+		return userName;
+	}
+
+
+	/**
+	 * @param userName the userName to set
+	 */
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 
 	/**
 	 * @return the courseWaitlist
@@ -273,7 +276,7 @@ public class Student_details implements FlatFileObject{
 	 */
 	@Override
 	public String getDatabaseId() {
-		return this.matric_num;
+		return this.userName;
 	}
 
 

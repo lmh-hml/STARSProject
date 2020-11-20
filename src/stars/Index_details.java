@@ -19,8 +19,11 @@ public class Index_details implements stars.FlatFileObject{
 	private String courseCode = "";
 	private int capacity=0;
 
+	/**A list containing the different classes (lectures, lab, tutorials) of this index.**/
 	private ArrayList<IndexClass> classes = new ArrayList<>();
+	/**A list containing the Matriculation number of students registered in this index.**/
 	private ArrayList<String> registered = new ArrayList<>();
+	/**A list containing the Matriculation number of students waiting in this index.**/
 	private ArrayList<String> waitlist = new ArrayList<>();
 	
 	/**Number of fields in this class that should be read/written to flat file**/

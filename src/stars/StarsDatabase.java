@@ -2,6 +2,7 @@ package stars;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * A class that serves as intermediary between the databases that contains user and student information, and programs that access
@@ -30,6 +31,7 @@ public class StarsDatabase {
 	 */
 	private StudentDatabase studentDatabase;
 
+	
 	/**
 	 * Default contructor of StarsDatabase.
 	 */
@@ -50,7 +52,7 @@ public class StarsDatabase {
 	 */
 	void addUser(User_details user)
 	{
-		userDatabase.add(user);
+		userDatabase.add(user.getUsername(),user);
 	}
 	
 	/**
@@ -116,7 +118,7 @@ public class StarsDatabase {
 	 */
 	void addStudent(Student_details student)
 	{
-		studentDatabase.add(student);
+		studentDatabase.add(student.getUserName(),student);
 	}
 	
 	/**
@@ -137,7 +139,7 @@ public class StarsDatabase {
 	 */
 	Student_details getStudent(User_details user)
 	{
-		Student_details student = studentDatabase.get(user.getId());
+		Student_details student = studentDatabase.get(user.getUsername());
 		return student;
 	}
 	

@@ -34,16 +34,17 @@ public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 
 	
 	/**
-	 * Adds an object of type T into the database.
+	 * Associates the specified object with the specified key in this database.
 	 * @param obj The object to be added into database
 	 * @param key The key for the object to be indexed
 	 */
-	public void add( T obj)
+	public void add( String key, T obj)
 	{
 		String id = obj.getDatabaseId();
 		if(id == ""|| id == null)return;
-		this.hashmap.put(obj.getDatabaseId(), obj);
+		this.hashmap.put(key, obj);
 	}
+
 	
 	/**
 	 * Removes an object indexed by the key from the database
@@ -114,7 +115,7 @@ public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 		Files.lines(p).forEach( line -> {
 			
 			T obj = parseLine(line);
-			add(obj);
+			add(obj.getDatabaseId(),obj);
 		});	
 	}
 	
@@ -140,7 +141,6 @@ public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 				s = item.toFlatFileString();
 				out.println(s);
 			}
-		
 		out.close();
 	}
 

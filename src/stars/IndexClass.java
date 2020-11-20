@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-enum IndexClassType { LEC, TUT, LAB;}
+enum IndexClassType { Lecture, Tutorial, Lab;}
 public class IndexClass implements FlatFileObject
 {
 	public final static String delimiter= "\\-";
@@ -172,7 +172,7 @@ public class IndexClass implements FlatFileObject
 		IndexClass indexClass = new IndexClass();
 		System.out.println(indexClass.toFlatFileString());
 		
-		indexClass.setType(IndexClassType.LEC);
+		indexClass.setType(IndexClassType.Lecture);
 		indexClass.setGroup("SE2");
 		indexClass.setDay(DayOfWeek.FRIDAY);
 		indexClass.setStartTime(LocalTime.of(8, 30));

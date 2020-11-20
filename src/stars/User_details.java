@@ -11,6 +11,7 @@ import stars.exception.FlatFileParseException;
  * A class that holds details regarding a user's account 
  * A user can be either a student or an admin.
  * in the Stars system.
+ * Users are identified by their usernames, which must be unique.
  * @author Lai Ming Hui
  * @version 1.0
  * @since 2020/11/14
@@ -30,12 +31,9 @@ public class User_details implements FlatFileObject
 	
 	/**Account type of this user **/
 	private String accountType= "";
-	
-	/**Id of this user **/
-	private String id = "";
 
 	/**Number of fields in this class that should be read/written to flat file**/
-	private static final int NumFields= 5;
+	private static final int NumFields= 4;
 	
 	/*
 	 * Base constructor.
@@ -47,7 +45,7 @@ public class User_details implements FlatFileObject
 	 * @return The flat file representation of this object.
 	 */
 	public String toFlatFileString() {
-		return FlatFileObject.buildFlatFileString(username, password, email, accountType, id) ;
+		return FlatFileObject.buildFlatFileString(username, password, email, accountType) ;
 	}
 	
 
@@ -62,7 +60,6 @@ public class User_details implements FlatFileObject
 		this.password = array.get(1);
 		this.email = array.get(2);
 		this.accountType = array.get(3);
-		this.id = array.get(4);
 		return true;
 	}
 
@@ -119,16 +116,6 @@ public class User_details implements FlatFileObject
 	/**@return Set this user's account type, either "student" or "admin"*/
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
-	}
-
-	/**@return Return this user's id*/
-	public String getId() {
-		return id;
-	}
-
-	/**@return Set this user's id*/
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	@Override

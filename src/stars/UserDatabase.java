@@ -40,10 +40,9 @@ public class UserDatabase extends FlatFileDatabase<User_details>{
 	 * @param obj A User_details object
 	 */
 	@Override
-	public void add(User_details obj) {
-		String key = obj.getId();
+	public void add(String key, User_details obj) {
 		if( key == "" || key == null)return;
-		hashmap.put(obj.getDatabaseId(), obj);
+		hashmap.put(key, obj);
 	}
 	
 	

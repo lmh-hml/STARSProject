@@ -49,7 +49,7 @@ public class CourseManager{
 	
 	public void addIndex(Index_details index, String courseCode)
 	{
-		this.indexes.add(index);
+		this.indexes.add(index.getIndexCode(),index);
 		this.courses.get(courseCode).addIndexName(index.getIndexCode());
 	}
 	public void removeIndex( String indexCode)
@@ -78,7 +78,7 @@ public class CourseManager{
 
 	public void addCourse(Course course)
 	{
-		this.courses.add(course);
+		this.courses.add(course.getcoursecode(),course);
 	}
 	public void removeCourse(String courseCode){
 		this.courses.remove(courseCode);
@@ -118,7 +118,7 @@ public class CourseManager{
 	 */		
 	public List<IndexClass> getLectures(String indexCode) 
 	{
-		return getIndexClasses(indexCode, IndexClassType.LEC);
+		return getIndexClasses(indexCode, IndexClassType.Lecture);
 	}
 	/**
 	 * Gets the lab classes under the index with the specified index code
@@ -127,7 +127,7 @@ public class CourseManager{
 	 */
 	public List<IndexClass> getLab(String indexCode) 
 	{
-		return getIndexClasses(indexCode, IndexClassType.LAB);
+		return getIndexClasses(indexCode, IndexClassType.Lab);
 	}		
 	/**
 	 * Gets the tutorials classes under the index with the specified index code
@@ -136,7 +136,7 @@ public class CourseManager{
 	 */
 	public List<IndexClass> getTut(String indexCode)
 	{
-		return getIndexClasses(indexCode, IndexClassType.TUT);	
+		return getIndexClasses(indexCode, IndexClassType.Tutorial);	
 	}
 
 	/**

@@ -110,14 +110,14 @@ public class StudentProgram{
 		if (index.isRegistered(currentUser.getName())== true) {
 			System.out.println("Already in course");
 		}
-		else if ( Integer.parseInt(currentUser.getAU())+ course.getAU() >20) {
+		else if ( currentUser.getAU()+ course.getAU() >20) {
 			System.out.println("Amount of AU exceeds maximum AU");
 		}
 		else if (courseManager.getAllIndexes().contains(index)==false) {
 			System.out.println("Index does not exist");
 		}
 		else {
-			currentUser.setAU(String.valueOf(Integer.parseInt(currentUser.getAU())+ course.getAU() ));
+			currentUser.setAU(currentUser.getAU()+ course.getAU() );
 			int vacancy = courseManager.getVacancy(indexCode);
 			System.out.format("There were %d slots left in this index %s\n", vacancy, index.getCourseCode() );
 			if (vacancy==0) {
@@ -138,8 +138,8 @@ public class StudentProgram{
 	public void dropIndex(String indexCode) {
 		Index_details index = courseManager.getIndex(indexCode);
 		currentUser.removeCourse(indexCode);
-		int newAU = Integer.parseInt(currentUser.getAU()) - courseManager.getAU(indexCode); //shouldn't this be add ?
-		currentUser.setAU(String.valueOf(newAU));
+		int newAU = currentUser.getAU() - courseManager.getAU(indexCode); //shouldn't this be add ?
+		currentUser.setAU(newAU);
 		courseManager.removeStudentFromIndex(indexCode, currentUser);
 		
 		if (index.getWaitingStudents().length!=0) {
