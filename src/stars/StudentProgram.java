@@ -116,9 +116,9 @@ public class StudentProgram
 		if (index==null) {
 			System.out.format("Index %s does not exist.\n", indexCode);
 		}
-		else if (index.isRegistered(currentUser.getName())== true) 
+		else if (isStudentRegistered(currentUser, index)== true) 
 		{
-			System.out.format("Student is already in index %s!\n", indexCode);
+			System.out.format("Student is already registered in index %s!\n", indexCode);
 		}
 		else if ( currentUser.getAU()+ course.getAU() >20) {
 			System.out.println("Student's cuurent amount of AU exceeds maximum AU");
@@ -127,7 +127,7 @@ public class StudentProgram
 			int vacancy = courseManager.getVacancy(indexCode);
 			System.out.format("There were %d slots left in this index %s\n", vacancy, index.getCourseCode() );
 			if (vacancy==0) {
-				addStudentindexWaitlist(currentUser, index);
+				addStudentIndexWaitlist(currentUser, index);
 				System.out.format("Added Index %s to waitlist.\n", index.getIndexCode());
 			}
 			else {
@@ -231,7 +231,7 @@ public class StudentProgram
 		Index_details index = courseManager.getIndex(indexCode);
 		if(index==null)
 		{
-			System.err.println("Specified Index with code %s does not exist.");
+			System.err.format("Specified Index with code %s does not exist.\n",indexCode);
 			return;
 		}
 		System.out.println(index+": ");
@@ -274,10 +274,11 @@ public class StudentProgram
 		student.addIndex(index.getIndexCode());
 		index.registerStudent(student.getMatric_num());
 		student.setAU(student.getAU()+courseManager.getIndexAU(index));
+		if(isStudentWaiting(student, index))removeStudentFromIndexWaitlist(student, index);
 	}
-	public void addStudentindexWaitlist(Student_details student, Index_details index)
+	public void addStudentIndexWaitlist(Student_details student, Index_details index)
 	{
-		if(isStudentWaiting(student, index))return;
+		if(isStudentWaiting(student, index) || isStudentRegistered(student, index))return;
 		student.addWaitlist(index.getIndexCode());
 		index.registerStudent(student.getMatric_num());
 		student.setAU(student.getAU()+courseManager.getIndexAU(index));

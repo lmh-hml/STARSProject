@@ -17,24 +17,27 @@ public class ProgramTest {
 		Student_details student2 = stars.getStudent("Richard41");
 		Index_details index = cm.getIndex("10019");
 		
+		program.printStudentDetails(student);
+
+		
 		program.setCurrentStudent(student);
 		program.addIndex("10019");
 		program.printRegisteredIndexes(student);
 		
 		program.addStudentIndexRegistered(student2, index);
-		program.printStudentDetails(student2);
 		program.printRegisteredIndexes(student2);
 		program.printRegisteredIndexes(student);
 
 
 		
-//		try {
-//			stars.saveStudents();
-//			stars.saveUsers();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			cm.saveCourse("Courses.txt");
+			stars.saveStudents();
+			stars.saveUsers();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		
 	}

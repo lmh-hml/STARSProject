@@ -108,8 +108,7 @@ public class Index_details implements stars.FlatFileObject{
 	{
 		if(this.getVacancy() > 0)
 		{
-			this.registered.add(matricNum);
-			return true;
+			return this.registered.add(matricNum);
 		}
 		else
 		{

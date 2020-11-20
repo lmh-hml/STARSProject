@@ -68,11 +68,11 @@ public interface FlatFileObject {
 
 	public static void flatFileStringToCollection(String str, Collection<String> collection)
 	{
-		String[] waitlist_array = str.split("\\,");
-		for( String item : waitlist_array)
+		String[] array = str.split("\\,");
+		for( String item : array)
 		{
-			if(item.equals(EmptyString))continue;
-			collection.add(str);
+			if(item.equals(EmptyString)|| item.equals(""))continue;
+			collection.add(item);
 		}		
 	}
 }

@@ -70,24 +70,11 @@ public class Student_details implements FlatFileObject{
 		this.userName = array.get(6);
 		
 		String registeredData = array.get(7);
-		if(!registeredData.equals(EmptyString))
-		{
-			for(String item: registeredData.split("\\,"))
-			{
-				if(item.equals(EmptyString))continue;
-				this.addIndex(item);
-			}
-		}
+		FlatFileObject.flatFileStringToCollection(registeredData, indexRegistered);
 		
 		String waitlistData = array.get(8);
-		if(!waitlistData.equals(EmptyString))
-		{
-			for(String item: waitlistData.split("\\,"))
-			{
-				if(item.equals(EmptyString))continue;
-				this.addWaitlist(item);
-			}
-		}
+		FlatFileObject.flatFileStringToCollection(waitlistData, indexRegistered);
+
 		return true;
 	}
 
