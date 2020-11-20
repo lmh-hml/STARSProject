@@ -46,10 +46,8 @@ public class Index_details implements stars.FlatFileObject{
 		}
 		s += delimiter;
 		
-		s += FlatFileObject.listToFlatFileString(registered);
-		s += FlatFileObject.listToFlatFileString(waitlist);
-
-		
+		s += FlatFileObject.collectionToFlatFileString(registered);
+		s += FlatFileObject.collectionToFlatFileString(waitlist);
 		return s;
 	
 	}
@@ -169,9 +167,9 @@ public class Index_details implements stars.FlatFileObject{
 		return waitlist.contains(studentName);
 	}
 	
-	public String[] getRegisteredStudents()
+	public List<String> getRegisteredStudents()
 	{
-		return (String[]) registered.toArray();
+		return  registered.subList(0, registered.size());
 	}
 	
 	public String[] getWaitingStudents()

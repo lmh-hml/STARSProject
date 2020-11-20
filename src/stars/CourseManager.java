@@ -98,7 +98,12 @@ public class CourseManager{
 	{
 		return this.courses.get(courseCode);
 	}
-
+	public boolean checkCourseExists(String courseCode)
+	{
+		return this.courses.getKeys().contains(courseCode);
+	}
+	
+	
 	/**
 	 * Gets the classes under the index with the specified index code with the specified Index Class type.
 	 * @param indexCode Code of the target index
@@ -160,14 +165,15 @@ public class CourseManager{
 
 	/**
 	 * Retrieves all the students in a course in a hashmap, where its keys are the
-	 * indexes of the course, and the corresponding value is the array of registered students in the course.
+	 * indexes of the course, and the corresponding value is the array of student's matriculation numbers who is 
+	 * registered in the index.
 	 * @param courseCode Course code of the target course.
-	 * @return A hashmap where the keys are the indexes of the course, and the values are arrays containing the names of students who registered
-	 * in the course.
+	 * @return A hashmap where the keys are the indexes of the course, and the values are arrays containing the matriculation no. of students 
+	 * who registered in the course.
 	 */
-	public HashMap<String, String[]> getStudentsInCourse(String courseCode)  
+	public HashMap<String,List<String>> getStudentsInCourse(String courseCode)  
 	{
-		HashMap<String, String[]> studentsInCourse = new HashMap<>();
+		HashMap<String, List<String>> studentsInCourse = new HashMap<>();
 		Course course = this.courses.get(courseCode);
 		for( String indexCode : course.getIndexName())
 		{
@@ -187,56 +193,14 @@ public class CourseManager{
 		if(course==null)return -1;
 		return course.getAU();
 	}
-	
+	/**
+	 * Gets the AU of the specified index.
+	 * @param index The specified Index_object object.
+	 * @return The AU of the specified index.
+	 */
 	public int getIndexAU(Index_details index)
 	{
 		return getCourseAU( index.getCourseCode());
 	}
 
-	/**
-	 * Add a student to the course index with the specified index code.
-	 * @param indexCode Code of the course index.
-	 * @param student   A Student_details object associated with the student to be added.
-	 * @return True if the student is successfully added, False otherwise (No student will be addedto any index.)
-	 */
-	public boolean addStudentToIndex(String indexCode, Student_details student)
-	{
-		Index_details index = indexes.get(indexCode);
-		if(index==null)return false;
-		return index.registerStudent(student);
-	}
-	/**
-	 * Removes a student from a course index with the specified code.
-	 * @param indexCode Code of the course index.
-	 * @param student A Student_details object associated with the student.
-	 */
-	public void removeStudentFromIndex(String indexCode, Student_details student)
-	{
-		Index_details index  = indexes.get(indexCode);
-		if(index!=null)
-		{
-			index.removeFromRegistered(student.getName());
-			index.removeFromWaitlist(student.getName());
-		}
-	}
-
-	public static void main(String args[])
-		{
-			CourseManager cm= new CourseManager();
-			for( Course c :cm.getAllCourses())
-			{
-				System.out.println(c.toFlatFileString());
-			}
-			for( Index_details c :cm.getAllIndexes())
-			{
-				System.out.println(c.toFlatFileString());
-			}
-			Index_details i1 = cm.getIndex("10019");
-			Course c1 = cm.getCourse("CE2001");
-			
-			System.out.println(cm.getCourse(i1.getCourseCode()).toFlatFileString());
-
-
-
-		}
-}	  
+}

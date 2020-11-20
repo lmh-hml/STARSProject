@@ -1,4 +1,5 @@
 package stars;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,7 +53,7 @@ public interface FlatFileObject {
 		return s;
 	}
 	
-	public static String listToFlatFileString(List list)
+	public static String collectionToFlatFileString(Collection list)
 	{
 		if(list.isEmpty()) { return EmptyString;}
 		

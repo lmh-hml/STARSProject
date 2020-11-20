@@ -14,19 +14,36 @@ public class ProgramTest {
 		
 		
 		Student_details student = stars.getStudent("WeiJie67");
-		program.printStudentDetails(student);
+		Student_details student2 = stars.getStudent("Richard41");
+		Index_details index = cm.getIndex("10019");
+		
+		program.addStudentIndexRegistered(student2, index);
+		program.printStudentDetails(student2);
+		program.printRegisteredIndexes(student2);
+		
 		program.setCurrentStudent(student);
-		//program.CheckAndPrintRegistered();
 		program.addIndex("10019");
-		//student.addIndex("10019");
-		program.printStudentDetails(student);
+		program.printRegisteredIndexes(student);
+		
+//		program.SwapIndex("10019", student2, "10020");
+//
+//
+//		program.printRegisteredIndexes(student);
+//		program.printRegisteredIndexes(student2);
 
-		//program.CheckAndPrintRegistered();
-		program.dropIndex("10019");
-		//program.CheckAndPrintRegistered();
+		
+
+		
+//		program.printStudentDetails(student);
+//		program.setCurrentStudent(student);
+//		program.printRegisteredIndexes(student);
+//		program.addIndex("10019");
+//		program.printRegisteredIndexes(student);
+//		program.dropIndex("10019");
+//		program.printRegisteredIndexes(student);
 
 
-		program.printStudentDetails(student);
+
 
 		
 //		try {
