@@ -1,6 +1,9 @@
 package stars;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.Set;
 
 public class ProgramTest {
 
@@ -10,35 +13,14 @@ public class ProgramTest {
 		StarsDatabase stars = new StarsDatabase();
 		StarsNotifier notifier = new StarsMail();
 		StudentProgram program = new StudentProgram( cm , stars, notifier);
-		
-		
-		
-		Student_details student = stars.getStudent("WeiJie67");
-		Student_details student2 = stars.getStudent("Richard41");
-		Index_details index = cm.getIndex("10019");
-		
-		program.printStudentDetails(student);
 
-		
-		program.setCurrentStudent(student);
-		program.addIndex("10019");
-		program.printRegisteredIndexes(student);
-		
-		program.addStudentIndexRegistered(student2, index);
-		program.printRegisteredIndexes(student2);
-		program.printRegisteredIndexes(student);
-
-
-		
 		try {
-			cm.saveCourse("Courses.txt");
+			cm.save();
 			stars.saveStudents();
 			stars.saveUsers();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		
 	}
 }

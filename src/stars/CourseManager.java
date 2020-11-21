@@ -25,6 +25,7 @@ public class CourseManager{
 	
 	private CourseDatabase courses = new CourseDatabase();
 	private IndexDatabase  indexes = new IndexDatabase();
+	private HashMap<String,HashMap<String,Collection<String>>> studentsInCourseCache = new HashMap<>();
 	public CourseManager() {
 		
 		try {
@@ -35,7 +36,7 @@ public class CourseManager{
 		}
 	}
 
-	public void saveCourse(String filename)
+	public void save()
 	{
 		try {
 			courses.writeFile(courseFile);
@@ -102,8 +103,7 @@ public class CourseManager{
 	{
 		return this.courses.getKeys().contains(courseCode);
 	}
-	
-	
+		
 	/**
 	 * Gets the classes under the index with the specified index code with the specified Index Class type.
 	 * @param indexCode Code of the target index
@@ -150,7 +150,6 @@ public class CourseManager{
 	{
 		return getIndexClasses(indexCode, IndexClassType.Tutorial);	
 	}
-
 	/**
 	 * Gets the vacancy of the index with the course code.
 	 * @param indexCode Code of the target index.
@@ -171,17 +170,33 @@ public class CourseManager{
 	 * @return A hashmap where the keys are the indexes of the course, and the values are arrays containing the matriculation no. of students 
 	 * who registered in the course.
 	 */
-	public HashMap<String,List<String>> getStudentsInCourse(String courseCode)  
+	public HashMap<String,Collection<String>> getStudentsInCourse(String courseCode)  
 	{
-		HashMap<String, List<String>> studentsInCourse = new HashMap<>();
-		Course course = this.courses.get(courseCode);
-		for( String indexCode : course.getIndexName())
+		//Creates and caches the collection of students in the specified course if it not already created.
+		if(studentsInCourseCache.get(courseCode)==null)
 		{
-			studentsInCourse.put(indexCode, this.indexes.get(indexCode).getRegisteredStudents());
+			HashMap<String, Collection<String>> studentsInCourse = new HashMap<>();
+			Course course = this.courses.get(courseCode);
+			for( String indexCode : course.getIndexName())
+			{
+				studentsInCourse.put(indexCode, this.indexes.get(indexCode).getRegisteredStudents());
+			}		
+			studentsInCourseCache.put(courseCode, studentsInCourse);
 		}
-		return studentsInCourse;
+		return studentsInCourseCache.get(courseCode);
 	}
-
+	public boolean isStudentInCourse(String matricNum, String courseCode)
+	{
+		boolean found = false;
+		for( Collection<String> c : getStudentsInCourse(courseCode).values())
+		{
+			if(c.contains(matricNum)) { 
+				found  = true;
+				break;
+			}
+		}
+		return found;
+	}
 	/**
 	 * Gets the AU of the course with the specified course code.
 	 * @param courseCode Course code of the target course.

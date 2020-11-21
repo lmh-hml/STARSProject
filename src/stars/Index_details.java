@@ -48,8 +48,8 @@ public class Index_details implements stars.FlatFileObject{
 		}
 		s += delimiter;
 		
-		s += FlatFileObject.collectionToFlatFileString(registered);
-		s += FlatFileObject.collectionToFlatFileString(waitlist);
+		s += FlatFileObject.collectionToFlatFileString(registered)+delimiter;
+		s += FlatFileObject.collectionToFlatFileString(waitlist)+delimiter;
 		return s;
 	
 	}
@@ -141,8 +141,8 @@ public class Index_details implements stars.FlatFileObject{
 	{ return addStudentToWaitlist(student.getMatric_num());}
 	public boolean removeFromWaitlist(String matricNum)
 	{
-		boolean success = this.registered.remove(matricNum);
-		return success;
+		return this.registered.remove(matricNum);
+
 	}
 	public String  getFirstWaitingStudent()
 	{
@@ -174,6 +174,19 @@ public class Index_details implements stars.FlatFileObject{
 		return this.classes.toArray(new IndexClass[this.classes.size()]);
 	}
 	
+	public boolean clash(Index_details otherIndex)
+	{
+		boolean clash = false;
+		for(IndexClass c : this.classes)
+		{
+			for(IndexClass c2 : otherIndex.getIndexClasses())
+			{
+				clash = c.clash(c2);
+				if(clash==true)break;
+			}
+		}
+		return clash;
+	}
 	
 	public static void main(String args[])
 	{

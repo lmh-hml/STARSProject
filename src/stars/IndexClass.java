@@ -133,7 +133,7 @@ public class IndexClass implements FlatFileObject
     			return false;
     	}
     }
-     
+  
     public String toFlatFileString()
 	{
 		String s = "";

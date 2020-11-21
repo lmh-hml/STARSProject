@@ -1,5 +1,5 @@
-WeiJie_Lee|U1945048O|M|3|Singaporean|2|WeiJie67|10019,|| |
-Richard_Ham|U1936254J|M|0|Singaporean|2|Richard41| | |
+WeiJie_Lee|U1945048O|M|6|Singaporean|2|WeiJie67|10019,|| |
+Richard_Ham|U1936254J|M|3|Singaporean|2|Richard41| | |
 Jeremiah_Clark|U1908491G|M|0|Singaporean|2|Jeremiah80| | |
 Nina_Yew|U1933585J|F|0|Singaporean|2|Nina26| | |
 Jim_Karl|U1985400N|M|0|Singaporean|2|Jim56| | |

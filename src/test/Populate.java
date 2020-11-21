@@ -1,4 +1,4 @@
-package stars;
+package test;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,6 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
+
+import stars.StarsDatabase;
+import stars.Student_details;
 
 public class Populate {
 	

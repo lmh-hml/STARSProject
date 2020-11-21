@@ -1,4 +1,4 @@
-package stars;
+package test;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -13,6 +13,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import stars.Course;
+import stars.IndexClass;
+import stars.IndexDatabase;
+import stars.Index_details;
 
 
 
@@ -82,7 +87,7 @@ public class CourseMain {
 					id.setType(array[0]);
 					id.setGroup(array[1]);
 					id.setStartTime(LocalTime.parse(array[2], fmt));
-					id.setStartTime(LocalTime.parse(array[3], fmt));
+					id.setEndTime(LocalTime.parse(array[3], fmt));
 					id.setDay(DayOfWeek.valueOf(array[4].toUpperCase()));
 					id.setVenue(array[5]);
 					id.setIndexCode(array[6]);
@@ -186,53 +191,35 @@ public class CourseMain {
 	{
 
 		try {
-		CourseDatabase courses = new CourseDatabase();
 		IndexDatabase indexes = new IndexDatabase();
-		courses.openFile("Courses.txt");
 		indexes.openFile("Indexes.txt");
 		
-		for(Course c : courses.getContents())
+
+		HashMap<String, ArrayList<IndexClass>> indexClassesMap = readIndexClass("CourseData - IndexClass.csv");
+		printIndexClasses(indexClassesMap);
+
+		
+		HashMap< String , Index_details> indexMap = readIndex("CourseData - Indexes.csv");
+		for(Index_details id : indexMap.values())
 		{
-			System.out.println(c.toFlatFileString());
+			System.out.format("%s\n", id.toFlatFileString());
+			for( IndexClass key : indexClassesMap.get(id.getIndexCode()))
+			{
+				System.out.format("%s: Adding %s \n",id.getIndexCode(),key.toFlatFileString());
+				id.addIndexClass(key);
+			}
+			System.out.format("%s:%s\n", id.getCourseCode(),id.toFlatFileString());
+			indexes.add(id.getIndexCode(), id);;
 		}
 		
+		
+		indexes.writeFile("Indexes.txt");
+
 		for(Index_details c : indexes.getContents())
 		{
 			System.out.println(c.toFlatFileString());
 		}
 		
-//
-//		try {
-//
-//			HashMap<String, ArrayList<IndexClass>> indexClassesMap = readIndexClass("CourseData - IndexClass.csv");
-//			HashMap<String , Course> coursemap = readCourse("CourseData - Courses.csv");
-//			for(Course c: coursemap.values())
-//			{
-//				courses.add(c);
-//			}
-//			printIndexClasses(indexClassesMap);
-//
-//			
-//			HashMap< String , Index_details> indexMap = readIndex("CourseData - Indexes.csv");
-//			for(Index_details id : indexMap.values())
-//			{
-//				System.out.format("%s\n", id.toFlatFileString());
-//				for( IndexClass key : indexClassesMap.get(id.getIndexCode()))
-//				{
-//					System.out.format("%s: Adding %s \n",id.getIndexCode(),key.toFlatFileString());
-//					id.addIndexClass(key);
-//				}
-//				System.out.format("%s:%s\n", id.getCourseCode(),id.toFlatFileString());
-//				indexes.add(id);
-//				coursemap.get(id.getCourseCode()).addIndexName(id.getIndexCode());
-//			}
-//			
-//			
-//			indexes.writeFile("Indexes.txt");
-//			courses.writeFile("Courses.txt");
-			
-
-
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

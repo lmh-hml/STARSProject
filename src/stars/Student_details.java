@@ -40,43 +40,6 @@ public class Student_details implements FlatFileObject{
 	public Student_details() {}
 
 
-	/**
-	 * Returns flat file string representation of this student object
-	 * @return Flat file string representation of this object
-	 */
-	public String toFlatFileString() {
-		
-		String coursesString = FlatFileObject.collectionToFlatFileString(indexRegistered);
-		String waitlistString = FlatFileObject.collectionToFlatFileString(indexWaitlist);
-
-		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality,studyYear ,userName, coursesString, waitlistString ) ;
-	}
-	
-	/**
-	 * Initializes this object with a flat file string read from a flat file.
-	 * This method does nothing if the flat file string has insufficient columns to initialize this object.
-	 * @return 
-	 */
-	@Override
-	public boolean fromFlatFileString(String s) {
-		ArrayList<String> array = new ArrayList<String>( Arrays.asList(s.split("\\|")) );
-		if(array.size()<NumFields)return false;
-		this.name = array.get(0);
-		this.matric_num = array.get(1);
-		this.gender = array.get(2);
-		this.AU = Integer.parseInt(array.get(3));
-		this.nationality = array.get(4);
-		this.studyYear = Integer.parseInt(array.get(5));
-		this.userName = array.get(6);
-		
-		String registeredData = array.get(7);
-		FlatFileObject.flatFileStringToCollection(registeredData, indexRegistered);
-		
-		String waitlistData = array.get(8);
-		FlatFileObject.flatFileStringToCollection(waitlistData, indexRegistered);
-
-		return true;
-	}
 
 	/**
 	 * Gets the courses registered by this student.
@@ -209,8 +172,7 @@ public class Student_details implements FlatFileObject{
 	 */
 	public void setindexWaitlist(List<String> indexWaitlist) {
 		this.indexWaitlist = indexWaitlist;
-	}
-	
+	}	
 	/**
 	 * Adds a course to the waitlist of this student
 	 * @param courses The courses to be added to this student's waitlist
@@ -221,7 +183,6 @@ public class Student_details implements FlatFileObject{
 			indexWaitlist.add(s);
 		}
 	}
-	
 	/**
 	 * Removes the specified course from the waitlist of this student.
 	 * @param course name of course to be removed
@@ -230,7 +191,16 @@ public class Student_details implements FlatFileObject{
 	{
 		indexWaitlist.remove(course);
 	}
-
+	/**
+	 * Checks if the student has registered in the specified index course
+	 * @param index The specified index
+	 * @return True if the student is registered in the index, false otherwise
+	 */
+	public boolean isWaiting(String index)
+	{
+		return this.indexWaitlist.contains(index);
+	}
+	
 	/**
 	 * Add the courses' names to the list of courses registered by this student.
 	 * @param courses Names of courses to be added
@@ -255,10 +225,54 @@ public class Student_details implements FlatFileObject{
 	 */
 	public void setIndexRegistered(List<String> indexCodes) {
 		indexRegistered = indexCodes;
+	}	
+	/**
+	 * Checks if the student is in waitlist of the specified index course
+	 * @param index The specified index
+	 * @return True if the student is in the waitlist of the index, false otherwise
+	 */	
+	public boolean isRegistered(String index)
+	{
+		return indexRegistered.contains(index);
 	}
 	
 	
-	
+	/**
+	 * Returns flat file string representation of this student object
+	 * @return Flat file string representation of this object
+	 */
+	public String toFlatFileString() {
+		
+		String coursesString = FlatFileObject.collectionToFlatFileString(indexRegistered);
+		String waitlistString = FlatFileObject.collectionToFlatFileString(indexWaitlist);
+
+		return FlatFileObject.buildFlatFileString(name, matric_num, gender, AU, nationality,studyYear ,userName, coursesString, waitlistString ) ;
+	}
+	/**
+	 * Initializes this object with a flat file string read from a flat file.
+	 * This method does nothing if the flat file string has insufficient columns to initialize this object.
+	 * @return 
+	 */
+	@Override
+	public boolean fromFlatFileString(String s) {
+		ArrayList<String> array = new ArrayList<String>( Arrays.asList(s.split("\\|")) );
+		if(array.size()<NumFields)return false;
+		this.name = array.get(0);
+		this.matric_num = array.get(1);
+		this.gender = array.get(2);
+		this.AU = Integer.parseInt(array.get(3));
+		this.nationality = array.get(4);
+		this.studyYear = Integer.parseInt(array.get(5));
+		this.userName = array.get(6);
+		
+		String registeredData = array.get(7);
+		FlatFileObject.flatFileStringToCollection(registeredData, indexRegistered);
+		
+		String waitlistData = array.get(8);
+		FlatFileObject.flatFileStringToCollection(waitlistData, indexRegistered);
+
+		return true;
+	}
 	/**
 	 * Returns the value of this flat file object's id in the database
 	 * @return The string id used to index this object in a flatfile database.
