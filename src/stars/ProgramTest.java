@@ -13,14 +13,18 @@ public class ProgramTest {
 		StarsDatabase stars = new StarsDatabase();
 		StarsNotifier notifier = new StarsMail();
 		StudentProgram program = new StudentProgram( cm , stars, notifier);
-
-		try {
-			cm.save();
-			stars.saveStudents();
-			stars.saveUsers();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		Student_details student = stars.getStudentByUsername("WeiJie67");
+		program.run(student);
+		
+		
+//		try {
+//			cm.save();
+//			stars.saveStudents();
+//			stars.saveUsers();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

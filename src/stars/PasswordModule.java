@@ -21,7 +21,7 @@ import javax.crypto.spec.PBEKeySpec;
  * @since 23/10/2020
  * @version 1.0
  */
-public class PasswordMaker {
+public class PasswordModule {
 
 	private final static SecureRandom sr = new SecureRandom();
 	

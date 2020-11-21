@@ -36,6 +36,9 @@ public class CourseManager{
 		}
 	}
 
+	/**Writes the contents of this database
+	 * back to storage.
+	 */
 	public void save()
 	{
 		try {

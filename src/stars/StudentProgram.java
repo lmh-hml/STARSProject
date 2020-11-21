@@ -9,7 +9,7 @@ public class StudentProgram
 	private Student_details currentUser;
 	private CourseManager courseManager;
 	private StarsDatabase starsDatabase;
-	private Scanner scanner;
+	private Scanner scanner = new Scanner(System.in);
 	private StarsNotifier notifier;
 	private final int AU_LIMIT = 20;
 	
@@ -49,46 +49,35 @@ public class StudentProgram
 		}
 		System.out.format("Welcome to STARS Students, %s !\n", currentUser.getName());
 		System.out.print(studentOptions);
-		System.out.format("Please enter an option: ");
+		System.out.format("Please enter an option (0-7): ");
 
 		while( loopInput || !quit )
 		{
-			
 			System.out.format("Please enter an option: ");
 			int input  = -1;
 			try {  input = scanner.nextInt(); } 
 			catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();}
-			
+
 			switch( input )
 			{
 			
-			case 1: 
-			{
-				//Add
-			}break;
-			
-			case 2: {
-				//drop
-			}break;
-			
+			case 1: { run_AddIndex(); }break;
+			case 2: { run_DropIndex(); }break;
 			case 3: {
-				//check print courses registered
+				printRegisteredIndexes(student);
+				printWaitingIndexes(student);
 			}break;
 			
 			case 4: {
-
-				//check vacancies available
+				run_CheckVacancies();
 			}break;
 			
 			case 5: {
-				
-				//Change course index
+				run_ChangeIndex();
 			}break;
 			
 			case 6: {
-				
-				//swap with another student.
-				
+				run_SwapIndex();
 			} break;
 			
 			case 7: {System.out.print(studentOptions);}
@@ -107,20 +96,105 @@ public class StudentProgram
 		
 	}
 
+//CLIENT METHODS
+	Index_details promptForIndexCode(String message)
+	{
+		Index_details index = null;
+		String inputIndex = "";
+		while(index == null && !inputIndex.equals("0"))
+		{
+			System.out.println(message);
+			inputIndex = scanner.nextLine();
+			if(inputIndex == "0")return null;
+			index = courseManager.getIndex(inputIndex);
+			if(index == null) {System.out.println("No such index exists. Please enter the code again.");}
+		}
+		return index;	
+	}
+	void run_AddIndex()
+	{
+		Index_details index = promptForIndexCode("Please enter the code of the index that you want to register: (Press 0 to go back) ");
+		if(index==null)return;
+		addIndex(index.getIndexCode());
+	}
+	void run_DropIndex()
+	{
+		scanner.nextLine();
+		Index_details index = promptForIndexCode("Please enter the code of the index that you want to drop: (Press 0 to go back) ");
+		if(index==null)return;
+		dropIndex(index.getIndexCode());
+	}
+	void run_CheckVacancies()
+	{
+		scanner.nextLine();
+		Index_details index = promptForIndexCode("Please enter the index code you want to check:");
+		if(index==null)return;
+		CheckVacancies(index.getIndexCode());
+	}
+	void run_ChangeIndex()
+	{
+		scanner.nextLine();
+		Index_details id1 = promptForIndexCode("Please enter the index you want to change:");
+		if(id1==null)return;
+		Index_details id2 = promptForIndexCode("Please enter the index you want to change with:");
+		if(id2==null)return;
+		changeCourseIndex(id1.getIndexCode(), id2.getIndexCode());
+	}
+	void run_SwapIndex()
+	{
+		scanner.nextLine();
+		Index_details index = promptForIndexCode("Please enter index you want to swap:");
+		if(index==null)return;
+		
+		
+		String input = "";
+		User_details user = null;
+		
+		System.out.println("Enter matriculation number of student to swap with:");
+		
+		while(user == null && input!="0")
+		{
+			input = scanner.nextLine();
+			if(input == currentUser.getMatric_num())
+			{
+				System.out.println("You can not swap index with yourself.");
+				continue;
+			}
+			user =  starsDatabase.getUser(starsDatabase.getStudentbyMatric(input).getUserName());
+			if(user == null) {System.out.println("Matriculation number input does not belong to a student.");break;}
+		}
+		
+		if(user!=null)
+		{
+			System.out.println("Enter password of the student to swap with:");
+			boolean correct = false;
+			input = "";
+			while(!correct && input!="0")
+			{
+				input = scanner.nextLine();
+				correct = PasswordModule.verifyPassword(input, user.getPassword());
+				if(!correct)System.out.println("Password is incorrect. Please try again.");
+			}
+		}
+		
+		if(input=="0")return;
+		Index_details index2 = promptForIndexCode("Please enter index you want to swap with:");
+		if(index2 == null)return;
+		SwapIndex( index.getIndexCode(), starsDatabase.getStudent(user), index2.getIndexCode());
+		
+	}
 
 //PROGRAM METHODS
 	//Method to register a index of course for the student
 	public void addIndex(String indexCode) {
 		//check if student in other index of same course
 		Index_details index = courseManager.getIndex(indexCode);
-		indexCode = index.getIndexCode();
+		if (index==null) { System.out.format("Add failed: Index %s does not exist.\n", indexCode); return;}
+
 		Course course  = courseManager.getCourse(index.getCourseCode());
 		ArrayList<Index_details> clashes = isIndexClashWithStudentRegistered(index, currentUser);
-		
-		if (index==null) {
-			System.out.format("Add failed: Index %s does not exist.\n", indexCode);
-		}
-		else if (isStudentRegistered(currentUser, index)== true) 
+				
+		if (isStudentRegistered(currentUser, index)== true) 
 		{
 			System.out.format("Add failed: Student is already registered in index %s!\n", indexCode);
 		}
@@ -149,10 +223,8 @@ public class StudentProgram
 				addStudentIndexRegistered(currentUser, index);
 				System.out.format("Add successful: There are %d slots left in this index %s\n", index.getVacancy(), index.getCourseCode() );
 			}
-			System.out.format("You have %d AU.\n", currentUser.getAU());
 		}
-	}
-	
+	}	
 	//Method to drop a course for the student
 	public void dropIndex(String indexCode) {
 		Index_details index = courseManager.getIndex(indexCode);
@@ -161,7 +233,6 @@ public class StudentProgram
 		{
 			removeStudentFromIndexRegistered(currentUser,index);
 			System.out.format("Drop successful: Dropped %s.\n", indexCode);
-			System.out.format("You have %d AU.\n", currentUser.getAU());
 		}
 		else
 		{
@@ -169,10 +240,10 @@ public class StudentProgram
 		}
 		
 		if (index.getWaitingStudents().size()!=0) {
-			Student_details newstudent = starsDatabase.getStudentByUsername(index.getFirstWaitingStudent());//first out student
+			Student_details newstudent = starsDatabase.getStudentbyMatric(index.getFirstWaitingStudent());//first out student
 			if(newstudent!= null)
 			{
-				index.removeFromWaitlist(newstudent.getName()); //remove first out student from course waitlist
+				index.removeFromWaitlist(newstudent.getMatric_num()); //remove first out student from course waitlist
 				newstudent.removeFromWaitlist(indexCode);;//remove first out course from student waitlist
 				index.registerStudent(newstudent); //add student name to course
 				newstudent.addIndex(indexCode);
@@ -187,7 +258,7 @@ public class StudentProgram
 			System.out.format("Specified index with code %s does not exist\n",indexCode);
 		}
 		else {
-			System.out.format("%s: Number of vacancies left: %d\n"+indexCode, index.getVacancy());
+			System.out.format("%s: Number of vacancies left: %d/%d\n",indexCode, index.getVacancy(), index.getCapacity());
 		}
 	}
 	
@@ -197,10 +268,10 @@ public class StudentProgram
 		Index_details newIndex = courseManager.getIndex(newindex);
 		//check if student in other index of same course
 		if (isStudentRegistered(currentUser,  oldIndex )== false) {
-			System.out.println("Not in previous course"); //else if student not in oldindex
+			System.out.format("Student is not registered in the first index:%s\n", oldindex); //else if student not in oldindex
 		}
 		else if (isStudentRegistered(currentUser, newIndex) ) {
-			System.out.println("Already registred in requested index"); //else if student already in newindex
+			System.out.format("Already registred in requested index:%s", newindex); //else if student already in newindex
 		}
 		else if ( courseManager.getIndex(oldindex)==null ||courseManager.getIndex(oldindex)==null) {
 			System.out.println("Course does not exist"); //else if any index does not exist
@@ -225,7 +296,7 @@ public class StudentProgram
 			System.out.format("Student %s is not in index %s!\n", currentUser.getName(), userindex); //if student not in userindex
 		}
 		else if (isStudentRegistered(newstudent, stuIndex)== false) {
-			System.out.println("Student to swap index with is not in the index!"); //else if newstudent not in stuindex
+			System.out.format("Student %s is not in index %s!\n", newstudent.getName(), stuindex); //if student not in userindex
 		}
 		else {
 			swapIndex(currentUser, userIndex, newstudent, stuIndex );
@@ -238,12 +309,7 @@ public class StudentProgram
 //PRINTING METHODS	
 	public void printStudentDetails(Student_details student)
 	{
-		System.out.format("Student Name: %s\n", student.getName());
-		System.out.format("Matric Number: %s\n", student.getMatric_num());
-		System.out.format("Study year: %d\n", student.getStudyYear());
-		System.out.format("Gender: %s\n", student.getGender());
-		System.out.format("Nationality: %s\n", student.getNationality());
-		System.out.format("Total AU of registered courses:  %d\n", student.getAU());
+		student.printDetails();
 	}	
 	/**
 	 * Prints the specified index and the classes under it.
@@ -273,6 +339,10 @@ public class StudentProgram
 			System.out.format("%s\n",indexCode);
 		}
 	}	
+	/**
+	 * Prints the indexes that this student is in the wait list of.
+	 * @param student The specified student
+	 */
 	public void printWaitingIndexes(Student_details student)
 	{
 		System.out.format("Courses currently waiting for: %d courses.\n",student.getIndexWaitlist().size());
@@ -332,7 +402,7 @@ public class StudentProgram
 	{
 		if(isStudentWaiting(student, index) || isStudentRegistered(student, index))return;
 		student.addWaitlist(index.getIndexCode());
-		index.registerStudent(student.getMatric_num());
+		index.addStudentToWaitlist(student.getMatric_num());
 		student.setAU(student.getAU()+courseManager.getIndexAU(index));
 	}
 	/**Removes the specified student from the specified index's registrations

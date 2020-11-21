@@ -1,6 +1,9 @@
 package stars;
 import java.awt.desktop.UserSessionEvent;
+import java.io.BufferedReader;
 import java.io.Console;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,32 +18,24 @@ import stars.exception.*;
 
 public class StarsMain {
 	
-	
-	Console console = System.console();
-	Scanner scanner = new Scanner(System.in);
-	
-	StarsDatabase starsDatabase = new StarsDatabase();
-	CourseManager courseManager = new CourseManager();
-	StarsNotifier notifier;
-	
-	AdminProgram adminProgram = new AdminProgram( starsDatabase);	
-	StudentProgram studentProgram = new StudentProgram(courseManager, starsDatabase, notifier);
+	private final String SettingsFile = "Settings.txt";
+	private Console console = System.console();
+	private Scanner scanner = new Scanner(System.in);
+	private StarsDatabase starsDatabase = new StarsDatabase();
+	private CourseManager courseManager = new CourseManager();
+	private StarsNotifier notifier = new StarsMail();
+	private AdminProgram adminProgram = new AdminProgram( starsDatabase);	
+	private StudentProgram studentProgram = new StudentProgram(courseManager, starsDatabase, notifier);	
+	private LocalDate accessPeriodStart = null;
+	private LocalDate accessPeriodEnd = null;
+	private LocalTime accessTimeStart = null;
+	private LocalTime accessTimeEnd = null;
 
-	
-	
-	
-	LocalDate accessPeriodStart = LocalDate.of(2020, 12, 1);
-	LocalDate accessPeriodEnd = LocalDate.of(2020, 12, 31);;
-	LocalTime access_time_start = LocalTime.of(9, 0);
-	LocalTime access_time_end = LocalTime.of(23,  59);
-	
-	
-
-	
-	StarsMain() 
+	/**Default constructor of this class**/
+	public StarsMain() 
 	{
+		openSettingsFile(SettingsFile);
 	}
-
 	
 	public User_details logIn()
 	{
@@ -52,7 +47,7 @@ public class StarsMain {
 		{
 			System.out.println("Please enter your username: ");
 			String input_username = scanner.nextLine();
-			user = starsDatabase.getUserByUsername(input_username);
+			user = starsDatabase.getUser(input_username);
 			if(user == null)
 			{
 				System.out.println("Username is incorrect or does not exist.");
@@ -66,7 +61,7 @@ public class StarsMain {
 //			String input_pwd = String.valueOf(console.readPassword());
 			System.out.println("Please enter password: ");
 			String input_pwd = scanner.nextLine();
-			pwd_correct = PasswordMaker.verifyPassword(input_pwd, user.getPassword());
+			pwd_correct = PasswordModule.verifyPassword(input_pwd, user.getPassword());
 			if( ! pwd_correct)
 			{
 				System.out.println("Password is incorrect. ");
@@ -75,30 +70,34 @@ public class StarsMain {
 		
 		return user;
 	}
-
-	void logOut()
+	public void logOut()
 	{
 		System.out.println("Logging off...");
-	}
-	
-	
-	public LocalDate[] getAccessPeriod()
+	}	
+	private void openSettingsFile(String settingsFile)
 	{
-		return new LocalDate[] {accessPeriodStart, accessPeriodEnd };
-	}
-	
-	public void setAccessPeriodStartDate(LocalDate date)
-	{
-		accessPeriodStart = date;
-	}
-
-	public void setAccessPeriodEndDate(LocalDate date)
-	{
-		accessPeriodEnd = date;
-	}
-	
-	
-	public void run() throws IdNotFoundException
+		try {
+			BufferedReader bfr = new BufferedReader(new FileReader(settingsFile));
+			String line = "";
+			while((line = bfr.readLine())!= null)
+			{
+				String[] array = line.split("\\|");
+				if(array[0].equals("AccessPeriod"))
+				{
+					accessPeriodStart = LocalDate.parse(array[1]);
+					accessTimeStart = LocalTime.parse(array[2]);
+					accessPeriodEnd = LocalDate.parse(array[3]);
+					accessTimeStart = LocalTime.parse(array[4]);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}	
+	public void run() 
 	{
 		User_details user = logIn();			
 		
@@ -120,7 +119,14 @@ public class StarsMain {
 				{
 					System.err.println("Unable to find student account for this user. Please approach admin for assistance.");
 				}
-				studentProgram.run(student);
+				else if(LocalDate.now().isBefore(accessPeriodStart) || LocalDate.now().isAfter(accessPeriodEnd))
+				{
+					System.out.format("Unable to access STARS outside of access period from %s to %s !\n", accessPeriodStart, accessPeriodEnd);
+				}
+				else
+				{
+					studentProgram.run(student);
+				}
 				
 			}break;
 
@@ -153,13 +159,10 @@ public class StarsMain {
 	
 	public static void main(String args[])
 	{
-	
-		try {
-			StarsMain stars = new StarsMain();
-			stars.run();
-		} catch (IdNotFoundException e) {
-			e.printStackTrace();
-		}
+
+		StarsMain stars = new StarsMain();
+		stars.run();
+
 	}
 
 }

@@ -3,7 +3,11 @@ package stars;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A class that holds the details regarding a student who uses the Stars system.
@@ -30,9 +34,9 @@ public class Student_details implements FlatFileObject{
 	/**Email of this student**/
 	private String userName = EmptyString;
 	/**Courses registered by this student*/
-	private List<String> indexRegistered = new ArrayList<>();
+	private Set<String> indexRegistered = new HashSet<>();
 	/**Courses that this student is in the waitlist for.*/
-	private List<String> indexWaitlist = new ArrayList<>();
+	private Set<String> indexWaitlist = new HashSet<>();
 	/**Number of fields in this class that should be read/written to flat file**/
 	private static final int NumFields = 9;
 	
@@ -42,20 +46,25 @@ public class Student_details implements FlatFileObject{
 
 
 	/**
-	 * Gets the courses registered by this student.
-	 * @return A list of the registered courses' names
+	 * Gets the indexes registered by this student.
+	 * @return A list of the registered indexes' names
 	 */
-	public List<String> getIndexRegistered() {
-		return indexRegistered;
+	public Set<String> getIndexRegistered() {
+		return Collections.unmodifiableSet(indexRegistered);
 	}
-
+	/**
+	 * Gets the indexes that this student is in the waiting list for.
+	 * @return A list of index codes that is in the student's wait list.
+	 */
+	public Set<String> getIndexWaitlist() {
+		return Collections.unmodifiableSet(indexWaitlist);
+	}
 	/**
 	 * @return Return student's name
 	 */
 	public String getName() {
 		return name;
 	}
-
 	/**
 	 * Sets this Student's name
 	 * @param name Name of the student
@@ -63,14 +72,12 @@ public class Student_details implements FlatFileObject{
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	/**
 	 * @return Return student's matriculation number
 	 */
 	public String getMatric_num() {
 		return matric_num;
 	}
-
 	/**
 	 * Sets this user's matriculation number
 	 * @param matric_num Student's matriculation number
@@ -78,7 +85,6 @@ public class Student_details implements FlatFileObject{
 	public void setMatric_num(String matric_num) {
 		this.matric_num = matric_num;
 	}
-
 	/**
 	 * Gets this student's gender.
 	 * @return
@@ -86,8 +92,6 @@ public class Student_details implements FlatFileObject{
 	public String getGender() {
 		return gender;
 	}
-
-
 	/**
 	 * Set this student's gender "M" or "F"
 	 * @param gender Student's gender
@@ -95,7 +99,6 @@ public class Student_details implements FlatFileObject{
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-
 	/**
 	 * Returns this student's AU
 	 * @return String representation of this student'AU
@@ -103,7 +106,6 @@ public class Student_details implements FlatFileObject{
 	public int getAU() {
 		return AU;
 	}
-
 	/**
 	 * Sets this student's AU
 	 * @param i Academic units of this student
@@ -111,7 +113,6 @@ public class Student_details implements FlatFileObject{
 	public void setAU(int i) {
 		AU = i;
 	}
-
 	/**
 	 * Returns this student's nationality
 	 * @return Student's nationality
@@ -119,7 +120,6 @@ public class Student_details implements FlatFileObject{
 	public String getNationality() {
 		return nationality;
 	}
-
 	/**
 	 * Set this student's nationality
 	 * @param nationality This student's nationality
@@ -127,31 +127,24 @@ public class Student_details implements FlatFileObject{
 	public void setNationality(String nationality) {
 		this.nationality = nationality;
 	}
-	
 	/**
 	 * @return the studyYear
 	 */
 	public int getStudyYear() {
 		return studyYear;
 	}
-
-
 	/**
 	 * @param studyYear the studyYear to set
 	 */
 	public void setStudyYear(int studyYear) {
 		this.studyYear = studyYear;
 	}
-
-
 	/**
 	 * @return the userName
 	 */
 	public String getUserName() {
 		return userName;
 	}
-
-
 	/**
 	 * @param userName the userName to set
 	 */
@@ -161,16 +154,9 @@ public class Student_details implements FlatFileObject{
 
 
 	/**
-	 * @return the indexWaitlist
-	 */
-	public List<String> getIndexWaitlist() {
-		return indexWaitlist;
-	}
-
-	/**
 	 * @param indexWaitlist the indexWaitlist to set
 	 */
-	public void setindexWaitlist(List<String> indexWaitlist) {
+	public void setindexWaitlist(Set<String> indexWaitlist) {
 		this.indexWaitlist = indexWaitlist;
 	}	
 	/**
@@ -223,7 +209,7 @@ public class Student_details implements FlatFileObject{
 	 * Sets list names of courses registered by this student.
 	 * @param courses List of names  of courses to be added.
 	 */
-	public void setIndexRegistered(List<String> indexCodes) {
+	public void setIndexRegistered(Set<String> indexCodes) {
 		indexRegistered = indexCodes;
 	}	
 	/**
@@ -281,6 +267,16 @@ public class Student_details implements FlatFileObject{
 	public String getDatabaseId() {
 		return this.userName;
 	}
+	/**Prints the etails of this student**/
+	public void printDetails()
+	{
+		System.out.format("\nStudent Name: %s\n", getName());
+		System.out.format("Matric Number: %s\n", getMatric_num());
+		System.out.format("Study year: %d\n", getStudyYear());
+		System.out.format("Gender: %s\n", getGender());
+		System.out.format("Nationality: %s\n", getNationality());
+		System.out.format("Total AU of registered courses:  %d\n\n", getAU());
+	}	
 
 
 }

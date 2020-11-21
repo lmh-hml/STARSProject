@@ -18,7 +18,7 @@ public class AdminProgram
     private StarsDatabase starsDatabase;
     private CourseManager courseManager;
     private String default_password = "password" ;
-    private String hashed_default_password = PasswordMaker.generatePasswordHash(default_password);
+    private String hashed_default_password = PasswordModule.generatePasswordHash(default_password);
     //public CourseManager courseManager;
     private Scanner sc = new Scanner(System.in);//you will need to delete this later
     

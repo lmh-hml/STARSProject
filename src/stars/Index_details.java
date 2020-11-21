@@ -141,7 +141,7 @@ public class Index_details implements stars.FlatFileObject{
 	{ return addStudentToWaitlist(student.getMatric_num());}
 	public boolean removeFromWaitlist(String matricNum)
 	{
-		return this.registered.remove(matricNum);
+		return this.waitlist.remove(matricNum);
 
 	}
 	public String  getFirstWaitingStudent()

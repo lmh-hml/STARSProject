@@ -21,7 +21,6 @@ public class StarsDatabase {
 	 * Default filename of flat file for users
 	 */
 	private static String userFile = "Users.txt";
-	
 	/**
 	 * Member UserDatabase object
 	 */
@@ -30,6 +29,8 @@ public class StarsDatabase {
 	 * Member StudentDatabase object.
 	 */
 	private StudentDatabase studentDatabase;
+	
+	private CourseManager courseManager = new CourseManager();
 
 	
 	/**
@@ -53,24 +54,14 @@ public class StarsDatabase {
 	void addUser(User_details user)
 	{
 		userDatabase.add(user.getUsername(),user);
-	}
-	
-	/**
-	 * Gets a user from the database by its id.
-	 * @param id The user's id.
-	 * @return The User_details object that associated with the id.
-	 */
-	User_details getUser(String id)
-	{
-		return userDatabase.get(id);
-	}
+	}	
 	
 	/**
 	 * Gets the user in the database associated with the username.
 	 * @param username Username of the user to be retrieved.
 	 * @return The User_detail object associated with the username
 	 */
-	User_details getUserByUsername(String username)
+	User_details getUser(String username)
 	{
 		User_details user = null;
 		for (User_details u  : userDatabase.getContents())
@@ -82,8 +73,7 @@ public class StarsDatabase {
 			}
 		}
 		return user;
-	}
-	
+	}	
 	/**
 	 * Gets all the users stored in the database.
 	 * @return A collection view of all the users registered in the database.
@@ -91,8 +81,7 @@ public class StarsDatabase {
 	Collection<User_details> getAllUsers()
 	{
 		return this.userDatabase.getContents();
-	}
-	
+	}	
 	/**
 	 * Removes user with the specified id from the database.
 	 * @param id Id of specified user.
@@ -101,7 +90,6 @@ public class StarsDatabase {
 	{
 		userDatabase.remove(id);
 	}
-
 	/**
 	 * Adds an instance of Student_details object to the database
 	 * @param student A Student_details object to be added to database.
@@ -109,18 +97,21 @@ public class StarsDatabase {
 	void addStudent(Student_details student)
 	{
 		studentDatabase.add(student.getUserName(),student);
-	}
-	
+	}	
 	/**
 	 * Gets a student by their id
 	 * @param ID of the student.
 	 * @return The Student with the id, null if no such student with ID exists
 	 */
-	Student_details getStudent(String id)
+	Student_details getStudentbyMatric(String matricNum)
 	{
-		return studentDatabase.get(id);
+		Student_details student = null;
+		for(Student_details item : studentDatabase.getContents())
+		{
+			if(item.getMatric_num().equals(matricNum))student = item;
+		}
+		return student;
 	}
-
 	/**
 	 * Get the student details associated with a user
 	 * THis method returns null if no such student_details object is found.
@@ -132,7 +123,6 @@ public class StarsDatabase {
 		Student_details student = studentDatabase.get(user.getUsername());
 		return student;
 	}
-	
 	/**
 	 * Gets a collection view of all the students in this database.
 	 * @return A collection view of all the student_details objects stored in this database.
@@ -141,7 +131,6 @@ public class StarsDatabase {
 	{
 		return this.studentDatabase.getContents();
 	}
-	
 	/**
 	 * Retrieves a student's details associated with the email.
 	 * @param email Email of the student 
@@ -159,7 +148,6 @@ public class StarsDatabase {
 		}
 		return student;
 	}
-	
 	/**
 	 * Get the student associated with the username.
 	 * @param username username of the student
@@ -176,8 +164,7 @@ public class StarsDatabase {
 			}
 		}
 		return student;
-	}
-		
+	}	
 	/**
 	 * Removes a student with the id from the database.
 	 * @param id The id of the Student_details object to be removed.
@@ -186,7 +173,6 @@ public class StarsDatabase {
 	{
 		studentDatabase.remove(id);
 	}
-	
 	/**
 	 * Updates the database with the current contents of this instance of StarsDatabase.
 	 */
@@ -202,42 +188,13 @@ public class StarsDatabase {
 			e.printStackTrace();
 		}
 		System.out.println("Finished Writing to files!");
-	}
-	
+	}	
 	void saveStudents() throws IOException
 	{
 		studentDatabase.writeFile(studentFile);
-	}
-	
+	}	
 	void saveUsers() throws IOException
 	{
 		userDatabase.writeFile(userFile);
 	}
-	
-
-
-
-	public static void main(String args[])
-	{
-		StarsDatabase stars = new StarsDatabase();
-		
-		User_details user = stars.getUserByUsername("Thrish");
-		System.out.println(user.toFlatFileString());
-		
-		
-		
-		for(Student_details std : stars.getAllStudents())
-		{
-			System.out.println(std.toFlatFileString());
-		}
-		
-		for(User_details std : stars.getAllUsers())
-		{
-			System.out.println(std.getUsername());
-		}
-		
-		
-	
-	}
-
 }
