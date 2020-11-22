@@ -91,11 +91,8 @@ public class PasswordModule {
 		byte[] salt = generateSalt(saltLength);
 		String hashed = hashWithSalt(pwd, salt);
 		String encodedSalt = Base64.getEncoder().encodeToString(salt);
-		byte[] decoded =  Base64.getDecoder().decode(encodedSalt);
 		String finalString = hashed + "$" + encodedSalt;
-
 		return finalString;
-
 	}
 	
 }

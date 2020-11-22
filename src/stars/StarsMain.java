@@ -1,5 +1,4 @@
 package stars;
-import java.awt.desktop.UserSessionEvent;
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.FileNotFoundException;
@@ -7,15 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.UUID;
-
-import javax.mail.MessagingException;
-
-import stars.exception.*;
-
 public class StarsMain {
 	
 	private final String SettingsFile = "Settings.txt";
@@ -151,6 +142,7 @@ public class StarsMain {
 //		System.out.println("Notification sent!");
 		logOut();
 		starsDatabase.writeDatabaseFiles();
+		courseManager.save();
 		System.out.println("Goodbye!");
 
 		

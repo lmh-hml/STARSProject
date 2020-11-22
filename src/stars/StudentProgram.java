@@ -1,4 +1,6 @@
 package stars;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -13,7 +15,7 @@ public class StudentProgram
 	private StarsNotifier notifier;
 	private final int AU_LIMIT = 20;
 	
-	private final String studentOptions = "1. Add course\n"
+	private final static String StudentOptions = "1. Add course\n"
 			+ "2. Drop course\n"
 			+ "3.Check/Print Courses Registered\n"
 			+ "4. Check vacancies available\n"
@@ -21,19 +23,18 @@ public class StudentProgram
 			+ "6. Swap index with another student\n"
 			+ "7. Show options\n"
 			+ "0. Quit";
-	
+
+			
 	/**StudentProgram has attributes of Student_details, CourseManager and StarsDatabase*/
 	public StudentProgram( CourseManager courseManager, StarsDatabase starsDatabase, StarsNotifier notifier) {
 		this.courseManager=courseManager;
 		this.starsDatabase=starsDatabase;
 		this.notifier = notifier;
 	}
-	
 	public void setCurrentStudent(Student_details student)
 	{
 		currentUser = student;
 	}
-	
 	public void run(Student_details student)
 	{
 		assert (student) != null;
@@ -48,7 +49,7 @@ public class StudentProgram
 			return;
 		}
 		System.out.format("Welcome to STARS Students, %s !\n", currentUser.getName());
-		System.out.print(studentOptions);
+		System.out.print(StudentOptions);
 		System.out.format("Please enter an option (0-7): ");
 
 		while( loopInput || !quit )
@@ -80,7 +81,7 @@ public class StudentProgram
 				run_SwapIndex();
 			} break;
 			
-			case 7: {System.out.print(studentOptions);}
+			case 7: {System.out.print(StudentOptions);}
 			
 			case 0: { quit = true; } break;
 			
@@ -96,7 +97,7 @@ public class StudentProgram
 		
 	}
 
-//CLIENT METHODS
+//CLIENT METHODS: 
 	Index_details promptForIndexCode(String message)
 	{
 		Index_details index = null;
@@ -113,6 +114,7 @@ public class StudentProgram
 	}
 	void run_AddIndex()
 	{
+		scanner.nextLine();
 		Index_details index = promptForIndexCode("Please enter the code of the index that you want to register: (Press 0 to go back) ");
 		if(index==null)return;
 		addIndex(index.getIndexCode());
@@ -190,7 +192,6 @@ public class StudentProgram
 		//check if student in other index of same course
 		Index_details index = courseManager.getIndex(indexCode);
 		if (index==null) { System.out.format("Add failed: Index %s does not exist.\n", indexCode); return;}
-
 		Course course  = courseManager.getCourse(index.getCourseCode());
 		ArrayList<Index_details> clashes = isIndexClashWithStudentRegistered(index, currentUser);
 				
@@ -198,7 +199,7 @@ public class StudentProgram
 		{
 			System.out.format("Add failed: Student is already registered in index %s!\n", indexCode);
 		}
-		else if (isStudentRegisteredCourse(currentUser.getMatric_num(), index.getCourseCode()))
+		else if (isStudentRegisteredCourse(currentUser.getMatric_num(), course))
 		{
 			System.out.format("Add failed: Student is already registered in the same course: %s!\n", course.getcoursecode());
 		}
@@ -250,7 +251,6 @@ public class StudentProgram
 			}
 		}
 	}
-
 	/**Method to check the vacancies of a course index**/
 	public void CheckVacancies(String indexCode) {
 		Index_details index = courseManager.getIndex(indexCode);
@@ -261,7 +261,6 @@ public class StudentProgram
 			System.out.format("%s: Number of vacancies left: %d/%d\n",indexCode, index.getVacancy(), index.getCapacity());
 		}
 	}
-	
 	//Method to change the course index for the student
 	public void changeCourseIndex(String oldindex, String newindex) {
 		Index_details oldIndex = courseManager.getIndex(oldindex);
@@ -277,12 +276,16 @@ public class StudentProgram
 			System.out.println("Course does not exist"); //else if any index does not exist
 		}
 		else {
+			if(newIndex.getVacancy()==0)
+			{
+				System.out.println("Index to change to is already full.");
+				return;
+			}
 			this.dropIndex(oldindex);
 			this.addIndex(newindex);
 			System.out.println("Index Number "+oldindex+" has been changed to "+newindex);
 		}
-	}
-	
+	}	
 	//Method to swap index of the student and another student
 	public void SwapIndex(String userindex, Student_details newstudent, String stuindex) {
 		
@@ -301,9 +304,28 @@ public class StudentProgram
 		else {
 			swapIndex(currentUser, userIndex, newstudent, stuIndex );
 			System.out.format("%s - Index %s swapped successfully with %s - Index %s\n", currentUser.getMatric_num(), userindex,newstudent.getMatric_num(), stuindex);
+			notifySwapSuccessful(currentUser, userindex, newstudent, stuindex);
 		}
 	}
-	
+	/**Sends a notifcation to the specified students that their index swapping is successful.
+	 * This method does not check if the indexes has actually been swapped or registered. This method only
+	 * creates the notifications and sends them to the specified students.
+	 * @param student1 The first student doing the swap
+	 * @param index1 The index of the first student that is to be swapped
+	 * @param student2 The second student doing the swap with student1
+	 * @param index2 The index of student2 that is to be swapped with index1.
+	 */
+	private void notifySwapSuccessful(Student_details student1, String index1, Student_details student2, String index2)
+	{		
+		String matricNum1 = student1.getMatric_num();
+		String matricNum2 = student2.getMatric_num();
+		
+		String message = "";
+		message += String.format("This is to confirm that your swapping of the following course with student %s is successful:\n", matricNum2);
+		message += String.format( "Before swap:\nStudent %s: Index %s\nStudent %s: Index %s\n", matricNum1, index1, matricNum2, index2);
+		message += String.format( "After swap:\nStudent %s: Index %s\nStudent %s: Index %s\n", matricNum1, index2, matricNum2, index1);
+		notifier.sendNotification("Successful swapping of indexes.", message, starsDatabase.getUser(student1.getUserName()), starsDatabase.getUser(student2.getUserName()));
+	}
 
 	
 //PRINTING METHODS	
@@ -324,9 +346,9 @@ public class StudentProgram
 			return;
 		}
 		System.out.println(index+": ");
-		System.out.println("\t"+courseManager.getLectures(indexCode)+" ");
-		System.out.println("\t"+courseManager.getLab(indexCode));
-		System.out.println("\t"+courseManager.getTut(indexCode));  
+		System.out.println("\t"+courseManager.getLectures(index)+" ");
+		System.out.println("\t"+courseManager.getLab(index));
+		System.out.println("\t"+courseManager.getTut(index));  
 	}	
 	/**
 	 * Prints the indexes the student is registered in and waiting for.
@@ -387,7 +409,7 @@ public class StudentProgram
 	{
 		if(isStudentRegistered(student, index) || index.getVacancy()<=0)return; //Student is already in the index
 		student.addIndex(index.getIndexCode()); //Adds the index to the student's registered list
-		index.registerStudent(student.getMatric_num()); //Adds the student to the index
+		index.registerStudent(student); //Adds the student to the index
 		student.setAU(student.getAU()+courseManager.getIndexAU(index)); //Updates the AU
 		if(isStudentWaiting(student, index))removeStudentFromIndexWaitlist(student, index);
 	}
@@ -452,9 +474,9 @@ public class StudentProgram
 	 * @param courseCode The course code of the course.
 	 * @return True if the student is registered in the course.
 	 */
-	public boolean isStudentRegisteredCourse(String matricNum, String courseCode)
+	public boolean isStudentRegisteredCourse(String matricNum, Course course)
 	{
-		return courseManager.isStudentInCourse(matricNum, courseCode);
+		return courseManager.isStudentInCourse(matricNum, course);
 	}
 	/**Check if specified index clashes with the indexes registered by this student.
 	 * @param index The specified index

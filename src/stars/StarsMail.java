@@ -35,35 +35,7 @@ public class StarsMail implements StarsNotifier{
 		initSession();
 	}
 	
-
-
-	public void sendMessage(String recipientAddress, String subject, String messageText) throws AddressException, MessagingException
-	{
-		Message message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(senderEmail));
-		message.setRecipients(Message.RecipientType.TO,
-			InternetAddress.parse(recipientAddress)); // to be added an email addr
-		message.setSubject(subject);
-		message.setText(messageText);
-		Transport.send(message);
-	}
-		
-	public Properties getProps() {
-		return props;
-	}
-
-	public void setProps(Properties props) {
-		this.props = props;
-	}
-
-	public Session getSession() {
-		return session;
-	}
-
-	public void setSession(Session session) {
-		this.session = session;
-	}
-
+	
 	public  String getUsername() {
 		return username;
 	}
@@ -110,7 +82,6 @@ public class StarsMail implements StarsNotifier{
 					}
 				  });
 	}
-
 	
 	public String getRecipient() {
 		return recipient;
@@ -120,13 +91,11 @@ public class StarsMail implements StarsNotifier{
 		this.recipient = recipient;
 	}
 	
-	
-	
 	@Override
-	public void sendNotification(String subject, String message) {
+	public void sendNotification(String subject, String messageText, User_details mainRecipient, User_details ...otherRecipients) {
 		
 		try {
-			sendMessage(this.recipient, subject, message);
+			sendMessage( subject, messageText, mainRecipient, otherRecipients);
 		} catch (AddressException e) {
 			e.printStackTrace();
 		} catch (MessagingException e) {
@@ -134,6 +103,23 @@ public class StarsMail implements StarsNotifier{
 		}
 	}
 
+	public void sendMessage( String subject, String messageText, User_details mainRecipient, User_details ...otherRecipients) throws AddressException, MessagingException
+	{
+		Message message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(senderEmail));
+		message.setRecipients(Message.RecipientType.TO,
+			InternetAddress.parse(mainRecipient.getEmail())); // to be added an email addr
+
+		for(User_details user : otherRecipients)
+		{
+			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(mainRecipient.getEmail()));
+		}
+		
+		message.setSubject(subject);
+		message.setText(messageText);
+		Transport.send(message);
+	}
+	
 	@Override
 	public void setRecipient(User_details user) {
 		this.setRecipient(user.getEmail());

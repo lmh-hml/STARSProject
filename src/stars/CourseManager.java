@@ -1,20 +1,12 @@
 package stars;
 
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
-import java.util.StringTokenizer;
-import stars.FlatFileDatabase;
-import stars.FlatFileObject;
-import stars.exception.NotFoundInDatabaseException;
+import java.util.Set;
 
 public class CourseManager{
 
@@ -25,7 +17,7 @@ public class CourseManager{
 	
 	private CourseDatabase courses = new CourseDatabase();
 	private IndexDatabase  indexes = new IndexDatabase();
-	private HashMap<String,HashMap<String,Collection<String>>> studentsInCourseCache = new HashMap<>();
+	private HashMap<String, Set<String>> studentsInCourseCache = new HashMap<>();
 	public CourseManager() {
 		
 		try {
@@ -35,7 +27,6 @@ public class CourseManager{
 			e.printStackTrace();
 		}
 	}
-
 	/**Writes the contents of this database
 	 * back to storage.
 	 */
@@ -51,6 +42,7 @@ public class CourseManager{
 	}
 	
 	
+//METHODS REGARDING INDEXES
 	/**
 	 * Add the specified index to the course with the specified course code.
 	 * @param index IndexCode of the specified index.
@@ -61,7 +53,7 @@ public class CourseManager{
 		this.indexes.add(index.getIndexCode(),index);
 		Course course;
 		course = this.courses.get(courseCode);
-		course.addIndexName(index.getIndexCode());
+		course.addIndexCode(index.getIndexCode());
 	}
 	public void removeIndex( String indexCode)
 	{
@@ -69,10 +61,9 @@ public class CourseManager{
 		Course c = this.courses.get(index.getCourseCode());
 		if(c != null)
 		{
-			c.removeIndexname(indexCode);
+			c.removeIndexCode(indexCode);
 		}
 		indexes.remove(indexCode);	
-
 	}
 	public Index_details getIndex(String indexCode)
 	{
@@ -86,7 +77,8 @@ public class CourseManager{
 	{
 		return this.indexes.getKeys().contains(indexCode);
 	}
-
+	
+//METHODS REGARDING COURSES
 	public void addCourse(Course course)
 	{
 		this.courses.add(course.getcoursecode(),course);
@@ -102,22 +94,28 @@ public class CourseManager{
 	{
 		return this.courses.get(courseCode);
 	}
+	/**
+	 * Checks if a course with the specified course code exists in the database.
+	 * @param courseCode The specified course code.
+	 * @return True if such a course exists, false otherwise.
+	 */
 	public boolean checkCourseExists(String courseCode)
 	{
 		return this.courses.getKeys().contains(courseCode);
 	}
 		
+	
+//ACCESSING INDEX INFORMATION
 	/**
 	 * Gets the classes under the index with the specified index code with the specified Index Class type.
 	 * @param indexCode Code of the target index
 	 * @param type A IndexClassType enum member
 	 * @return A list of Index Class objects with the specified index class type.
 	 */	
-	public List<IndexClass> getIndexClasses(String indexCode,IndexClassType type) 
+	public List<IndexClass> getIndexClasses(Index_details index,IndexClassType type) 
 	{
 		ArrayList<IndexClass> lecList = new ArrayList<>();
-		IndexClass[] indexClasses = (IndexClass[])this.indexes.get(indexCode).getIndexClasses();
-		for(IndexClass ic : indexClasses)
+		for(IndexClass ic : index.getIndexClasses())
 		{
 			if(ic.getType() == type)
 			{
@@ -131,27 +129,27 @@ public class CourseManager{
 	 * @param indexCode Code of the target index
 	 * @return A list of Index Class objects which are the lectures classes of the index.
 	 */		
-	public List<IndexClass> getLectures(String indexCode) 
+	public List<IndexClass> getLectures(Index_details index) 
 	{
-		return getIndexClasses(indexCode, IndexClassType.Lecture);
+		return getIndexClasses(index, IndexClassType.Lecture);
 	}
 	/**
 	 * Gets the lab classes under the index with the specified index code
 	 * @param indexCode COde of the target index
 	 * @return A list of Index Class objects which are the lab classes of the index.
 	 */
-	public List<IndexClass> getLab(String indexCode) 
+	public List<IndexClass> getLab(Index_details index) 
 	{
-		return getIndexClasses(indexCode, IndexClassType.Lab);
+		return getIndexClasses(index, IndexClassType.Lab);
 	}		
 	/**
 	 * Gets the tutorials classes under the index with the specified index code
 	 * @param indexCode COde of the target index
 	 * @return A list of Index Class objects which are the tutorial classes of the index.
 	 */
-	public List<IndexClass> getTut(String indexCode)
+	public List<IndexClass> getTut(Index_details index)
 	{
-		return getIndexClasses(indexCode, IndexClassType.Tutorial);	
+		return getIndexClasses(index, IndexClassType.Tutorial);	
 	}
 	/**
 	 * Gets the vacancy of the index with the course code.
@@ -164,39 +162,59 @@ public class CourseManager{
 		if(index==null)return -1;
 		return index.getVacancy();
 	}
+	/**Checks if the specified index is under the specified course.
+	 * @param index The specified index.
+	 * @param course The specified course
+	 * @return True if the index is under the course, false otherwise.
+	 */
+	public boolean isIndexUnderCourse(Index_details index, Course course)
+	{
+		return index.getCourseCode().equals(course.getcoursecode());
+	}
+	public Set<Index_details> getIndexUnderCourse(Course course)
+	{
+		Set<Index_details> indexSet = new HashSet<>();
+		for(String indexCode: course.getIndexCodes())
+		{
+			indexSet.add(indexes.get(indexCode));
+		}
+		return indexSet;
+	}
 
 	/**
-	 * Retrieves all the students in a course in a hashmap, where its keys are the
-	 * indexes of the course, and the corresponding value is the array of student's matriculation numbers who is 
-	 * registered in the index.
+	 * Retrieves a set of matriculation number of students registered under the specified course
 	 * @param courseCode Course code of the target course.
-	 * @return A hashmap where the keys are the indexes of the course, and the values are arrays containing the matriculation no. of students 
-	 * who registered in the course.
+	 * @return A set of matriculation number of students registered under the specified course.
 	 */
-	public HashMap<String,Collection<String>> getStudentsInCourse(String courseCode)  
+	public Set<String> getStudentsInCourse(Course course)  
 	{
 		//Creates and caches the collection of students in the specified course if it not already created.
-		if(studentsInCourseCache.get(courseCode)==null)
+		if(studentsInCourseCache.get(course.getcoursecode())==null)
 		{
-			HashMap<String, Collection<String>> studentsInCourse = new HashMap<>();
-			Course course = this.courses.get(courseCode);
-			for( String indexCode : course.getIndexName())
+			Set<String> students = new HashSet<>();
+			for(Index_details index : this.getIndexUnderCourse(course))
 			{
-				studentsInCourse.put(indexCode, this.indexes.get(indexCode).getRegisteredStudents());
-			}		
-			studentsInCourseCache.put(courseCode, studentsInCourse);
+				for(String matricNum : index.getRegisteredStudents())
+				{
+					students.add(matricNum);
+				}
+			}
+			studentsInCourseCache.put(course.getcoursecode(), students);
 		}
-		return studentsInCourseCache.get(courseCode);
+		return studentsInCourseCache.get(course.getcoursecode());
 	}
-	public boolean isStudentInCourse(String matricNum, String courseCode)
+	/**
+	 * Checks if the specified student matric number is registered under a course.
+	 * @param matricNum The matriculation number of the student
+	 * @param courseCode The course code tof the course to be checked
+	 * @return True if the student is listed under the course, false otherwise.
+	 */
+	public boolean isStudentInCourse(String matricNum, Course course)
 	{
 		boolean found = false;
-		for( Collection<String> c : getStudentsInCourse(courseCode).values())
+		for( String matric : getStudentsInCourse(course))
 		{
-			if(c.contains(matricNum)) { 
-				found  = true;
-				break;
-			}
+			if(matricNum.equals(matric))found = true;
 		}
 		return found;
 	}
@@ -205,10 +223,8 @@ public class CourseManager{
 	 * @param courseCode Course code of the target course.
 	 * @return The AU of the course if the course exists, otherwise -1.
 	 */
-	public int getCourseAU(String courseCode)
+	public int getCourseAU(Course course)
 	{
-		Course course = courses.get(courseCode);
-		if(course==null)return -1;
 		return course.getAU();
 	}
 	/**
@@ -218,7 +234,7 @@ public class CourseManager{
 	 */
 	public int getIndexAU(Index_details index)
 	{
-		return getCourseAU( index.getCourseCode());
+		return getCourseAU( courses.get(index.getCourseCode()));
 	}
 
 }

@@ -15,7 +15,17 @@ public class ProgramTest {
 		StudentProgram program = new StudentProgram( cm , stars, notifier);
 		
 		Student_details student = stars.getStudentByUsername("WeiJie67");
-		program.run(student);
+		Student_details student2 = stars.getStudentByUsername("Richard41");
+		
+		program.setCurrentStudent(student);
+		program.addIndex("10019");
+		
+		program.setCurrentStudent(student2);
+		program.addIndex("10020");
+		
+		program.SwapIndex("10020", student, "10019");
+
+		
 		
 		
 //		try {

@@ -7,6 +7,7 @@ import java.util.HashMap;
 /**
  * A class that serves as intermediary between the databases that contains user and student information, and programs that access
  * the data in those databases.
+ * Each user and student information object can be accessed by using their usernames: i.getUser( username ), getStudent( username )
  * Methods provided by this class are capable of accessing and modifying databases' contents.
  * @author Work
  *
@@ -29,7 +30,6 @@ public class StarsDatabase {
 	 * Member StudentDatabase object.
 	 */
 	private StudentDatabase studentDatabase;
-	
 	private CourseManager courseManager = new CourseManager();
 
 	
@@ -44,9 +44,7 @@ public class StarsDatabase {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	
+	}	
 	/**
 	 * Adds a User_details object to the database.
 	 * @param user User_details object to be added
@@ -55,7 +53,6 @@ public class StarsDatabase {
 	{
 		userDatabase.add(user.getUsername(),user);
 	}	
-	
 	/**
 	 * Gets the user in the database associated with the username.
 	 * @param username Username of the user to be retrieved.
@@ -165,6 +162,11 @@ public class StarsDatabase {
 		}
 		return student;
 	}	
+	/**Returns the email of the student.**/
+	String getStudentEmail(Student_details student)
+	{
+		return this.getUser(student.getUserName()).getEmail();
+	}
 	/**
 	 * Removes a student with the id from the database.
 	 * @param id The id of the Student_details object to be removed.
@@ -189,12 +191,21 @@ public class StarsDatabase {
 		}
 		System.out.println("Finished Writing to files!");
 	}	
-	void saveStudents() throws IOException
+	private void saveStudents() throws IOException
 	{
 		studentDatabase.writeFile(studentFile);
 	}	
-	void saveUsers() throws IOException
+	private void saveUsers() throws IOException
 	{
 		userDatabase.writeFile(userFile);
 	}
+
+
+
+
+
+
+
+
+
 }

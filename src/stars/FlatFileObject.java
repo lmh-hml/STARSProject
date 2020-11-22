@@ -62,7 +62,6 @@ public interface FlatFileObject {
 		{
 			s +=  str.toString() + ',';
 		}
-		s += delimiter;
 		return s;
 	}
 

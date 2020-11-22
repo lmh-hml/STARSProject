@@ -5,7 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import stars.FlatFileObject;
@@ -16,7 +20,7 @@ public class Course implements FlatFileObject
     private String courseCode;
     private String courseName;
     private int AU;
-    private ArrayList<String> indexes = new ArrayList<>();
+    private Set<String> indexes = new HashSet<>();
 	/**Number of fields in this class that should be read/written to flat file**/
     private final static int NumFields = 4;
 
@@ -28,7 +32,7 @@ public class Course implements FlatFileObject
 	}
 	Course(){}
 	
-	
+//GETTERS AND SETTERS
 	public String getcoursecode() {return courseCode;}
 	public void setcoursecode(String courseCode) {this.courseCode = courseCode;}
 	public String getcourseName() {return courseName;}
@@ -36,34 +40,27 @@ public class Course implements FlatFileObject
 	public int getAU() {return AU;}
 	public void   setAU(int au) { this.AU = au;}
 	
-	
-	public ArrayList<String> getIndexName()
+//METHODS REGARDING INDEXES
+	public Set<String> getIndexCodes()
 	{
-		ArrayList<String> copy = new ArrayList<String>(); 
-		for(String str : this.indexes) {
-		    copy.add(str);
-		}
+		Set<String> copy = Collections.unmodifiableSet(indexes);
 		return copy;
 	}
-	
-	
-	
-	public void addIndexName(String index)
+	public void addIndexCode(String index)
 	{
 		this.indexes.add(index);
-	}
-	
-	public void removeIndexname(String name)
+	}	
+	public void removeIndexCode(String name)
 	{
 		this.indexes.remove(name);
 	}
 	
 	
-	
+//FLATFILE OBJECT INTERFACE	
 	@Override
 	public String toFlatFileString() {
 		String courseStr = FlatFileObject.buildFlatFileString(courseCode, courseName, AU);
-		courseStr += FlatFileObject.collectionToFlatFileString(indexes);
+		courseStr += FlatFileObject.collectionToFlatFileString(indexes)+delimiter;
 		return courseStr;
 	}	
 	@Override
@@ -85,18 +82,6 @@ public class Course implements FlatFileObject
 	public String getDatabaseId() {
 		return this.courseCode;
 	}
-	
-	public static void main(String args[])
-	{
-		Course course = new Course("CE2001","Algorithms",0);
-		course.addIndexName("1101");
-		course.addIndexName("1102");
-		String s = course.toFlatFileString();
-		
-		Course c2 = new Course();
-		c2.fromFlatFileString(s);
-		System.out.println(s);
-		System.out.println(c2.toFlatFileString());
-	}
+
 
 }

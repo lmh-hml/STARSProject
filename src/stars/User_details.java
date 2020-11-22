@@ -1,11 +1,6 @@
 package stars;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import stars.exception.FlatFileParseException;
-
 
 /**
  * A class that holds details regarding a user's account 
