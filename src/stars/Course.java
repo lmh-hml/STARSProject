@@ -83,5 +83,4 @@ public class Course implements FlatFileObject
 		return this.courseCode;
 	}
 
-
 }
