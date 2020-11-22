@@ -235,6 +235,11 @@ public class StudentProgram
 			removeStudentFromIndexRegistered(currentUser,index);
 			System.out.format("Drop successful: Dropped %s.\n", indexCode);
 		}
+		else if(isStudentWaiting(currentUser, index))
+		{
+			removeStudentFromIndexWaitlist(currentUser,index);
+			System.out.format("Drop successful from waitlist: Dropped %s.\n", indexCode);
+		}
 		else
 		{
 			System.out.println("Drop failed: Student is not in this index!");
@@ -446,7 +451,7 @@ public class StudentProgram
 	 */
 	public void removeStudentFromIndexWaitlist(Student_details student, Index_details index)
 	{
-		student.removeFromWaitlist(index.getCourseCode());
+		student.removeFromWaitlist(index.getIndexCode());
 		index.removeFromWaitlist(student.getMatric_num());
 	}
 	/**

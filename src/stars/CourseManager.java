@@ -189,19 +189,15 @@ public class CourseManager{
 	public Set<String> getStudentsInCourse(Course course)  
 	{
 		//Creates and caches the collection of students in the specified course if it not already created.
-		if(studentsInCourseCache.get(course.getcoursecode())==null)
+		Set<String> students = new HashSet<>();
+		for(Index_details index : this.getIndexUnderCourse(course))
 		{
-			Set<String> students = new HashSet<>();
-			for(Index_details index : this.getIndexUnderCourse(course))
+			for(String matricNum : index.getRegisteredStudents())
 			{
-				for(String matricNum : index.getRegisteredStudents())
-				{
-					students.add(matricNum);
-				}
+				students.add(matricNum);
 			}
-			studentsInCourseCache.put(course.getcoursecode(), students);
 		}
-		return studentsInCourseCache.get(course.getcoursecode());
+		return students;
 	}
 	/**
 	 * Checks if the specified student matric number is registered under a course.
