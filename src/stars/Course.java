@@ -85,7 +85,7 @@ public class Course implements FlatFileObject
 	public String getDatabaseId() {
 		return this.courseCode;
 	}
-	
+	/**test **/
 	public static void main(String args[])
 	{
 		Course course = new Course("CE2001","Algorithms",0);
