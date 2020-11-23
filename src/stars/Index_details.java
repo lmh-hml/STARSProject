@@ -173,7 +173,7 @@ public class Index_details implements stars.FlatFileObject{
 		}
 	public String toString()
 	{
-		return String.format("Index Code: %s, Total capacity: %d", indexCode, capacity);
+		return String.format("Index Code: %s, %d/%d slots left.", indexCode, getVacancy(), capacity);
 	}
 	@Override
 	public String getDatabaseId() {

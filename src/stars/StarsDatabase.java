@@ -33,6 +33,8 @@ public class StarsDatabase {
 	 * Member StudentDatabase object.
 	 */
 	private StudentDatabase studentDatabase;
+	
+	/**Member course manasger object**/
 	private CourseManager courseManager = new CourseManager();
 
 	

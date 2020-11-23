@@ -55,7 +55,7 @@ public class StudentProgram
 
 		while( loopInput || !quit )
 		{
-			System.out.format("Please enter an option (%d-%d): ", 0, StudentOptions.length);
+			System.out.format("Main Menu:Please enter an option (%d-%d): ", 0, StudentOptions.length-1);
 			int input  = -1;
 			try {  input = scanner.nextInt(); } 
 			catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();}
@@ -82,9 +82,19 @@ public class StudentProgram
 				run_SwapIndex();
 			} break;
 			
-			case 7: {System.out.print(StudentOptions);}
+			case 7: {
+				run_PrintIndex();
+			}break;
+			case 8:
+			{
+				for(String option: StudentOptions)System.out.println(option);
+			}break;
 			
-			case 0: { quit = true; } break;
+			case 0: { 
+				System.out.println("Are you sure you want to quit ?"); 
+				scanner.nextLine();
+				quit = promptYesNo("Please enter Y or N:"); 
+			} break;
 			
 			default: 
 			{ 
@@ -112,6 +122,19 @@ public class StudentProgram
 			if(index == null) {System.out.println("No such index exists. Please enter the code again.");}
 		}
 		return index;	
+	}
+	boolean promptYesNo(String message)
+	{
+		String input = "";
+		while(!input.equals("Y") && !input.equals("N"))
+		{
+			System.out.println(message);
+			input = scanner.nextLine().toUpperCase();
+		}
+		boolean yesNo = false;
+		if(input.equals("Y"))yesNo = true;
+		else if(input.equals("N"))yesNo =false;
+		return yesNo;	
 	}
 	void run_AddIndex()
 	{
@@ -186,7 +209,13 @@ public class StudentProgram
 		SwapIndex( index.getIndexCode(), starsDatabase.getStudent(user), index2.getIndexCode());
 		
 	}
-
+	void run_PrintIndex()
+	{
+		scanner.nextLine();
+		Index_details index = promptForIndexCode("Please enter theindex code of the index you want to see details of:");
+		if(index==null)return;
+		printIndex(index.getIndexCode());
+	}
 //PROGRAM METHODS
 	//Method to register a index of course for the student
 	public void addIndex(String indexCode) {
