@@ -10,8 +10,12 @@ import java.util.Set;
 
 
 /**
- * A class that manages the data of of courses and indexes.
- * @author Work
+ * A class that manages the data of of courses and indexes within the STARS system.
+ * Provides way to read course and index information from files and writing new data back to those files, as well as
+ * accessing their information.
+ * @author Lai Ming Hui
+ * @since 23/11/2020
+ * @version 1.0.0
  *
  */
 public class CourseManager{
@@ -97,17 +101,34 @@ public class CourseManager{
 	}
 	
 //METHODS REGARDING COURSES
+	/**
+	 * Adds a course to the manager.
+	 * @param course The specified course object.
+	 */
 	public void addCourse(Course course)
 	{
 		this.courses.add(course.getcoursecode(),course);
 	}
+	/**
+	 * Removes a course from the manager.
+	 * @param courseCode The course code of the course to be removed.
+	 */
 	public void removeCourse(String courseCode){
 		this.courses.remove(courseCode);
 	}
+	/**
+	 * Retrieves a collection view of all courses in the manager.
+	 * Changes to objects in this view will be reflected back in the manager.
+	 * @return A collection view of courses in the manager.
+	 */
 	public Collection<Course> getAllCourses()
 	{
 		return this.courses.getContents();
 	}
+	/**Gets the course with the specified course code from the manager
+	 * @param courseCode The code of the specified course
+	 * @return The course object stored in the manager corresponding to the course code, null otherwise.
+	 */
 	public Course getCourse(String courseCode)
 	{
 		return this.courses.get(courseCode);
@@ -189,6 +210,10 @@ public class CourseManager{
 	{
 		return index.getCourseCode().equals(course.getcoursecode());
 	}
+	/**Retrieves all indexes under a course in an unmodifiable set. Changes to this set is not allowed.
+	 * @param course The course to retrieve the indexes from.
+	 * @return An unmodifiable set containing all indexes within this course. The set can have zero items if no indexes are available.
+	 */
 	public Set<Index_details> getIndexUnderCourse(Course course)
 	{
 		Set<Index_details> indexSet = new HashSet<>();
