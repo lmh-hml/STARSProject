@@ -15,14 +15,16 @@ public class StudentProgram
 	private StarsNotifier notifier;
 	private final int AU_LIMIT = 20;
 	
-	private final static String StudentOptions = "1. Add course\n"
-			+ "2. Drop course\n"
-			+ "3.Check/Print Courses Registered\n"
-			+ "4. Check vacancies available\n"
-			+ "5. Change Index Number of course\n"
-			+ "6. Swap index with another student\n"
-			+ "7. Show options\n"
-			+ "0. Quit";
+	private final static String[] StudentOptions = {"1. Add course"
+			, "2. Drop course"
+			, "3.Check/Print Courses Registered"
+			, "4. Check vacancies available"
+			, "5. Change Index Number of course"
+			, "6. Swap index with another student"
+			, "7. Print index details"
+			, "8. Show options"
+			, "0. Quit"
+	};
 
 			
 	/**StudentProgram has attributes of Student_details, CourseManager and StarsDatabase*/
@@ -49,12 +51,11 @@ public class StudentProgram
 			return;
 		}
 		System.out.format("Welcome to STARS Students, %s !\n", currentUser.getName());
-		System.out.print(StudentOptions);
-		System.out.format("Please enter an option (0-7): ");
+		for(String option: StudentOptions)System.out.println(option);
 
 		while( loopInput || !quit )
 		{
-			System.out.format("Please enter an option: ");
+			System.out.format("Please enter an option (%d-%d): ", 0, StudentOptions.length);
 			int input  = -1;
 			try {  input = scanner.nextInt(); } 
 			catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();}
@@ -106,7 +107,7 @@ public class StudentProgram
 		{
 			System.out.println(message);
 			inputIndex = scanner.nextLine();
-			if(inputIndex == "0")return null;
+			if(inputIndex.equals("0"))return null;
 			index = courseManager.getIndex(inputIndex);
 			if(index == null) {System.out.println("No such index exists. Please enter the code again.");}
 		}
