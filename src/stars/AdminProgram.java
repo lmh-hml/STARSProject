@@ -9,21 +9,31 @@ import java.time.format.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import java.util.Arrays;
 
+/**
+ * A class that represents the program a admin will use when accessing MySTARS.
+ * @author Yu Peng
+ * @since  20/11/2020
+ * @version 1.0.0
+ */
 public class AdminProgram
 {
+	/**
+	 * Current_User 		record the type of user has logged in
+	 * starsDatabase		a reference to StarsDatabase, used to call access and manage the data about student and user in the database
+	 * courseManager		a reference to CourseManager, used to call access and manage the data about course, index and indexClass in the database
+	 * default_password		the default password given to the new account that is just created
+	 * hashed_default_password	the hashed value of the default password, stored in the local files.
+	 */
     public String Current_User = "Admin";
-    public StarsMain main;
-    private String AccessPeriodFile = "AccessPeriod.txt";
-    private String Student_Database_dir = "Students.txt";//"D:/Eclipse/STARS/src/stars/Students.txt"
-    public final static String delimiter = "|";
-    private StarsDatabase starsDatabase;
-    private CourseManager courseManager;
-    private String default_password = "password" ;
-    private String hashed_default_password = PasswordModule.generatePasswordHash(default_password);
-    //public CourseManager courseManager;
-    private Scanner sc = new Scanner(System.in);//you will need to delete this later
+    private StarsDatabase starsDatabase=null;
+    private CourseManager courseManager=null;
+    private StarsNotifier notifier = null;
+    public Scanner sc;
     
 	private final String adminOptions = "1.Edit student access period\n"
 			+ "2.Add a student (name, matric number, gender, nationality, etc)\n"
@@ -39,13 +49,20 @@ public class AdminProgram
 			+ "12. Show Course info\n"
 			+ "-1. Quit\n";
     
-    AdminProgram(StarsDatabase StarDatabase, CourseManager CourseManager)//, Scanner sc)
+	/**
+	 * 
+	 * @param StarDatabase 		a reference to StarsDatabase, used to call access and manage the data about student and user in the database
+	 * @param CourseManager		a reference to CourseManager, used to call access and manage the data about course, index and indexClass in the database
+	 * @param sc				a reference to Scanner, used to input the data
+	 */
+    AdminProgram(StarsDatabase StarDatabase, CourseManager CourseManager, Scanner sc)
     {
         courseManager = CourseManager;
-    	starsDatabase = StarDatabase;    
+    	starsDatabase = StarDatabase;
+    	this.notifier = StarsNotifier.getNotifificationMethod(StarsNotificationType.Email);
+    	this.sc =sc;
     }
 
-    
     /**
      * edit the access period for the student to do add/drop
      * prompt the user to enter the start time and end time of the access period
@@ -54,7 +71,6 @@ public class AdminProgram
      * error will be checked
      * 1: illegal input for date and time
      * 2: start time is later than end time
-     * 
      */
     void EditAccessPeriod() 
     {
@@ -177,10 +193,11 @@ public class AdminProgram
     /**
      * This function adds a student
      * it will prompt you to enter the student info 
-     * create a student with an empty registered course and waitlist
+     * including: Name, matric number, gender, nationality, useranme and accountType(Student or Admin)
+     * id of the user is set to matric number
      * 
-     * We allow students to have the same name but id has to be unique
-     * 
+     * We allow students to have the same name but matric number has to be unique
+     * the newly created student would have an empty waitlist and regisetered list
      */
     void AddaStudent()
     {
@@ -241,8 +258,9 @@ public class AdminProgram
             System.out.println("The UserName has been used, enter a new one.");
         }while(true);
     
-        System.out.println("The password is setted to default");
-        new_user.setPassword(hashed_default_password);
+        System.out.println("The password is setted to the same as username");
+        String hashedPwd = PasswordModule.generatePasswordHash(userName);
+        new_user.setPassword(hashedPwd);
 
         new_user.setEmail(userName + "@e.ntu.edu.sg");
         
@@ -271,12 +289,12 @@ public class AdminProgram
         
         starsDatabase.addUser(new_user);
         starsDatabase.addStudent(new_student);
-
-        //displaying all the students' info
         DisplayStudentInfo();
-        
     }
     
+    /**
+     * display the information of all students currently in the system.
+     */
     public void DisplayStudentInfo()
     {
     	String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Student name","Student's id","User name");
@@ -296,32 +314,17 @@ public class AdminProgram
     }
     
     /**
-     * not used function, delete it if you don't really need this
-     * 
-     * This function deletes the student from the database and rewrites the database 
-     * warning, this is not yet complete and doesn't garanteen the integrity of database after using
-     */
-    private void deleteStudent()
-    {
-    	//cause id is the key.
-    	System.out.println("Enter the id");
-        String id = sc.nextLine();
-        starsDatabase.removeStudent(id);
-        starsDatabase.removeUser(id);
-        //here we remove what else is relevent to this student.
-        //it should be mostly courseDatabase
-        
-    }
-    
-    
-    /**
      * add/update the course
-     * add/update is checked first, and warning will be give if new course shares the index
+     * a course contains basic information and a list of indexes
      * 
-     * update a course -> rewrite what was in the course
+     * user will be prompt to enter the courseCode first
+     * the program will check if this courseCode exists previously
      * 
-     * special case: update a course, and expanded the vacancy while there are student in waitlist
-     * for such cases, this function would add the course randomly for the students.
+     *  if there is pre-existed courseCode, you can change the courseName, and AU
+     * 	if the courseCode is new, you will need to enter information like course name and AU to compete the creation.
+     * 		when the course is newly created, it will have no index
+     * 
+     * however, this function should be used after the student has registered, which might damage the integrity of the data
      */
     void UpdateCourse()
     {
@@ -405,7 +408,7 @@ public class AdminProgram
     }
     
     /**
-     * display the information about the course
+     * display the information of all courses
      */
     public void DisplayCourseInfo()
     {
@@ -425,14 +428,17 @@ public class AdminProgram
     
     /**
      * add/update the index
-     * btw the index is immutable(by now)
-     * so be careful when you create them
      * 
-     * a bit from others, updating is done if you enter y for changes
-     * and you actually entered legal input
+     * similar to UpdateCourse()
+     * prompt the user to enter the index, and check if the index is used before 
      * 
-     * others do update at the end, so both don't have to worry about program crashing in the middle
-     * and gives you weird data
+     * if the index is not used, the program will create a new index, you would enter information:course code and capacity
+     * if the index is used, the program will rewrite the old data, and user can use y to choose if they want to rewrite
+     *  
+     *  note that you shouldn't enter a course code that is not in a database
+     *  an index has to be created after its course is created
+     *  
+     * same to UpdateCourse(), this function should be used after the student has registered, which might damage the integrity of the data
      */
     public void Update_Index()
     {
@@ -575,7 +581,7 @@ public class AdminProgram
     
     /**
      * helper function for updateIndex
-     * update the CourseDatabase
+     * create the new index
      * 
      */
     private void createIndex(Collection<Course> courseDB, String indexCode)
@@ -627,9 +633,15 @@ public class AdminProgram
 
     /**
      * used to add class to the index
-     * 
-     * example: LEC, TUT, LAB
+     * need the user to enter the information to create a new class for the index
+     * class type is needed:example: LEC, TUT, LAB
      * together with group, venue and time
+     *
+     * index has to exist previously to add am IndexClass to it
+     * doesn't allow clash with previous classes, and would ask you to enter again
+     *
+     *doesn't provide the delete the class
+     *
      */
     public void UpdateClass()
     {
@@ -651,7 +663,6 @@ public class AdminProgram
     	do {
     		
     		System.out.println("1.add a class");
-    		System.out.println("2.remove a class(not available)");
     		System.out.println("q.exit");
     		System.out.println("Your choice:");
     		choice = sc.nextLine();
@@ -730,9 +741,9 @@ public class AdminProgram
     }
     
     /**
-     * display the info about indexClass in index
+     * display the info about all of the indexClasses in index
      *
-     * @param indexCode
+     * @param indexCode		index of the course
      */
     public void DisplayClassesInfo(String indexCode)
     {
@@ -751,14 +762,14 @@ public class AdminProgram
     
     /**
      * helper function
-     * this can get the input of time
+     * this can get the input of time and check for errors
      * 
      * check two errors
      * 1. illegal input
      * 2. start time is later than end time
      * 
      * returns a ArrayList<LocalTime>, index 0 is start time, index 1 is end time 
-     * @return
+     * @return arraylist		an arraylist whose first element is the start time and second element is end time, both in LocalTime format
      */
     private ArrayList<LocalTime> readPeriod()
     {
@@ -810,11 +821,14 @@ public class AdminProgram
 
     /**
      * change the vacancy of a specific index
-     * the only function that allows you to modify data after the start of registration.
+     * different from UpdateCourse(), UpdateIndex() and UpdateindexClass, this is the only function that allows you to modify data after the start of registration.
      * 
-     * @param indexCode
-     * @param newCapacity
-     * @throws IllegalArgumentException
+     * if the index enter is not found in the database, an exception will be thrown
+     * if the capacity is lower than the student registered, which might cause error, the program will also throw out the exception
+     * 
+     * @param indexCode						index of the course
+     * @param newCapacity					the new Capacity for this index
+     * @throws IllegalArgumentException		throw this Exception when the input is illegal
      */
     public void UpdateCapacity(String indexCode, int newCapacity) throws IllegalArgumentException
     {
@@ -841,14 +855,31 @@ public class AdminProgram
     			newstudent.removeFromWaitlist(indexCode);;//remove first out course from student waitlist
     			index.registerStudent(newstudent); //add student name to course
     			newstudent.addIndex(indexCode);
+    			sendNotification_courseAdded(indexCode, newstudent);
     		}
     	}
+    }
+    
+    /**
+     * send the notification to student when a course has been added from the waitlist
+     * 
+     * @param indexCode		the index of the course
+     * @param student		the student that got this course
+     */
+    private void sendNotification_courseAdded(String indexCode, Student_details student)
+    {
     	
+    	String message = "";
+		message += String.format("Dear %s\n",student.getName());
+		message += String.format("\tIndex %s has been added to your register list.\n",indexCode);
+		message += String.format("Best Wishes\n");
+		message += String.format("Stars");
+    	notifier.sendNotification("Course added from waitlist", message, starsDatabase.getUser(student.getUserName()).getEmail()  );
     }
 
     /**
-     * print out the available slots for all indexes
-     * @param indexCode
+     * print out the available slots for an index
+     * @param indexCode		index of the course
      */
     void CheckAvailableSlot(String indexCode)
     {
@@ -874,7 +905,9 @@ public class AdminProgram
 
     /**
      * print out the student info for those who has taken indexCode
-     * @param indexCode
+     * printed info includes name, matric number, gender and nationality
+     * 
+     * @param indexCode		the index of the course
      */
     void PrintStudentByIndex(String indexCode)
     {
@@ -888,7 +921,7 @@ public class AdminProgram
         String str = String.format("|%-20s|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Student name","Matric number","Gender","Nationality");
     	System.out.printf(str);
     	System.out.printf("\n");
-        int rows = 1;
+    	int rows = 1;
 		for(Student_details student_info: starsDatabase.getAllStudents())
 			if(student_info.isRegistered(indexCode)&&(!student_info.getName().equals(" ")))
 			{
@@ -901,38 +934,33 @@ public class AdminProgram
     
     /**
      * print out the student info for those who has taken courseCode
-     * @param indexCode
+     * @param indexCode		the index of the course
      */
     void PrintStudentByCourse(String courseCode)
     {
         Set<String> indexlist = courseManager.getCourse(courseCode).getIndexCodes();
         System.out.printf("Course code:%s\n", courseCode);
-    	for(String index: indexlist)
-    	{	
-    		PrintStudentByIndex(index);
+    	for(String indexCode: indexlist)
+    	{
+    		System.out.printf("Index: %s\n",indexCode);
+    		System.out.printf(String.format("|%-20s|%-20s|%-20s|\n", "Student name", "Gender","Nationality"));
+    		Collection<Student_details> StudentListAll = starsDatabase.getAllStudents();
+    		for(Student_details student_info: starsDatabase.getAllStudents())
+    			if(student_info.isRegistered(indexCode))
+    			{
+    	        	System.out.printf(String.format("|%-20s|%-20s|%-20s|\n", student_info.getName(),student_info.getGender(),student_info.getNationality()));
+    			}
     	}
     }
-    
-    
-    public static void main(String[] args)
-    {
-    	
-    	StarsDatabase exampleDatabase = new StarsDatabase("TestStudents.txt","TestUsers.txt");
-    	CourseManager courseManager = new CourseManager("TestCourses.txt","TestIndexes.txt");
-		AdminProgram Admin = new AdminProgram(exampleDatabase, courseManager);
-		User_details user = new User_details();
-    	Admin.run(user);
-    	
-    }
+
     
     /**
      * the execution of the our program
+     * provide the UI for the user to choose the things that they want to use 
      * ask users for instruction and use proper methods
      * 
      * data is saved to local until exiting this program
-     * @param user
-     * @param exampleDatabase
-     * @param courseManager
+     * @param user				the class of the current user
      */
     void run(User_details user)
     {
@@ -1040,6 +1068,5 @@ public class AdminProgram
 		    	return;
 			}
 		}
-
     }
 }

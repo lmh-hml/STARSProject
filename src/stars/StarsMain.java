@@ -5,35 +5,70 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Scanner;
 public class StarsMain {
 	
+	/**Default file name of the settings file.**/
 	private final String SettingsFile = "Settings.txt";
+	/**Console used for password input.**/
 	private Console console = System.console();
+	/**Scanner used for IO between user and program for non-password IO.**/
 	private Scanner scanner = new Scanner(System.in);
+	/**Member StarsDatabase object. Represents the database that stores users and students information in the system.**/
 	private StarsDatabase starsDatabase = new StarsDatabase("Students.txt", "Users.txt");
+	/**Member CourseManager object. Represents the database that stores courses and index information in the system.**/
 	private CourseManager courseManager = new CourseManager("Courses.txt","Indexes.txt");
-	private StarsNotifier notifier = new StarsMail();
-	private AdminProgram adminProgram = new AdminProgram(starsDatabase, courseManager);	
-	private StudentProgram studentProgram = new StudentProgram(courseManager, starsDatabase, notifier);	
-	private LocalDate accessPeriodStart = null;
-	private LocalDate accessPeriodEnd = null;
-	private LocalTime accessTimeStart = null;
-	private LocalTime accessTimeEnd = null;
+	/**Member AdminProgram. Control is transferred to this object if an admin logs into the system.**/
+	private AdminProgram adminProgram = new AdminProgram(starsDatabase, courseManager, scanner);	
+	/**Member student program. Control is handed over to this object if a student logs into the program.**/
+	private StudentProgram studentProgram = new StudentProgram(courseManager, starsDatabase);	
+	/**Access period start date.**/
+	private LocalDateTime accessPeriodStart = null;
+	/**Access period end date.**/
+	private LocalDateTime accessPeriodEnd = null;
+
 
 	/**Default constructor of this class**/
 	public StarsMain() 
 	{
 		openSettingsFile(SettingsFile);
 	}
+	/**Opens the settings file and sets up the program based on settings provided.
+	 * @param settingsFile The name of the file that contains the settings to be read from.
+	 */
+	private void openSettingsFile(String settingsFile)
+	{
+		try {
+			BufferedReader bfr = new BufferedReader(new FileReader(settingsFile));
+			String line = "";
+			while((line = bfr.readLine())!= null)
+			{
+				String[] array = line.split("\\|");
+				if(array[0].equals("accessPeriod"))
+				{
+					accessPeriodStart = LocalDateTime.of(LocalDate.parse(array[1]), LocalTime.parse(array[2]));
+					accessPeriodEnd = LocalDateTime.of(LocalDate.parse(array[3]),LocalTime.parse(array[4]));
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}	
 	
-	public User_details logIn()
+	/**
+	 * Method that begins the log in sequence of the MySTARS program. 
+	 * @return A User_details object that contains information regarding the current user who successfully logged in; null 
+	 * if the user's credentials cannot be associated with an account in the system.
+	 */
+	private  User_details logIn()
 	{
 		System.out.println("Welcome to STARS.\n");
-		
 		User_details user = null;
-		
 		while(user == null )
 		{
 			System.out.println("Please enter your username: ");
@@ -50,7 +85,7 @@ public class StarsMain {
 		{
 //			console.printf("Please enter password: ");
 //			String input_pwd = String.valueOf(console.readPassword());
-			System.out.println("Please enter password: ");
+			System.out.println("Please enter password:");
 			String input_pwd = scanner.nextLine();
 			pwd_correct = PasswordModule.verifyPassword(input_pwd, user.getPassword());
 			if( ! pwd_correct)
@@ -61,38 +96,19 @@ public class StarsMain {
 		
 		return user;
 	}
-	public void logOut()
+	/**Method that is called when the program quits. Perofrms clean up and other routines needed during shut down of program.
+	 */
+	private void quit()
 	{
-		System.out.println("Logging off...");
+		starsDatabase.save();
+		courseManager.save();
+		System.out.println("Goodbye!");
 	}	
-	private void openSettingsFile(String settingsFile)
-	{
-		try {
-			BufferedReader bfr = new BufferedReader(new FileReader(settingsFile));
-			String line = "";
-			while((line = bfr.readLine())!= null)
-			{
-				String[] array = line.split("\\|");
-				if(array[0].equals("accessPeriod"))
-				{
-					accessPeriodStart = LocalDate.parse(array[1]);
-					accessTimeStart = LocalTime.parse(array[2]);
-					accessPeriodEnd = LocalDate.parse(array[3]);
-					accessTimeStart = LocalTime.parse(array[4]);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}	
+	/**Main method that is called to run the MyStars program.
+	 */
 	public void run() 
 	{
 		User_details user = logIn();			
-		
-		
 		if(user == null)
 		{
 			System.err.println("Unable to find user account");
@@ -106,11 +122,12 @@ public class StarsMain {
 			case "Student":
 			{
 				Student_details student = starsDatabase.getStudent(user);
+				
 				if(student == null)
 				{
 					System.err.println("Unable to find student account for this user. Please approach admin for assistance.");
 				}
-				else if(LocalDate.now().isBefore(accessPeriodStart) || LocalDate.now().isAfter(accessPeriodEnd))
+				else if(LocalDateTime.now().isBefore(accessPeriodStart) || LocalDateTime.now().isAfter(accessPeriodEnd))
 				{
 					System.out.format("Unable to access STARS outside of access period from %s to %s !\n", accessPeriodStart, accessPeriodEnd);
 				}
@@ -135,26 +152,14 @@ public class StarsMain {
 			}//end switch
 
 		}
-		
-//		notifier = StarsNotifier.getNotificationMethod("Email");
-//		notifier.setRecipient("laim0012@e.ntu.edu.sg");
-//		notifier.sendNotification("Hey", "Test");
-//		System.out.println("Notification sent!");
-		logOut();
-		starsDatabase.save();
-		courseManager.save();
-		System.out.println("Goodbye!");
-
-		
+		quit();
 	}
 	
 	
 	public static void main(String args[])
 	{
-
 		StarsMain stars = new StarsMain();
 		stars.run();
-
 	}
 
 }

@@ -23,6 +23,8 @@ import java.util.Set;
  * should have their own database class that extends this class and overrides its methods to the 
  * specification of those types.
  * @author Lai Ming Hui
+ * @version 1.0
+ * @since 20/11/2020
  *
  * @param <K> The type of key used to retrieve items from this database.
  * @param <T> A class that implements FlatFileObject

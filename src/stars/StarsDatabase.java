@@ -29,12 +29,6 @@ public class StarsDatabase {
 	private StudentDatabase studentDatabase;
 	
 	public StarsDatabase(String studentFile, String userFile) {
-		openFiles(studentFile, userFile);
-	}	
-
-
-	public void openFiles(String studentFile, String userFile)
-	{
 		try 
 		{
 			userDatabase = new UserDatabase(userFile);
@@ -45,7 +39,8 @@ public class StarsDatabase {
 		}
 		this.studentFile = studentFile;
 		this.userFile = userFile;
-	}
+	}	
+
 	/**
 	 * Adds a User_details object to the database.
 	 * @param user User_details object to be added
@@ -189,13 +184,6 @@ public class StarsDatabase {
 			e.printStackTrace();
 		}
 	}	
-
-
-
-
-
-
-
 
 
 }

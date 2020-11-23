@@ -1,13 +1,26 @@
 package stars;
 
+enum StarsNotificationType { Email };
 public interface StarsNotifier{
 	
-	public void sendNotification(String subject, String messageText, User_details mainRecipient, User_details ...otherRecipients);
-	public void setRecipient(String recipient);
-	public void setRecipient(User_details user);
-	public static StarsNotifier getNotificationMethod(String method)
+	/**Returns an implementation of StarsNotifier based on the specified notification type.
+	 * If the type passed in is currently unsupported, the method returns null.
+	 * @param type The specified type. Currently only Email is supported.
+	 * @return The corresponding implementation of StarsNotifier based on the specified type, of null if the type is not
+	 * supported.
+	 */
+	public static StarsNotifier getNotifificationMethod(StarsNotificationType type)
 	{
-		StarsMail mail = new StarsMail();
-		return mail;
+		switch(type)
+		{
+		case Email:{ return new StarsMail();}
+		default:
+		{
+			System.err.println("Unsupported notification type passed as parameter.");
+		}
+		}
+		return null;
 	}
+	
+	public void sendNotification(String subject, String messageText, String mainRecipient, String ...otherRecipients);
 }

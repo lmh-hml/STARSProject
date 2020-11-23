@@ -15,7 +15,9 @@ public interface FlatFileObject {
 	
 	/**The delimter that separate columns in the flat file*/
 	public final static String delimiter = "|";
+	/**Regex version of delimiter used in flat file format.**/
 	public final static String regexDelimiter = "\\"+delimiter;
+	/**String that represents a non-value or empty column in flat file format.**/
 	public final static String EmptyString = " ";
 	
 	/**Returns the flat file string representation of the object.
@@ -53,6 +55,7 @@ public interface FlatFileObject {
 		return s;
 	}
 	
+	/**Helper method to convert a list into a column of a line in flat file format.**/
 	public static String collectionToFlatFileString(Collection list)
 	{
 		if(list.isEmpty()) { return EmptyString;}
@@ -64,7 +67,7 @@ public interface FlatFileObject {
 		}
 		return s;
 	}
-
+	/**Helper method to covert list f strings in flat fileformat to a a collection of strings**/
 	public static void flatFileStringToCollection(String str, Collection<String> collection)
 	{
 		String[] array = str.split("\\,");
