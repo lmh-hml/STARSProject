@@ -431,13 +431,13 @@ public class AdminProgram
      */
     public void DisplayCourseInfo()
     {
-        String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Course code","AU","Course Name");
+        String str = String.format("|%-20s|%-20s|%-20s|%-20s","Rows" ,"Course code","AU","Course Name");
     	System.out.printf(str);
     	System.out.printf("\n");
         int rows = 1;
         for(Course course : courseManager.getAllCourses())
         {
-        	String str1 = String.format("|%-20d|%-20s|%-20s|%-20s|",rows ,course.getcoursecode(),course.getAU(),course.getcourseName());
+        	String str1 = String.format("|%-20d|%-20s|%-20s|%-20s",rows ,course.getcoursecode(),course.getAU(),course.getcourseName());
         	System.out.printf(str1);
         	rows++;
 
@@ -939,15 +939,16 @@ public class AdminProgram
     		System.out.println("index not found");
     		return;
     	}
-    	System.out.printf("Index: %s\n",indexCode);
-        String str = String.format("|%-20s|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Student name","Matric number","Gender","Nationality");
+    	System.out.printf("Index: %s Vacancies: %d/%d\n",indexCode, index.getVacancy(), index.getCapacity());
+    	String format = "|%-5s|%-20s|%-20s|%-20s|%-20s|";
+        String str = String.format(format,"Rows" ,"Student name","Matric number","Gender","Nationality");
     	System.out.printf(str);
     	System.out.printf("\n");
     	int rows = 1;
 		for(Student_details student_info: starsDatabase.getAllStudents())
 			if(student_info.isRegistered(indexCode)&&(!student_info.getName().equals(" ")))
 			{
-	        	String str1 = String.format("|%-20d|%-20s|%-20s|%-20s|%-20s|",rows, student_info.getName(), student_info.getMatric_num(),student_info.getGender(),student_info.getNationality());
+	        	String str1 = String.format(format,rows, student_info.getName(), student_info.getMatric_num(),student_info.getGender(),student_info.getNationality());
 	        	System.out.printf(str1);
 	        	rows++;
 	        	System.out.printf("\n");

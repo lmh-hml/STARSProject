@@ -1,1 +1,4 @@
-CE2001|Algorithms|3|10019,|
+CE2001|Algorithms|3|10019,10020,|
+CE2002|Object_Oriented_Design_&_Programming|3|10022,10021,|
+CE2005|Operating_Systems|3|10029,|
+CE3007|Digital_Signal_Processing|3|10044,10045,|

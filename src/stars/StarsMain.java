@@ -17,7 +17,7 @@ public class StarsMain {
 	/**Scanner used for IO between user and program for non-password IO.**/
 	private Scanner scanner = new Scanner(System.in);
 	/**Member StarsDatabase object. Represents the database that stores users and students information in the system.**/
-	private StarsDatabase starsDatabase = new StarsDatabase("Students.txt", "Users.txt");
+	private StarsDatabase starsDatabase = new StarsDatabase("TestStudents.txt", "TestUsers.txt");
 	/**Member CourseManager object. Represents the database that stores courses and index information in the system.**/
 	private CourseManager courseManager = new CourseManager("TestCourses.txt","TestIndexes.txt");
 	/**Member AdminProgram. Control is transferred to this object if an admin logs into the system.**/

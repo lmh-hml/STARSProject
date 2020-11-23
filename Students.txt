@@ -1,6 +1,6 @@
-WeiJie_Lee|U1945048O|M|3|Singaporean|2|WeiJie67|10019,| |
-Jeremiah_Clark|U1908491G|M|3|Singaporean|2|Jeremiah80|10019,| |
-Daniel_Reeves|U1942675P|M|3|Singaporean|2|Daniel51|10019,| |
+WeiJie_Lee|U1945048O|M|3|Singaporean|2|WeiJie67| | |
+Jeremiah_Clark|U1908491G|M|3|Singaporean|2|Jeremiah80| | |
+Daniel_Reeves|U1942675P|M|3|Singaporean|2|Daniel51| | |
 Joe_Schmoe|U1941430D|M|0|Singaporean|2|Joe22| | |
 Nina_Yew|U1933585J|F|0|Singaporean|2|Nina26| | |
 Jim_Karl|U1985400N|M|0|Singaporean|2|Jim56| | |
