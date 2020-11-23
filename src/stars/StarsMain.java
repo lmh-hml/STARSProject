@@ -19,7 +19,7 @@ public class StarsMain {
 	/**Member StarsDatabase object. Represents the database that stores users and students information in the system.**/
 	private StarsDatabase starsDatabase = new StarsDatabase("Students.txt", "Users.txt");
 	/**Member CourseManager object. Represents the database that stores courses and index information in the system.**/
-	private CourseManager courseManager = new CourseManager("Courses.txt","Indexes.txt");
+	private CourseManager courseManager = new CourseManager("TestCourses.txt","TestIndexes.txt");
 	/**Member AdminProgram. Control is transferred to this object if an admin logs into the system.**/
 	private AdminProgram adminProgram = new AdminProgram(starsDatabase, courseManager, scanner);	
 	/**Member student program. Control is handed over to this object if a student logs into the program.**/

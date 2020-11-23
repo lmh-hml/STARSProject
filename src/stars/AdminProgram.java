@@ -242,7 +242,22 @@ public class AdminProgram
         String nationality = sc.nextLine();
         new_student.setNationality(nationality);
         
-        new_student.setMatric_num(matric);
+        boolean loop =true;
+        while(loop)
+        {
+            System.out.println("Enter the student study year:");
+            try {
+            int year = sc.nextInt();
+            new_student.setStudyYear(year);
+            loop =false;
+            }catch(InputMismatchException e)
+            {
+            	System.out.println("Input not a numbe, please try again.");
+            }      
+            sc.nextLine();
+        }
+
+        
         
         //this part will update the user info, as userName and password.
         String userName = null;
@@ -257,6 +272,8 @@ public class AdminProgram
             }
             System.out.println("The UserName has been used, enter a new one.");
         }while(true);
+        
+        
     
         System.out.println("The password is setted to the same as username");
         String hashedPwd = PasswordModule.generatePasswordHash(userName);
@@ -286,10 +303,12 @@ public class AdminProgram
         {
         	System.out.println("Your inputs are not saved.");
         }
-        
-        starsDatabase.addUser(new_user);
-        starsDatabase.addStudent(new_student);
-        DisplayStudentInfo();
+        else
+        {
+            starsDatabase.addUser(new_user);
+            starsDatabase.addStudent(new_student);
+            DisplayStudentInfo();     	
+        }
     }
     
     /**
@@ -412,13 +431,13 @@ public class AdminProgram
      */
     public void DisplayCourseInfo()
     {
-        String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Course code","Course Name","AU");
+        String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Course code","AU","Course Name");
     	System.out.printf(str);
     	System.out.printf("\n");
         int rows = 1;
         for(Course course : courseManager.getAllCourses())
         {
-        	String str1 = String.format("|%-20d|%-20s|%-20s|%-20d|",rows ,course.getcoursecode(),course.getcourseName(),course.getAU());
+        	String str1 = String.format("|%-20d|%-20s|%-20s|%-20s|",rows ,course.getcoursecode(),course.getAU(),course.getcourseName());
         	System.out.printf(str1);
         	rows++;
 
@@ -828,23 +847,25 @@ public class AdminProgram
      * 
      * @param indexCode						index of the course
      * @param newCapacity					the new Capacity for this index
-     * @throws IllegalArgumentException		throw this Exception when the input is illegal
      */
-    public void UpdateCapacity(String indexCode, int newCapacity) throws IllegalArgumentException
+    public void UpdateCapacity(String indexCode, int newCapacity)
     {
-    	try {
-    		if(newCapacity<courseManager.getIndex(indexCode).getRegisteredStudents().size())
-    		{
-    			throw new IllegalArgumentException("new Capacity is less than number of student registered.");
-    		}
-    		if(courseManager.getIndex(indexCode)==null)
-    		{
-    			throw new IllegalArgumentException("IndexCode not found");
-    		}
-    	}finally{}
-    	
-    	courseManager.getIndex(indexCode).setCapacity(newCapacity);
     	Index_details index = courseManager.getIndex(indexCode);
+    	if(index==null)
+    	{
+    		System.out.println("Index with the code entered does not exist.");
+    		return;
+    	}
+
+    	if(newCapacity<index.getRegisteredStudents().size())
+    	{
+    		System.out.println("Entered capacity of index is smaller than number of students registered in the index.");
+    		return;
+    	}
+	
+    	courseManager.getIndex(indexCode).setCapacity(newCapacity);
+		System.out.format("Updated capacity of index %s to %d.\n", index.getIndexCode(),index.getCapacity());
+		sc.nextLine();
     	//two conditions to stop 1.no student in waitlist 2.no more vacancy
     	while(index.getWaitingStudents().size()>0 && index.getVacancy()>0)
     	{
@@ -856,6 +877,7 @@ public class AdminProgram
     			index.registerStudent(newstudent); //add student name to course
     			newstudent.addIndex(indexCode);
     			sendNotification_courseAdded(indexCode, newstudent);
+    			System.out.format("Added student %s from waitlist to registered list of this index.\n", newstudent.getMatric_num());
     		}
     	}
     }
@@ -939,7 +961,8 @@ public class AdminProgram
     void PrintStudentByCourse(String courseCode)
     {
         Set<String> indexlist = courseManager.getCourse(courseCode).getIndexCodes();
-        System.out.printf("Course code:%s\n", courseCode);
+        Collection<Student_details> allStudents = starsDatabase.getAllStudents();
+        System.out.printf("Course code:%s No.of registered students:%d\n", courseCode, allStudents.size());
     	for(String indexCode: indexlist)
     	{
     		System.out.printf("Index: %s\n",indexCode);
@@ -977,7 +1000,7 @@ public class AdminProgram
 			System.out.format("Please enter an option: ");
 			int input  = -1;
 			try {  input = scanner.nextInt(); scanner.nextLine(); } 
-			catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();}
+			catch(InputMismatchException e) {System.out.println("Please enter a proper input"); scanner.nextLine();continue;}
 		
 			switch( input )
 			{
@@ -1036,6 +1059,7 @@ public class AdminProgram
 					System.out.println("Enter the course code that you wanted.");
 					courseCode = sc.nextLine();
 					if(courseManager.getCourse(courseCode)!=null)break;
+					System.out.println("No course with specified code exists. Please try again.");
 				}while(true);
 				PrintStudentByCourse(courseCode);
 			} break;

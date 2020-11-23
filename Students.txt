@@ -1,28 +1,13 @@
-WeiJie_Lee|U1945048O|M|9|Singaporean|2|WeiJie67|10020,| |
-Richard_Ham|U1936254J|M|6|Singaporean|2|Richard41|10019,| |
-Jeremiah_Clark|U1908491G|M|0|Singaporean|2|Jeremiah80| | |
+WeiJie_Lee|U1945048O|M|3|Singaporean|2|WeiJie67|10019,| |
+Jeremiah_Clark|U1908491G|M|3|Singaporean|2|Jeremiah80|10019,| |
+Daniel_Reeves|U1942675P|M|3|Singaporean|2|Daniel51|10019,| |
+Joe_Schmoe|U1941430D|M|0|Singaporean|2|Joe22| | |
 Nina_Yew|U1933585J|F|0|Singaporean|2|Nina26| | |
 Jim_Karl|U1985400N|M|0|Singaporean|2|Jim56| | |
 Damian_Chan|U1976028L|M|0|Singaporean|2|Damian9| | |
 Jenny_Loh|U1927680F|F|0|Singaporean|2|Jenny39| | |
-Damian_Chan|U1962501A|M|0|Singaporean|2|Damian6| | |
 Fiona_Yoh|U1932900F|F|0|Singaporean|2|Fiona67| | |
-Jenny_Loh|U1940791G|F|0|Singaporean|2|Jenny60| | |
-Jamie_Mai|U1986565W|F|0|Singaporean|1|Jamie25| | |
-Jamie_Mai|U1901885W|F|0|Singaporean|1|Jamie64| | |
-Amy_Tan|U1989903M|F|0|Singaporean|3|Amy16| | |
-John_Wick|U1944430I|M|0|Singaporean|3|John15| | |
+Jamie_Mai|U1986565W|F|0|Singaporean|2|Jamie25| | |
+Amy_Tan|U1989903M|F|0|Singaporean|2|Amy16| | |
+John_Wick|U1944430I|M|0|Singaporean|2|John15| | |
 Rock_Lee|U1939769U|M|0|Singaporean|2|Rock54| | |
-Jeremiah_Clark|U1922533L|M|0|Singaporean|2|Jeremiah27| | |
-Nina_Yew|U1988577F|F|0|Singaporean|2|Nina18| | |
-John_Wick|U1902877P|M|0|Singaporean|3|John28| | |
-Daniel_Reeves|U1942675P|M|0|Singaporean|2|Daniel51| | |
-WeiJie_Lee|U1901857J|M|0|Singaporean|2|WeiJie52| | |
-Joe_Schmoe|U1941430D|M|0|Singaporean|2|Joe22| | |
-Daniel_Reeves|U1965942T|M|0|Singaporean|2|Daniel10| | |
-Amy_Tan|U1998670B|F|0|Singaporean|3|Amy89| | |
-Richard_Ham|U1923124Y|M|0|Singaporean|2|Richard35| | |
-Fiona_Yoh|U1942561D|F|0|Singaporean|2|Fiona34| | |
-Jim_Karl|U1975898I|M|0|Singaporean|2|Jim68| | |
-Rock_Lee|U1900218B|M|0|Singaporean|2|Rock61| | |
-Joe_Schmoe|U1976352D|M|0|Singaporean|2|Joe98| | |
