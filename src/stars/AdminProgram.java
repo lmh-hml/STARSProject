@@ -667,34 +667,11 @@ public class AdminProgram
 					String dayy = new String();
 					do {
 						System.out.println("Enter day");
-						//day = sc.nextLine();
 						dayy = sc.nextLine();
-						switch(dayy)
+						try{day = DayOfWeek.valueOf(dayy.toUpperCase());}
+						catch(IllegalArgumentException e)
 						{
-							case "Mon":
-								day = DayOfWeek.of(1);
-								break;
-							case "Tue":
-								day = DayOfWeek.of(2);
-								break;
-							case "Wed":
-								day = DayOfWeek.of(3);
-								break;
-							case "Thur":
-								day = DayOfWeek.of(4);
-								break;
-							case "Fri":
-								day = DayOfWeek.of(5);
-								break;
-							case "Sat":
-								day = DayOfWeek.of(6);
-								break;
-							case "Sun":
-								day = DayOfWeek.of(7);
-								break;
-							default: 
-								System.out.println("Invalid input");
-								continue;
+							System.out.println("Please enter a weekday (ex: MONDAY)");continue;
 						}
 						break;
 					}while(true);

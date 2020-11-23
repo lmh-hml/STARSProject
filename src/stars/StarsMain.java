@@ -123,7 +123,7 @@ public class StarsMain {
 
 			case "Admin":
 			{
-				adminProgram.run(user);	
+				//adminProgram.run(user);	
 			}break;
 
 
@@ -141,7 +141,7 @@ public class StarsMain {
 //		notifier.sendNotification("Hey", "Test");
 //		System.out.println("Notification sent!");
 		logOut();
-		starsDatabase.writeDatabaseFiles();
+		starsDatabase.save();
 		courseManager.save();
 		System.out.println("Goodbye!");
 
