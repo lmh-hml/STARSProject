@@ -8,27 +8,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * A class that manages the data of of courses and indexes.
+ * @author Work
+ *
+ */
 public class CourseManager{
 
-	public static final String SEPARATOR = "|";
-
+	/**String that stores the name of the file that contain course information.**/
 	private String courseFile = "";
+	/**String that stores the name of the file that contain index information.**/
 	private String indexFile = "";
-	private final static String DefaultCourseFile = "Courses.txt";
-	private final static String DefaultIndexFile = "Indexes.txt";
 	
+	/**Member CourseDatabase object**/
 	private CourseDatabase courses = new CourseDatabase();
+	/**Member CourseDatabase object**/
 	private IndexDatabase  indexes = new IndexDatabase();
+	/**Member CourseDatabase object**/
 	private HashMap<String, Set<String>> studentsInCourseCache = new HashMap<>();
-	public CourseManager() {
-		openFiles(DefaultCourseFile, DefaultIndexFile);
-	}
-	
+
+	/**
+	 * Initializes this manager from data using files that contain course information and index information.
+	 * @param courseFile The name of the file that contain course information in flat file format.
+	 * @param indexFile  The name of the file that contains indexes in flat file format.
+	 */
 	public CourseManager(String courseFile, String indexFile) {
-		openFiles(courseFile, indexFile);
-	}
-	public void openFiles(String courseFile, String indexFile)
-	{
 		try {
 			courses.openFile(courseFile);
 			indexes.openFile(indexFile);
@@ -38,16 +43,15 @@ public class CourseManager{
 		this.courseFile = courseFile;
 		this.indexFile = indexFile;
 	}
+
 	
 	/**Writes the contents of this database
-	 * back to storage.
+	 * back to the files information was read from..
 	 */
 	public void save()
 	{
 		try {
-			System.out.format("Saving to %s\n", courseFile);
 			courses.writeFile(courseFile);
-			System.out.format("Saving to %s\n", indexFile);
 			indexes.writeFile(indexFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

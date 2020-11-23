@@ -14,17 +14,11 @@ import java.util.HashMap;
  */
 public class StarsDatabase {
 	
-	/**
-	 * Default filename of flat file for students 
-	 */
+	/**String used to store the name of the file that stores student information.**/
 	private String studentFile = "";
+	/**String used to store the name of the file that stores user information.**/
 	private String userFile = "";
 	
-	private final static String DefaultStudentFile = "Students.txt";
-	/**
-	 * Default filename of flat file for users
-	 */
-	private final static String DefaultUserFile = "Users.txt";
 	/**
 	 * Member UserDatabase object
 	 */
@@ -34,20 +28,11 @@ public class StarsDatabase {
 	 */
 	private StudentDatabase studentDatabase;
 	
-	/**Member course manasger object**/
-	private CourseManager courseManager = new CourseManager();
-
-	
 	public StarsDatabase(String studentFile, String userFile) {
 		openFiles(studentFile, userFile);
 	}	
 
-	/**
-	 * Default contructor of StarsDatabase.
-	 */
-	public StarsDatabase() {
-		openFiles(DefaultStudentFile, DefaultUserFile);
-	}	
+
 	public void openFiles(String studentFile, String userFile)
 	{
 		try 
@@ -196,28 +181,14 @@ public class StarsDatabase {
 	 */
 	void save()
 	{
-		System.out.println("Beginning writing to files!");
-
 		try {
-			saveStudents();
-			saveUsers();
+			studentDatabase.writeFile(studentFile);
+			userDatabase.writeFile(userFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Finished Writing to files!");
 	}	
-	private void saveStudents() throws IOException
-	{
-		System.out.format("Saving to %s\n", studentFile);
-		studentDatabase.writeFile(studentFile);
-	}	
-	private void saveUsers() throws IOException
-	{
-	
-		System.out.format("Saving to %s\n", userFile);
-		userDatabase.writeFile(userFile);
-	}
 
 
 

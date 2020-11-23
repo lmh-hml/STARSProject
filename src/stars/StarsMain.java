@@ -12,8 +12,8 @@ public class StarsMain {
 	private final String SettingsFile = "Settings.txt";
 	private Console console = System.console();
 	private Scanner scanner = new Scanner(System.in);
-	private StarsDatabase starsDatabase = new StarsDatabase();
-	private CourseManager courseManager = new CourseManager();
+	private StarsDatabase starsDatabase = new StarsDatabase("Students.txt", "Users.txt");
+	private CourseManager courseManager = new CourseManager("Courses.txt","Indexes.txt");
 	private StarsNotifier notifier = new StarsMail();
 	private AdminProgram adminProgram = new AdminProgram(starsDatabase, courseManager);	
 	private StudentProgram studentProgram = new StudentProgram(courseManager, starsDatabase, notifier);	
@@ -73,7 +73,7 @@ public class StarsMain {
 			while((line = bfr.readLine())!= null)
 			{
 				String[] array = line.split("\\|");
-				if(array[0].equals("AccessPeriod"))
+				if(array[0].equals("accessPeriod"))
 				{
 					accessPeriodStart = LocalDate.parse(array[1]);
 					accessTimeStart = LocalTime.parse(array[2]);
@@ -123,7 +123,7 @@ public class StarsMain {
 
 			case "Admin":
 			{
-				//adminProgram.run(user);	
+				adminProgram.run(user);	
 			}break;
 
 

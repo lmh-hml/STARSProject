@@ -35,6 +35,8 @@ public class AdminProgram
 			+ "8.Print student list by index number.\n"
 			+ "9.Print student list by course [ print only student�s name, gender and nationality ]\n"
 			+ "10. Show options\n"
+			+ "11. Show Student info\n"
+			+ "12. Show Course info\n"
 			+ "-1. Quit\n";
     
     AdminProgram(StarsDatabase StarDatabase, CourseManager CourseManager)//, Scanner sc)
@@ -277,15 +279,18 @@ public class AdminProgram
     
     public void DisplayStudentInfo()
     {
-    	System.out.println("Rows\t|\tStudent name\t|\tStudent's id\t|\tUser name");
+    	String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Student name","Student's id","User name");
+    	System.out.printf(str);
+    	System.out.printf("\n");
         int rows = 1;
         for(Student_details student : starsDatabase.getAllStudents())
         {
-        	System.out.printf("%d\t|\t%s\t\t|\t%s\t|\t",rows, student.getName(),student.getMatric_num());
+        	String str1 = String.format("|%-20d|%-20s|%-20s|",rows ,student.getName(),student.getMatric_num());
+        	System.out.printf(str1);
         	rows++;
         	//just in case you need the user info as well
         	User_details user = starsDatabase.getUser(student.getUserName());
-        	System.out.printf("%s",user.getUsername());
+        	System.out.printf("%-20s|",user.getUsername());
         	System.out.printf("\n");
         }
     }
@@ -404,16 +409,16 @@ public class AdminProgram
      */
     public void DisplayCourseInfo()
     {
-    	System.out.println("Rows\t|\tCourse code\t|\tCourse Name\t|\tAU\t|\tindexes");
+        String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Course code","Course Name","AU");
+    	System.out.printf(str);
+    	System.out.printf("\n");
         int rows = 1;
         for(Course course : courseManager.getAllCourses())
         {
-        	System.out.printf("%d\t|\t%s\t\t|\t%s\t|\t%d",rows,course.getcoursecode(),course.getcourseName(),course.getAU());
-        	for(String index: course.getIndexCodes())
-        	{
-        		System.out.printf("%s",index);
-        	}
+        	String str1 = String.format("|%-20d|%-20s|%-20s|%-20d|",rows ,course.getcoursecode(),course.getcourseName(),course.getAU());
+        	System.out.printf(str1);
         	rows++;
+
         	System.out.printf("\n");
         }
     }
@@ -555,11 +560,14 @@ public class AdminProgram
      */
     public void DisplayIndexInfo()
     {
-    	System.out.println("Rows\t|\tIndex code\t|\tCourse code\t|\tAU\t|\tCapacity");
+        String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Index code","Course code","Capacity");
+    	System.out.printf(str);
+    	System.out.printf("\n");
         int rows = 1;
         for(Index_details index: courseManager.getAllIndexes())
         {
-        	System.out.printf("%d\t|\t%s\t\t|\t%s\t|\t%d",rows,index.getIndexCode(),index.getCourseCode(),index.getCapacity());
+        	String str1 = String.format("|%-20d|%-20s|%-20s|%-20d|",rows,index.getIndexCode(),index.getCourseCode(),index.getCapacity());
+        	System.out.printf(str1);
         	rows++;
         	System.out.printf("\n");
         }
@@ -653,13 +661,23 @@ public class AdminProgram
     			{
     				//right now assume that
     				String Type, group, venue;
-    				
     				DayOfWeek day=null;
-    				System.out.println("Enter Type");
-    				Type = sc.nextLine();
+    				do {
+    					
+        				System.out.println("Enter Type");
+        				Type = sc.nextLine();
+        				try {
+        					IndexClassType.valueOf(Type);
+        				}catch(IllegalArgumentException e)
+        				{
+        					System.out.println("Please enter one of \"Lecture, Tutorial, Lab\"");
+        					continue;
+        				}
+        				break;
+    				}while(true);
+    				
     				System.out.println("Enter Group");
     				group = sc.nextLine();
-					
 					
 					System.out.println("Enter venue");
 					venue = sc.nextLine();
@@ -718,13 +736,17 @@ public class AdminProgram
      */
     public void DisplayClassesInfo(String indexCode)
     {
-    	System.out.printf("index is %s\n",indexCode);
-		int rows =1;
-		for(IndexClass classes : courseManager.getIndex(indexCode).getIndexClasses())
-		{
-			System.out.printf("%d\t|\t",rows);
-			System.out.println(classes.toFlatFileString());
-		}
+        String str = String.format("|%-20s|%-60s|","Rows" ,"Class Info");
+    	System.out.printf(str);
+    	System.out.printf("\n");
+        int rows = 1;
+        for(IndexClass classes : courseManager.getIndex(indexCode).getIndexClasses())
+        {
+        	String str1 = String.format("|%-20d|%-60s|",rows,classes.toFlatFileString());
+        	System.out.printf(str1);
+        	rows++;
+        	System.out.printf("\n");
+        }
     }
     
     /**
@@ -808,34 +830,20 @@ public class AdminProgram
     	}finally{}
     	
     	courseManager.getIndex(indexCode).setCapacity(newCapacity);
-    	
-    	
-    	Collection<Student_details> studentDB = starsDatabase.getAllStudents();
-    	
     	Index_details index = courseManager.getIndex(indexCode);
-		indexCode = index.getIndexCode();
-		Set<String> studentList = index.getWaitingStudents();
-    	int studentRegister = courseManager.getIndex(indexCode).getRegisteredStudents().size();
-    	String studentName;
-    	Student_details currentUser = null;
-    	
-    	while(studentList.size()>0 && newCapacity>studentRegister)
+    	//two conditions to stop 1.no student in waitlist 2.no more vacancy
+    	while(index.getWaitingStudents().size()>0 && index.getVacancy()>0)
     	{
-    		studentName = index.getFirstWaitingStudent();
-    		for(Student_details student : studentDB)
+    		Student_details newstudent = starsDatabase.getStudentbyMatric(index.getFirstWaitingStudent());//first out student
+    		if(newstudent!= null)
     		{
-    			if(student.getName()==studentName||student.isWaiting(indexCode))
-				{
-    				//if found
-					currentUser = student;
-					currentUser.removeFromWaitlist(indexCode);
-		    		index.removeFromWaitlist(studentName);
-		    		index.registerStudent(currentUser); //add student to course
-		    		studentList.remove(studentName);
-		    		studentRegister++;
-				}
+    			index.removeFromWaitlist(newstudent.getMatric_num()); //remove first out student from course waitlist
+    			newstudent.removeFromWaitlist(indexCode);;//remove first out course from student waitlist
+    			index.registerStudent(newstudent); //add student name to course
+    			newstudent.addIndex(indexCode);
     		}
     	}
+    	
     }
 
     /**
@@ -870,25 +878,25 @@ public class AdminProgram
      */
     void PrintStudentByIndex(String indexCode)
     {
-    	Index_details target = courseManager.getIndex(indexCode);
-    	if(target==null)
+    	Index_details index = courseManager.getIndex(indexCode);
+    	if(index==null)
     	{
     		System.out.println("index not found");
     		return;
     	}
     	System.out.printf("Index: %s\n",indexCode);
-    	System.out.println("Rows\t|\tStudent name\t|\tMatric number\t|\tGender\t|\tNationality");
-    	int rows = 1;
-    	for(String student : target.getRegisteredStudents())
-		{
-    		for(Student_details student_info: starsDatabase.getAllStudents())
-    			if(student_info.getName()==student&&student_info.isRegistered(indexCode)&&(!student.equals(" ")))
-    			{
-    				System.out.printf("%d\t|\t%s\t|\t%s\t|\t%s\t|\t%s\n",rows, student, student_info.getMatric_num(),student_info.getGender(),student_info.getNationality());
-    				rows++;
-    			}
-		}
+        String str = String.format("|%-20s|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Student name","Matric number","Gender","Nationality");
+    	System.out.printf(str);
     	System.out.printf("\n");
+        int rows = 1;
+		for(Student_details student_info: starsDatabase.getAllStudents())
+			if(student_info.isRegistered(indexCode)&&(!student_info.getName().equals(" ")))
+			{
+	        	String str1 = String.format("|%-20d|%-20s|%-20s|%-20s|%-20s|",rows, student_info.getName(), student_info.getMatric_num(),student_info.getGender(),student_info.getNationality());
+	        	System.out.printf(str1);
+	        	rows++;
+	        	System.out.printf("\n");
+			}
     }
     
     /**
@@ -913,7 +921,7 @@ public class AdminProgram
     	CourseManager courseManager = new CourseManager("TestCourses.txt","TestIndexes.txt");
 		AdminProgram Admin = new AdminProgram(exampleDatabase, courseManager);
 		User_details user = new User_details();
-    	Admin.run(user,exampleDatabase,courseManager);
+    	Admin.run(user);
     	
     }
     
@@ -926,7 +934,7 @@ public class AdminProgram
      * @param exampleDatabase
      * @param courseManager
      */
-    void run(User_details user,StarsDatabase exampleDatabase,CourseManager courseManager)
+    void run(User_details user)
     {
     	Scanner scanner= this.sc;
     	
@@ -972,7 +980,7 @@ public class AdminProgram
 				System.out.println("Enter the capacity that you wanted.");
 				int newCapcity = sc.nextInt();
 				UpdateCapacity(indexCode, newCapcity);
-			}
+			}break;
 
 			case 7: {
 				String indexCode = null;
@@ -1004,8 +1012,19 @@ public class AdminProgram
 				PrintStudentByCourse(courseCode);
 			} break;
 
-			case 10: {System.out.print(this.adminOptions);}
+			case 10: {System.out.print(this.adminOptions);}break;
 
+			case 11:
+			{
+				DisplayStudentInfo();
+			}break;
+			
+			case 12:
+			{
+				DisplayCourseInfo();
+				DisplayIndexInfo();
+			}break;
+			
 			case -1: { quit = true; } break;
 
 			default: 
