@@ -1,5 +1,7 @@
 package stars;
 
+import java.io.IOException;
+
 import stars.FlatFileDatabase;
 import stars.FlatFileObject;
 

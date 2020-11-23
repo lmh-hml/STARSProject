@@ -17,11 +17,14 @@ public class StarsDatabase {
 	/**
 	 * Default filename of flat file for students 
 	 */
-	private static String studentFile = "Students.txt";
+	private String studentFile = "";
+	private String userFile = "";
+	
+	private final static String DefaultStudentFile = "Students.txt";
 	/**
 	 * Default filename of flat file for users
 	 */
-	private static String userFile = "Users.txt";
+	private final static String DefaultUserFile = "Users.txt";
 	/**
 	 * Member UserDatabase object
 	 */
@@ -33,18 +36,29 @@ public class StarsDatabase {
 	private CourseManager courseManager = new CourseManager();
 
 	
+	public StarsDatabase(String studentFile, String userFile) {
+		openFiles(studentFile, userFile);
+	}	
+
 	/**
 	 * Default contructor of StarsDatabase.
 	 */
 	public StarsDatabase() {
-		try {
+		openFiles(DefaultStudentFile, DefaultUserFile);
+	}	
+	public void openFiles(String studentFile, String userFile)
+	{
+		try 
+		{
 			userDatabase = new UserDatabase(userFile);
 			studentDatabase = new StudentDatabase(studentFile);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}	
+		this.studentFile = studentFile;
+		this.userFile = userFile;
+	}
 	/**
 	 * Adds a User_details object to the database.
 	 * @param user User_details object to be added
@@ -178,7 +192,7 @@ public class StarsDatabase {
 	/**
 	 * Updates the database with the current contents of this instance of StarsDatabase.
 	 */
-	void writeDatabaseFiles()
+	void save()
 	{
 		System.out.println("Beginning writing to files!");
 
@@ -193,10 +207,13 @@ public class StarsDatabase {
 	}	
 	private void saveStudents() throws IOException
 	{
+		System.out.format("Saving to %s\n", studentFile);
 		studentDatabase.writeFile(studentFile);
 	}	
 	private void saveUsers() throws IOException
 	{
+	
+		System.out.format("Saving to %s\n", userFile);
 		userDatabase.writeFile(userFile);
 	}
 

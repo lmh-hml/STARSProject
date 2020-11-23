@@ -15,7 +15,7 @@ public class StarsMain {
 	private StarsDatabase starsDatabase = new StarsDatabase();
 	private CourseManager courseManager = new CourseManager();
 	private StarsNotifier notifier = new StarsMail();
-	private AdminProgram adminProgram = new AdminProgram( starsDatabase);	
+	private AdminProgram adminProgram = new AdminProgram(starsDatabase, courseManager);	
 	private StudentProgram studentProgram = new StudentProgram(courseManager, starsDatabase, notifier);	
 	private LocalDate accessPeriodStart = null;
 	private LocalDate accessPeriodEnd = null;

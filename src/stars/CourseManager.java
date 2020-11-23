@@ -12,28 +12,42 @@ public class CourseManager{
 
 	public static final String SEPARATOR = "|";
 
-	final String courseFile = "Courses.txt";
-	final String indexFile = "Indexes.txt";
+	private String courseFile = "";
+	private String indexFile = "";
+	private final static String DefaultCourseFile = "Courses.txt";
+	private final static String DefaultIndexFile = "Indexes.txt";
 	
 	private CourseDatabase courses = new CourseDatabase();
 	private IndexDatabase  indexes = new IndexDatabase();
 	private HashMap<String, Set<String>> studentsInCourseCache = new HashMap<>();
 	public CourseManager() {
-		
+		openFiles(DefaultCourseFile, DefaultIndexFile);
+	}
+	
+	public CourseManager(String courseFile, String indexFile) {
+		openFiles(courseFile, indexFile);
+	}
+	public void openFiles(String courseFile, String indexFile)
+	{
 		try {
 			courses.openFile(courseFile);
 			indexes.openFile(indexFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.courseFile = courseFile;
+		this.indexFile = indexFile;
 	}
+	
 	/**Writes the contents of this database
 	 * back to storage.
 	 */
 	public void save()
 	{
 		try {
+			System.out.format("Saving to %s\n", courseFile);
 			courses.writeFile(courseFile);
+			System.out.format("Saving to %s\n", indexFile);
 			indexes.writeFile(indexFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
