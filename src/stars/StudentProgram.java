@@ -277,6 +277,9 @@ public class StudentProgram
 		else if (isStudentRegistered(currentUser, newIndex) ) {
 			System.out.format("Already registred in requested index:%s", newindex); //else if student already in newindex
 		}
+		else if (!oldIndex.getCourseCode().equals(newIndex.getCourseCode())) {
+			System.out.println("Indexes not in same course");
+		}
 		else if ( courseManager.getIndex(oldindex)==null ||courseManager.getIndex(oldindex)==null) {
 			System.out.println("Course does not exist"); //else if any index does not exist
 		}
