@@ -47,9 +47,19 @@ public class IndexClass implements FlatFileObject
 	 * If the parameter does not fit the above types, this method will not set anything.
 	 * @param classType One among "Lectures", "Lab" or "Tutorial".
 	 */
-	public void setType(String classType) throws IllegalArgumentException
+	public boolean setType(String classType)  
 	{
-		setType(IndexClassType.valueOf(classType));
+		boolean success = true;
+		try
+		{
+			 setType(IndexClassType.valueOf(classType));
+		}
+		catch(IllegalArgumentException e)
+		{
+			System.err.format("Argument %s is not one of : %s \n'", classType, Arrays.toString(IndexClassType.values()));
+			success = false;
+		}
+		return false;
 	}
 	
 	

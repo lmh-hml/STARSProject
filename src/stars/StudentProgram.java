@@ -17,7 +17,7 @@ public class StudentProgram
 	
 	private final static String[] StudentOptions = {"1. Add course"
 			, "2. Drop course"
-			, "3.Check/Print Courses Registered"
+			, "3. Check/Print Courses Registered"
 			, "4. Check vacancies available"
 			, "5. Change Index Number of course"
 			, "6. Swap index with another student"
