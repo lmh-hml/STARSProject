@@ -83,10 +83,10 @@ public class MySTARS{
 		boolean pwd_correct = false;
 		while(pwd_correct == false)
 		{
-			console.printf("Please enter password: ");
-			String input_pwd = String.valueOf(console.readPassword());
-//			System.out.println("Please enter password:");
-//			String input_pwd = scanner.nextLine();
+//			console.printf("Please enter password: ");
+//			String input_pwd = String.valueOf(console.readPassword());
+			System.out.println("Please enter password:");
+			String input_pwd = scanner.nextLine();
 			pwd_correct = PasswordModule.verifyPassword(input_pwd, user.getPassword());
 			if( ! pwd_correct)
 			{

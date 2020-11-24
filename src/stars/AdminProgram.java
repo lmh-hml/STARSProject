@@ -248,6 +248,11 @@ public class AdminProgram
             System.out.println("Enter the student study year:");
             try {
             int year = sc.nextInt();
+            if(0<year || year>6) 
+            {
+            	System.out.println("Study year should be between 0 and 6.");
+            	continue;
+            }
             new_student.setStudyYear(year);
             loop =false;
             }catch(InputMismatchException e)
@@ -280,15 +285,7 @@ public class AdminProgram
         new_user.setPassword(hashedPwd);
 
         new_user.setEmail(userName + "@e.ntu.edu.sg");
-        
-        String accountType = "";
-        do {
-        	System.out.println("Enter the accountType(Admin/Student)");
-            accountType = sc.nextLine();
-            if(accountType.equals("Admin") || accountType.equals("Student"))
-            	break;
-        }while(true);
-        new_user.setAccountType(accountType);
+        new_user.setAccountType("Student");
         
         
         String write = "n";
@@ -299,7 +296,7 @@ public class AdminProgram
             	break;
         }while(true);
         
-        if(write=="n")
+        if(write.equals("n"))
         {
         	System.out.println("Your inputs are not saved.");
         }

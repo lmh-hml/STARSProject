@@ -248,8 +248,14 @@ public class StudentProgram
 				System.out.println("You can not swap index with yourself.");
 				continue;
 			}
+			try {
 			user =  starsDatabase.getUser(starsDatabase.getStudentbyMatric(input).getUserName());
-			if(user == null) {System.out.println("Matriculation number input does not belong to a student.");break;}
+			}
+			catch(NullPointerException e)
+			{
+				System.out.println("Input number does not belong to a student");
+				continue;
+			}
 		}
 		
 		if(user!=null)
@@ -259,8 +265,8 @@ public class StudentProgram
 			input = "";
 			while(!correct && input!="0")
 			{
-				//input = scanner.nextLine();
-				input = String.valueOf(console.readPassword());
+				input = scanner.nextLine();
+				//input = String.valueOf(console.readPassword());
 				correct = PasswordModule.verifyPassword(input, user.getPassword());
 				if(!correct)System.out.println("Password is incorrect. Please try again.");
 			}
