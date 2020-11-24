@@ -248,7 +248,7 @@ public class AdminProgram
             System.out.println("Enter the student study year:");
             try {
             int year = sc.nextInt();
-            if(0<year && year>6) 
+            if(year<0 || year>6) 
             {
             	System.out.println("Study year should be between 0 and 6.");
             	continue;
