@@ -446,7 +446,9 @@ public class StudentProgram
 		message += String.format("This is to confirm that your swapping of the following course with student %s is successful:\n", matricNum2);
 		message += String.format( "Before swap:\nStudent %s: Index %s\nStudent %s: Index %s\n", matricNum1, index1, matricNum2, index2);
 		message += String.format( "After swap:\nStudent %s: Index %s\nStudent %s: Index %s\n", matricNum1, index2, matricNum2, index1);
-		notifier.sendNotification("Successful swapping of indexes.", message, starsDatabase.getUser(student1.getUserName()).getEmail(), starsDatabase.getUser(student2.getUserName()).getEmail());
+		notifier.sendNotification("Successful swapping of indexes.", message, 
+				starsDatabase.getUser(student1.getUserName()).getEmail(), 
+				starsDatabase.getUser(student2.getUserName()).getEmail());
 	}
 	/**
 	 * Sends a notification to the current user confirming their registered indexes and indexes that they are waiting for,
