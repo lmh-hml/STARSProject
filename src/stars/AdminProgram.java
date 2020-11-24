@@ -963,13 +963,12 @@ public class AdminProgram
     {
         Set<String> indexlist = courseManager.getCourse(courseCode).getIndexCodes();
         Collection<Student_details> allStudents = starsDatabase.getAllStudents();
-        System.out.printf("Course code:%s No.of registered students:%d\n", courseCode, allStudents.size());
+        System.out.printf("Course code:%s\n", courseCode);
     	for(String indexCode: indexlist)
     	{
     		System.out.printf("Index: %s\n",indexCode);
     		System.out.printf(String.format("|%-20s|%-20s|%-20s|\n", "Student name", "Gender","Nationality"));
-    		Collection<Student_details> StudentListAll = starsDatabase.getAllStudents();
-    		for(Student_details student_info: starsDatabase.getAllStudents())
+    		for(Student_details student_info: allStudents)
     			if(student_info.isRegistered(indexCode))
     			{
     	        	System.out.printf(String.format("|%-20s|%-20s|%-20s|\n", student_info.getName(),student_info.getGender(),student_info.getNationality()));
