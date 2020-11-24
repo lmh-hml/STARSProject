@@ -513,9 +513,15 @@ public class StudentProgram
 		for (String indexCode : student.getIndexRegistered())
 		{
 			if(indexCode == FlatFileObject.EmptyString)continue;
-			System.out.format("%s\n",indexCode);
+			System.out.format("Index code:%-10s\n",indexCode);
+			Set<IndexClass> indexClasses = courseManager.getIndex(indexCode).getIndexClasses();
+			for(IndexClass classes: indexClasses)
+			{
+				System.out.format("|%-10s|%-10s|%-10s|%-10s|\n",classes.getType(),classes.getDay(),classes.getTime().get(0).toString(),classes.getTime().get(1).toString());
+			}
+			
 		}
-	}	
+	}
 	/**
 	 * Prints the indexes that this student is in the wait list of.
 	 * @param student The specified student
