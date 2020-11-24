@@ -1032,8 +1032,20 @@ public class AdminProgram
 			case 6:{
 				System.out.println("Enter the index that you wanted.");
 				String indexCode = sc.nextLine();
-				System.out.println("Enter the capacity that you wanted.");
-				int newCapcity = sc.nextInt();
+				int newCapcity = 0;
+				do {
+					try {
+						System.out.println("Enter the capacity that you wanted.");
+						newCapcity = sc.nextInt();
+						if(newCapcity>0)break;
+					}catch(Exception e)
+					{
+						sc.nextLine();
+						System.out.println("Please enter a number.");
+						continue;
+					}
+					break;
+				}while(true);
 				UpdateCapacity(indexCode, newCapcity);
 			}break;
 
