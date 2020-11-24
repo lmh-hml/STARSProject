@@ -568,6 +568,7 @@ public class AdminProgram
     					System.out.println("new vacancy has to be bigger than 0");
         			}catch(Exception e) {
         				System.out.println("Please enter a number.");
+        				sc.nextLine();
         			}
     			}while(true);
     			old_idx.setCapacity(capacity);
