@@ -598,11 +598,13 @@ public class AdminProgram
         }
     }
     
-    /**
-     * helper function for updateIndex
-     * create the new index
-     * 
-     */
+   /**
+    * Method to create an index
+    * @param courseDB When creating index, this collection of courses will be referred to when user enters a course code to check if the 
+    * course with the course code is already created.
+    * @param indexCode The index code of the index to be created.
+    */
+     
     private void createIndex(Collection<Course> courseDB, String indexCode)
     {
     	boolean success = false;
@@ -787,8 +789,8 @@ public class AdminProgram
      * 1. illegal input
      * 2. start time is later than end time
      * 
-     * returns a ArrayList<LocalTime>, index 0 is start time, index 1 is end time 
-     * @return arraylist		an arraylist whose first element is the start time and second element is end time, both in LocalTime format
+     * returns a ArrayList where index 0 is start time, index 1 is end time 
+     * @return  An arraylist whose first element is the start time and second element is end time, both in LocalTime format
      */
     private ArrayList<LocalTime> readPeriod()
     {
@@ -957,7 +959,7 @@ public class AdminProgram
     
     /**
      * print out the student info for those who has taken courseCode
-     * @param indexCode		the index of the course
+     * @param courseCode	the code of the course to print
      */
     void PrintStudentByCourse(String courseCode)
     {

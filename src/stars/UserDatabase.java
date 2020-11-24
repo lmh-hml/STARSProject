@@ -21,7 +21,7 @@ public class UserDatabase extends FlatFileDatabase<User_details>{
 	/**
 	 * Instantiates a UserDatabase object with a flat file
 	 * @param filename The file to be parsed.
-	 * @throws IOException
+	 * @throws IOException When te file with the filename could not be oepened.
 	 */
 	public UserDatabase(String filename) throws IOException {
 		openFile(filename);

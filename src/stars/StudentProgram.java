@@ -39,7 +39,10 @@ public class StudentProgram
 	};
 
 			
-	/**StudentProgram has attributes of Student_details, CourseManager and StarsDatabase*/
+	/**StudentProgram has attributes of Student_details, CourseManager and StarsDatabase
+	 * @param courseManager The courseManager object to be passed into this program
+	 * @param starsDatabase The StarsDatabase object to be passed into this program
+	 */
 	public StudentProgram( CourseManager courseManager, StarsDatabase starsDatabase) {
 		this.courseManager=courseManager;
 		this.starsDatabase=starsDatabase;
@@ -353,7 +356,9 @@ public class StudentProgram
 			}
 		}
 	}
-	/**Method to check the vacancies of a course index**/
+	/**Method to check the vacancies of a course index
+	 * @param indexCode The code of the index to check
+	 */
 	private void CheckVacancies(String indexCode) {
 		Index_details index = courseManager.getIndex(indexCode);
 		if (index == null) {
@@ -501,8 +506,8 @@ public class StudentProgram
 		System.out.println("\t"+courseManager.getLab(index));
 		System.out.println("\t"+courseManager.getTut(index));  
 	}	
-	/**
-	 * Prints the indexes the student is registered in and waiting for.
+	/**Prints the indexes the student is registered in and waiting for.
+	 * @param student The specified student
 	 */
 	public void printRegisteredIndexes(Student_details student) {
 		System.out.format("%s: Courses currently registered in: %d courses.\n", student.getName(),student.getIndexRegistered().size());
@@ -610,10 +615,10 @@ public class StudentProgram
 	 * Swaps a index registered by student1 with a index registered by student2.
 	 * This method does nothing if: the specified indexes are not in the same course, studen1 is not
 	 * registered in index1, or student2 is not registered in student2.
-	 * @param student1 
-	 * @param index1
-	 * @param student2
-	 * @param index2
+	 * @param student1  The student to initiate the swapping
+	 * @param index1 The index registered by student1 to be swapped
+	 * @param student2 The student to swap index with
+	 * @param index2 The index of student2 to be swapped
 	 * @return True is the swap is successful, false otherwise
 	 */
 	private boolean swapIndex(Student_details student1, Index_details index1, Student_details student2, Index_details index2)
@@ -628,7 +633,7 @@ public class StudentProgram
 	}
 	/**Checks if a student is registered in the specified course
 	 * @param matricNum The matriculation number of the student
-	 * @param courseCode The course code of the course.
+	 * @param course The specified course
 	 * @return True if the student is registered in the course.
 	 */
 	private boolean isStudentRegisteredCourse(String matricNum, Course course)

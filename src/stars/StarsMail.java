@@ -119,8 +119,8 @@ public class StarsMail implements StarsNotifier{
 	 * @param messageText THe message text.
 	 * @param mainRecipient Email of the main recipient of the email.
 	 * @param otherRecipients Email to be put in the CC list of the email.
-	 * @throws AddressException 
-	 * @throws MessagingException
+	 * @throws AddressException Thrown when there is an address exception
+	 * @throws MessagingException Thrown when there is a messaging exception.
 	 */
 	private void sendMessage( String subject, String messageText, String mainRecipient, String ...otherRecipients) throws AddressException, MessagingException
 	{

@@ -26,7 +26,6 @@ import java.util.Set;
  * @version 1.0
  * @since 20/11/2020
  *
- * @param <K> The type of key used to retrieve items from this database.
  * @param <T> A class that implements FlatFileObject
  */
 public abstract class  FlatFileDatabase <T extends FlatFileObject>{
@@ -61,7 +60,6 @@ public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 	 * Retrieves the object indexed by key.
 	 * @param key Key of object to be retrieved.
 	 * @return The object indexed by the key, or null if it is not in the database.
-	 * @throws NotFoundInDatabaseException 
 	 */
 	public T get(String key) 
 	{
@@ -110,10 +108,10 @@ public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 	 * Opens a file that contains data in flat file format, converts the text data into 
 	 * actual objects of this database's target type and stores them into this databse.
 	 * The file should be a text file containing data in flat file format
-	 * @param fileName
-	 * @throws IOException
+	 * @param fileName The name of the file to be opened.
+	 * @throws IOException if an I/O error occurs opening the file
 	 */
-	public void openFile(String fileName) throws IOException
+	public void openFile(String fileName) throws IOException 
 	{
 		Path p = Paths.get(fileName);
 		Files.lines(p).forEach( line -> {
@@ -134,7 +132,7 @@ public abstract class  FlatFileDatabase <T extends FlatFileObject>{
 	/**
 	 * Write the contents of the database to the specified file in flat file format.
 	 * @param fileName The file to be written to
-	 * @throws IOException 
+	 * @throws IOException  if the named file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
 	 */
 	public  void writeFile(String fileName) throws IOException
 	{

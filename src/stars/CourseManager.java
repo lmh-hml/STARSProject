@@ -166,7 +166,7 @@ public class CourseManager{
 //ACCESSING INDEX INFORMATION
 	/**
 	 * Gets the classes under the index with the specified index code with the specified Index Class type.
-	 * @param indexCode Code of the target index
+	 * @param index The specified Index_details object to retrieve from
 	 * @param type A IndexClassType enum member
 	 * @return A list of Index Class objects with the specified index class type.
 	 */	
@@ -184,7 +184,7 @@ public class CourseManager{
 	}		
 	/**
 	 * Gets the lectures classes under the index with the specified index code
-	 * @param indexCode Code of the target index
+	 * @param index Code of the target index
 	 * @return A list of Index Class objects which are the lectures classes of the index.
 	 */		
 	public List<IndexClass> getLectures(Index_details index) 
@@ -193,7 +193,7 @@ public class CourseManager{
 	}
 	/**
 	 * Gets the lab classes under the index with the specified index code
-	 * @param indexCode COde of the target index
+	 * @param index The specified index 
 	 * @return A list of Index Class objects which are the lab classes of the index.
 	 */
 	public List<IndexClass> getLab(Index_details index) 
@@ -202,7 +202,7 @@ public class CourseManager{
 	}		
 	/**
 	 * Gets the tutorials classes under the index with the specified index code
-	 * @param indexCode COde of the target index
+	 * @param index The specified index_details object
 	 * @return A list of Index Class objects which are the tutorial classes of the index.
 	 */
 	public List<IndexClass> getTut(Index_details index)
@@ -245,7 +245,7 @@ public class CourseManager{
 
 	/**
 	 * Retrieves a set of matriculation number of students registered under the specified course
-	 * @param courseCode Course code of the target course.
+	 * @param course Course code of the target course.
 	 * @return A set of matriculation number of students registered under the specified course.
 	 */
 	public Set<String> getStudentsInCourse(Course course)  
@@ -264,7 +264,7 @@ public class CourseManager{
 	/**
 	 * Checks if the specified student matric number is registered under a course.
 	 * @param matricNum The matriculation number of the student
-	 * @param courseCode The course code tof the course to be checked
+	 * @param course The course code tof the course to be checked
 	 * @return True if the student is listed under the course, false otherwise.
 	 */
 	public boolean isStudentInCourse(String matricNum, Course course)
@@ -278,7 +278,7 @@ public class CourseManager{
 	}
 	/**
 	 * Gets the AU of the course with the specified course code.
-	 * @param courseCode Course code of the target course.
+	 * @param course Specified course object
 	 * @return The AU of the course if the course exists, otherwise -1.
 	 */
 	public int getCourseAU(Course course)

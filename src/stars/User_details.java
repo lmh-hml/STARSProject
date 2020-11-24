@@ -88,7 +88,7 @@ public class User_details implements FlatFileObject
 		return password;
 	}
 
-	/**@param Set this user's password. Before setting, a plaintext password should be hashed.*/
+	/**@param password Set this user's password. Before setting, a plaintext password should be hashed.*/
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -98,7 +98,9 @@ public class User_details implements FlatFileObject
 		return email;
 	}
 
-	/**@return Set this user's email*/
+	/**Set this user's email
+	 * @param email The user's email 
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -108,7 +110,9 @@ public class User_details implements FlatFileObject
 		return accountType;
 	}
 
-	/**@return Set this user's account type, either "student" or "admin"*/
+	/**Set this user's account type, either "student" or "admin"
+	 * @param accountType The account type of this account
+	 */
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
 	}

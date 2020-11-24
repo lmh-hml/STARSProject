@@ -99,7 +99,7 @@ public class StarsDatabase {
 	}	
 	/**
 	 * Gets a student by their id
-	 * @param ID of the student.
+	 * @param matricNum of the student.
 	 * @return The Student with the id, null if no such student with ID exists
 	 */
 	Student_details getStudentbyMatric(String matricNum)
@@ -164,7 +164,10 @@ public class StarsDatabase {
 		}
 		return student;
 	}	
-	/**Returns the email of the student.**/
+	/**Returns the email of the student.
+	 * @param student The student to retrieve the email from
+	 * @return The email of the specified student
+	 */
 	String getStudentEmail(Student_details student)
 	{
 		return this.getUser(student.getUserName()).getEmail();

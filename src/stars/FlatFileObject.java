@@ -27,7 +27,8 @@ public interface FlatFileObject {
 	
 	/**
 	 * Initializes this object using a line read from a flat file.
-	 * @param s A line from a flat file.
+	 * @param s A line from a flat file
+	 * @return True if the initialization is successful, false otherwise.
 	 */
 	public abstract boolean fromFlatFileString(String s);
 
@@ -55,7 +56,10 @@ public interface FlatFileObject {
 		return s;
 	}
 	
-	/**Helper method to convert a list into a column of a line in flat file format.**/
+	/**Helper method to convert a list into a column of a line in flat file format.
+	 * @param list A collection to convert to flat file format
+	 * @return A flat file representation of the specified collection.
+	 */
 	public static String collectionToFlatFileString(Collection list)
 	{
 		if(list.isEmpty()) { return EmptyString;}
@@ -67,7 +71,10 @@ public interface FlatFileObject {
 		}
 		return s;
 	}
-	/**Helper method to covert list f strings in flat fileformat to a a collection of strings**/
+	/**Helper method to covert list f strings in flat fileformat to a a collection of strings
+	 * @param str The flat file string containing a list of strings to be processed
+	 * @param collection An object implementing collection that will store the strings extracted from the flat file string.
+	 */
 	public static void flatFileStringToCollection(String str, Collection<String> collection)
 	{
 		String[] array = str.split("\\,");

@@ -65,7 +65,7 @@ public class IndexClass implements FlatFileObject
 	public String getTypeStr() { return this.type;}
 	public IndexClassType getType() { return IndexClassType.valueOf(type);}
 	/**
-	 * @param type the type to set
+	 * @param classType the type of index class to set, among Lecture, Lab and Tuorial.
 	 */
 	public void setType(IndexClassType classType) 
 	{
@@ -76,6 +76,8 @@ public class IndexClass implements FlatFileObject
 	 * The options should be among Lectures, Lab or Tutorial.
 	 * If the parameter does not fit the above types, this method will not set anything.
 	 * @param classType One among "Lectures", "Lab" or "Tutorial".
+	 * @return True if setting the typeis successful, False if the string passed in is not among the supported class types
+	 * and the method fails to set this object's index class type.
 	 */
 	public boolean setType(String classType)  
 	{
@@ -109,7 +111,7 @@ public class IndexClass implements FlatFileObject
 	/**
 	 * Returns an array containing the start and end time of this class.
 	 * The first item in the list is the starting time, the second time is the ending time.
-	 * @return
+	 * @return A list of LocalTime objects, object at index 0 is the starting time , theobject at index 1 is the ending time.
 	 */
 	public ArrayList<LocalTime> getTime()
 	{
@@ -150,7 +152,7 @@ public class IndexClass implements FlatFileObject
 	public String getVenue() { return this.venue;}
 	/**
 	 * Sets the name of the venue that this class is held at.
-	 * @param venue
+	 * @param venue The name of the venue this class is held in.
 	 */
 	public void setVenue(String venue) { this.venue = venue;}
 	/**
@@ -165,15 +167,9 @@ public class IndexClass implements FlatFileObject
 	public void setIndexCode(String indexCode) {  this.indexCode = indexCode;}
 	
 	/**
-     * Used to determine if two classes gets clash
-     * But you will need to confirm that both course happens on the same Day beforehand
-     * 
-     * a clash return true, otherwise false
-     * @param start1
-     * @param end1
-     * @param start2
-     * @param end2
-     * @return
+	 * Determines if this indexClass clashes with another indexClass.
+	 *@param otherClass The specified IndexClass to check against.
+     * @return True if the two index class overlaps, false otherwise.
      */
     public boolean clash(IndexClass otherClass)
     {

@@ -89,7 +89,7 @@ public class Index_details implements stars.FlatFileObject{
 	/**
 	 * Adds the specified matriculation number to the index. This method will return false and not modify the state of this index 
 	 * if the index can no longer fit any more students.
-	 * @param matricNum 
+	 * @param matricNum The matriculation number of the student to register
 	 * @return True if the matric number is succesfully added, false otherwise.
 	 */
 	public boolean registerStudent(String matricNum)
@@ -158,7 +158,7 @@ public class Index_details implements stars.FlatFileObject{
 	}
 	/**
 	 * Gets the matric number of the earliest student added to the waiting list of this index.
-	 * @return
+	 * @return The matriculation number of the earliest waiting student from this index
 	 */
 	public String  getFirstWaitingStudent()
 	{
@@ -167,7 +167,7 @@ public class Index_details implements stars.FlatFileObject{
 	}
 	/**
 	 * Checks the specified matriculation number is listed among theindex's registered list.
-	 * @param matricNum
+	 * @param matricNum The matric number of the student to check
 	 * @return True if the number is listed, false otherwise.
 	 */
 	public boolean isRegistered(String matricNum)

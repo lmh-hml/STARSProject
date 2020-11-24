@@ -16,7 +16,7 @@ public class StudentDatabase extends FlatFileDatabase<Student_details>{
 	/**
 	 * Initializes this database with the flat file specified in fileName
 	 * @param fileName A file containing student details in flat file format.
-	 * @throws IOException
+	 * @throws IOException Thrown when file with fileName is cannot be found.
 	 */
 	public StudentDatabase(String fileName) throws IOException {
 		openFile(fileName);

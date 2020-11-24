@@ -84,7 +84,7 @@ public class Student_details implements FlatFileObject{
 	}
 	/**
 	 * Gets this student's gender.
-	 * @return
+	 * @return This student's gender
 	 */
 	public String getGender() {
 		return gender;
@@ -186,7 +186,7 @@ public class Student_details implements FlatFileObject{
 	
 	/**
 	 * Add the courses' names to the list of courses registered by this student.
-	 * @param courses Names of courses to be added
+	 * @param indexCodes Names of courses to be added
 	 */
 	public void addIndex(String... indexCodes ) {
 		for(String s: indexCodes)
@@ -196,7 +196,7 @@ public class Student_details implements FlatFileObject{
 	}
 	/**
 	 * Removes the specified course from the courses registered by this student.
-	 * @param course name of course to be removed
+	 * @param indexCode name of course to be removed
 	 */
 	public void removeIndex(String indexCode)
 	{
@@ -204,7 +204,7 @@ public class Student_details implements FlatFileObject{
 	}
 	/**
 	 * Sets list names of courses registered by this student.
-	 * @param courses List of names  of courses to be added.
+	 * @param indexCodes List of names  of courses to be added.
 	 */
 	public void setIndexRegistered(Set<String> indexCodes) {
 		indexRegistered = indexCodes;
@@ -234,7 +234,7 @@ public class Student_details implements FlatFileObject{
 	/**
 	 * Initializes this object with a flat file string read from a flat file.
 	 * This method does nothing if the flat file string has insufficient columns to initialize this object.
-	 * @return 
+	 * @return True if the deserialization is successsful, flase otherwise.
 	 */
 	@Override
 	public boolean fromFlatFileString(String s) {

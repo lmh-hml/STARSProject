@@ -11,7 +11,6 @@ import stars.FlatFileObject;
  * @author Lai Ming Hui
  * @since 11/11/2020
  * @version 1.0.0
- *
  */
 public class CourseDatabase extends FlatFileDatabase<Course>{
 
