@@ -77,6 +77,7 @@ public class CourseManager{
 		course = this.courses.get(courseCode);
 		course.addIndexCode(index.getIndexCode());
 	}
+
 	public void removeIndex( String indexCode)
 	{
 		Index_details index = this.indexes.get(indexCode);

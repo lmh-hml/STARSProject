@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Scanner;
-public class StarsMain {
+public class MySTARS{
 	
 	/**Default file name of the settings file.**/
 	private final String SettingsFile = "Settings.txt";
@@ -17,9 +17,9 @@ public class StarsMain {
 	/**Scanner used for IO between user and program for non-password IO.**/
 	private Scanner scanner = new Scanner(System.in);
 	/**Member StarsDatabase object. Represents the database that stores users and students information in the system.**/
-	private StarsDatabase starsDatabase = new StarsDatabase("TestStudents.txt", "TestUsers.txt");
+	private StarsDatabase starsDatabase = new StarsDatabase("Data/TestStudents.txt", "Data/TestUsers.txt");
 	/**Member CourseManager object. Represents the database that stores courses and index information in the system.**/
-	private CourseManager courseManager = new CourseManager("TestCourses.txt","TestIndexes.txt");
+	private CourseManager courseManager = new CourseManager("Data/TestCourses.txt","Data/TestIndexes.txt");
 	/**Member AdminProgram. Control is transferred to this object if an admin logs into the system.**/
 	private AdminProgram adminProgram = new AdminProgram(starsDatabase, courseManager, scanner);	
 	/**Member student program. Control is handed over to this object if a student logs into the program.**/
@@ -31,7 +31,7 @@ public class StarsMain {
 
 
 	/**Default constructor of this class**/
-	public StarsMain() 
+	public MySTARS() 
 	{
 		openSettingsFile(SettingsFile);
 	}
@@ -83,10 +83,10 @@ public class StarsMain {
 		boolean pwd_correct = false;
 		while(pwd_correct == false)
 		{
-//			console.printf("Please enter password: ");
-//			String input_pwd = String.valueOf(console.readPassword());
-			System.out.println("Please enter password:");
-			String input_pwd = scanner.nextLine();
+			console.printf("Please enter password: ");
+			String input_pwd = String.valueOf(console.readPassword());
+//			System.out.println("Please enter password:");
+//			String input_pwd = scanner.nextLine();
 			pwd_correct = PasswordModule.verifyPassword(input_pwd, user.getPassword());
 			if( ! pwd_correct)
 			{
@@ -158,7 +158,7 @@ public class StarsMain {
 	
 	public static void main(String args[])
 	{
-		StarsMain stars = new StarsMain();
+		MySTARS stars = new MySTARS();
 		stars.run();
 	}
 

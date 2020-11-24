@@ -16,7 +16,9 @@ import stars.FlatFileObject;
 
 /**
  * Class that represents a course that a student can register for during add/drop period.
- * @author Lai Ming Hui
+ * @author Lai Ming Hui, Ding Cong Cong
+ * @since 10/11/2020
+ * @version 1.0.0
  *
  */
 public class Course implements FlatFileObject
