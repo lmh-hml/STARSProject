@@ -184,6 +184,13 @@ public class StudentProgram
 	private void run_DropIndex()
 	{
 		scanner.nextLine();
+		int i=1;
+		for (String indexCode : this.currentUser.getIndexRegistered())
+		{
+			if(indexCode == FlatFileObject.EmptyString)continue;
+			System.out.format("%d. Index code:%-10s\n",i,indexCode);
+			i++;
+		}
 		Index_details index = promptForIndexCode("Please enter the code of the index that you want to drop: (Press 0 to go back) ");
 		if(index==null)return;
 		dropIndex(index.getIndexCode());
