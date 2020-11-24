@@ -265,8 +265,8 @@ public class StudentProgram
 			input = "";
 			while(!correct && input!="0")
 			{
-				input = scanner.nextLine();
-				//input = String.valueOf(console.readPassword());
+				//input = scanner.nextLine();
+				input = String.valueOf(console.readPassword());
 				correct = PasswordModule.verifyPassword(input, user.getPassword());
 				if(!correct)System.out.println("Password is incorrect. Please try again.");
 			}
