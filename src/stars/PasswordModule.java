@@ -23,6 +23,9 @@ import javax.crypto.spec.PBEKeySpec;
  */
 public class PasswordModule {
 
+	/**
+	 * A secure random object used to generate password hash.
+	 */
 	private final static SecureRandom sr = new SecureRandom();
 	
 	//Parameters for hashing.

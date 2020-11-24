@@ -5,20 +5,47 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**Enum of the typesof classes possible under a course.**/
 enum IndexClassType { Lecture, Tutorial, Lab;}
+
+/**
+ * Class representing a lesson under a course and containing its details.
+ * @author Lai Ming Hui
+ * @version 1.0.0
+ * @since 10/11/2020
+ */
 public class IndexClass implements FlatFileObject
 {
+	/**
+	 * Delimiter to separate each column when serializing to flat file format.
+	 */
 	public final static String delimiter= "\\-";
+	/**Lesson type of this index class.**/
 	private String type = " ";
+	/**Group code of this class**/
 	private String group = "  ";
+	/**The starting time of this class*/
 	private LocalTime startTime = LocalTime.MIN;
+	/**The ending time of this class**/
 	private LocalTime endTime = LocalTime.MIN;;
-	private DayOfWeek day = DayOfWeek.MONDAY;
+	/**The day of the week that this class isheld on.**/
+	private DayOfWeek day = null;
+	/**The venue name of this class.**/
 	private String venue = " ";
+	/**The code of the index this class belongs to.**/
 	private String indexCode = " ";
 	/**Number of fields in this class that should be read/written to flat file**/
 	private final static int NumFields = 7;
 	
+	/**
+	 * Constructs an instance of index class with the specified parameters.
+	 * @param type lesson type of this class, one of "Lecture", "Lab" or "Tutorial"
+	 * @param group Group code of this class.
+	 * @param start Startiing time of this class
+	 * @param end Ending timeof this class
+	 * @param day The day this class is held in
+	 * @param venue THe venue ona name of this class.
+	 */
 	IndexClass(String type, String group, LocalTime start, LocalTime end, DayOfWeek day, String venue)
 	{
 		this.setType(type);
@@ -27,6 +54,9 @@ public class IndexClass implements FlatFileObject
 		this.day = day;
 		this.venue = venue;
 	};
+	/**
+	 * Default constructor of this class.
+	 */
 	IndexClass(){};
 	
 	/**
@@ -64,18 +94,23 @@ public class IndexClass implements FlatFileObject
 	
 	
 	/**
-	 * @return the group
+	 * @return The group code of this class
 	 */
 	public String getGroup() {
 		return group;
 	}
 	/**
-	 * @param group the group to set
+	 * @param group the group code to set for this class
 	 */
 	public void setGroup(String group) {
 		this.group = group;
 	}
 	
+	/**
+	 * Returns an array containing the start and end time of this class.
+	 * The first item in the list is the starting time, the second time is the ending time.
+	 * @return
+	 */
 	public ArrayList<LocalTime> getTime()
 	{
 		ArrayList<LocalTime> result = new ArrayList<LocalTime>();
@@ -83,19 +118,50 @@ public class IndexClass implements FlatFileObject
 		result.add(endTime);
 		return result;
 	}
+	/**
+	 * Sets the starting time of this class.
+	 * @param startTime The starting time of this class.
+	 */
 	public void setStartTime(LocalTime startTime) {this.startTime = startTime;}
+	/**
+	 * The ending time of this class.
+	 * @param endTime The ending time of this class.
+	 */
 	public void setEndTime(LocalTime endTime) { this.endTime = endTime;}
 		
+	/**
+	 * Gets the day of week this day is held on.
+	 * @return A DayOfWeek enum corresponding to the day this class is held on, null if the day as yet to be set.
+	 */
 	public DayOfWeek getDay()
 	{
 		return this.day;
 	}
+	/**
+	 * Sets the day of the week that this class is held on.
+	 * @param day The day of the week this class is held on.
+	 */
 	public void setDay(DayOfWeek day) {this.day = day;}
 	
+	/**
+	 * Gets the venue that this class is held at.
+	 * @return The name of the venue this class is held at.
+	 */
 	public String getVenue() { return this.venue;}
+	/**
+	 * Sets the name of the venue that this class is held at.
+	 * @param venue
+	 */
 	public void setVenue(String venue) { this.venue = venue;}
-	
+	/**
+	 * Gets the code of the index this class id under.
+	 * @return The code of the index this class is under.
+	 */
 	public String getIndexCode() { return this.indexCode;}
+	/**
+	 * Sets the code of the index this class is under.
+	 * @param indexCode The specified code of the index to set.
+	 */
 	public void setIndexCode(String indexCode) {  this.indexCode = indexCode;}
 	
 	/**
@@ -165,31 +231,10 @@ public class IndexClass implements FlatFileObject
 	public String toString()
 	{
 		return String.format("%s %s, %s to %s at %s", type, group, startTime, endTime, venue);
-	}
-	
+	}	
 	@Override	
 	public String getDatabaseId() {
 		return this.group;
 	}
 	
-	
-	public static void main(String args[])
-	{
-		IndexClass indexClass = new IndexClass();
-		System.out.println(indexClass.toFlatFileString());
-		
-		indexClass.setType(IndexClassType.Lecture);
-		indexClass.setGroup("SE2");
-		indexClass.setDay(DayOfWeek.FRIDAY);
-		indexClass.setStartTime(LocalTime.of(8, 30));
-		indexClass.setEndTime(LocalTime.of(10, 30));
-		indexClass.venue = "LT2";
-		System.out.println(indexClass.toFlatFileString());
-		
-		IndexClass i2 = new IndexClass();
-		i2.fromFlatFileString(indexClass.toFlatFileString());
-		System.out.println(i2.toFlatFileString());
-
-
-	}
 }

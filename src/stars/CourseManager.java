@@ -13,7 +13,7 @@ import java.util.Set;
  * A class that manages the data of of courses and indexes within the STARS system.
  * Provides way to read course and index information from files and writing new data back to those files, as well as
  * accessing their information.
- * @author Lai Ming Hui
+ * @author Lai Ming Hui, Ding Cong Cong
  * @since 23/11/2020
  * @version 1.0.0
  *
@@ -77,7 +77,10 @@ public class CourseManager{
 		course = this.courses.get(courseCode);
 		course.addIndexCode(index.getIndexCode());
 	}
-
+/**
+ * Removes the  specified index code from this manager.
+ * @param indexCode The index code to remove.
+ */
 	public void removeIndex( String indexCode)
 	{
 		Index_details index = this.indexes.get(indexCode);
@@ -88,14 +91,29 @@ public class CourseManager{
 		}
 		indexes.remove(indexCode);	
 	}
+	/**
+	 * Gets the Index_Details object associated with the index code, it exist within this manager.
+	 * @param indexCode The specified index code to check.
+	 * @return The Index_detail object associated with the specified code, or null if no such object can be found.
+	 */
 	public Index_details getIndex(String indexCode)
 	{
 		return this.indexes.get(indexCode);
 	}	
+	/**
+	 * Retrieves a collection view of all the indexes managed by this manager.
+	 * The collection view is backed by the manager; modifications to the objects in the view will be reflected in the manager.
+	 * @return A collection view of all the indexes managed by this manager. 
+	 */
 	public Collection<Index_details> getAllIndexes() 
 	{
 		return this.indexes.getContents();
 	}
+	/**
+	 * Checks if an index with the index code exists within the manager.
+	 * @param indexCode The index code to check
+	 * @return True if it exists, false otherwise.
+	 */
 	public boolean checkIndexExists(String indexCode)
 	{
 		return this.indexes.getKeys().contains(indexCode);

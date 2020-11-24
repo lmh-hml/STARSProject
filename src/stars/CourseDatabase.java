@@ -8,7 +8,9 @@ import stars.FlatFileObject;
 /**
  * A class that reads from and writes to a file containing course information in flat file format and stores them in memory 
  * for access. 
- * @author Work
+ * @author Lai Ming Hui
+ * @since 11/11/2020
+ * @version 1.0.0
  *
  */
 public class CourseDatabase extends FlatFileDatabase<Course>{

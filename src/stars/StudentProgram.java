@@ -1,10 +1,6 @@
 package stars;
 import java.io.Console;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.*;
-
-
 
 /**
  * A class that represents the program that a student will use during add/drop period.

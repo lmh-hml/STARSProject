@@ -1,11 +1,7 @@
 package stars;
 
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 /**
  * Database class that implements FlatFileDatabase that handles stores and handles User_details objects.
  * This class can be instantiated with a file that contains User_detials data in flat file format,

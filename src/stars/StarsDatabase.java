@@ -9,8 +9,9 @@ import java.util.HashMap;
  * the data in those databases.
  * Each user and student information object can be accessed by using their usernames: i.getUser( username ), getStudent( username )
  * Methods provided by this class are capable of accessing and modifying databases' contents.
- * @author Work
- *
+ * @author Lai Ming Hui
+ * @since 10/11/2020
+ * @version 1.0.0
  */
 public class StarsDatabase {
 	
@@ -28,6 +29,11 @@ public class StarsDatabase {
 	 */
 	private StudentDatabase studentDatabase;
 	
+	/**
+	 * Constructs an instance of this object using the specified files
+	 * @param studentFile A file containing student information in flat file format
+	 * @param userFile A file containing user information in flat file format.
+	 */
 	public StarsDatabase(String studentFile, String userFile) {
 		try 
 		{

@@ -1,9 +1,16 @@
 package stars;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
+/**
+ * Database class that implements FlatFileDatabase that handles stores and handles Student_details objects.
+ * This class can be instantiated with a file that contains Student_details data in flat file format,
+ * and is able to write its contents back to a file in the same format.
+ * Students in this database are indexed by their matriculation number.  
+ * @author Lai Ming Hui
+ * @since 11/11/2020
+ * @version 1.0.0
+ */
 public class StudentDatabase extends FlatFileDatabase<Student_details>{
 
 	/**

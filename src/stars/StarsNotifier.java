@@ -1,6 +1,16 @@
 package stars;
 
+/**Enum used to select the appropriate type of notifer ot receive from getNotificationMethod**/
 enum StarsNotificationType { Email };
+/**
+ * Interface implemented by notification service provider classes used in the MySTARS program system.
+ * Any user class in the MySTARS psystem should be dependent on this interface and call getNotificationMethod with the 
+ * appropriate StarsNotificationType to get the correct StarsNotifier implementation.
+ * @author Lai Ming Hui
+ * @since 11/11/2020
+ * @version 1.0.0
+ *
+ */
 public interface StarsNotifier{
 	
 	/**Returns an implementation of StarsNotifier based on the specified notification type.
@@ -22,5 +32,12 @@ public interface StarsNotifier{
 		return null;
 	}
 	
+	/**
+	 * Sends a notification with the specified subject and message to the specified mainRecipient and any additional recipients in otherRecipients.
+	 * @param subject The subject text
+	 * @param messageText The message text
+	 * @param mainRecipient The address of the main recipient
+	 * @param otherRecipients The addresses of any other additional recipients.
+	 */
 	public void sendNotification(String subject, String messageText, String mainRecipient, String ...otherRecipients);
 }
