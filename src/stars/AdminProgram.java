@@ -732,17 +732,20 @@ public class AdminProgram
 					//check for clashes
     				IndexClass newClass = new IndexClass(Type, group, time.get(0), time.get(1), day, venue);
     				
+    				boolean clash =false;
     				for(IndexClass idxClass: oldIndex.getIndexClasses())
 					{
     					
     					if(idxClass.clash(newClass))
     					{
     						System.out.println("Got clash.");
+    						clash = true;
     						break;
     					}
 					}
     				
-    				courseManager.getIndex(indexCode).addIndexClass(newClass);
+    				if(!clash)
+    					courseManager.getIndex(indexCode).addIndexClass(newClass);
     				
     			}break;
     			case "2":
