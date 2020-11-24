@@ -397,6 +397,7 @@ public class AdminProgram
         			System.out.println("Please enter a positive number.");
     			}catch(Exception e) {
     				System.out.println("Please enter a number.");
+    				sc.nextLine();
     			}
 			}while(true);
 			
