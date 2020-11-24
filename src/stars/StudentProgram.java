@@ -383,7 +383,7 @@ public class StudentProgram
 			System.out.format("Student is not registered in the first index:%s\n", oldindex); //else if student not in oldindex
 		}
 		else if (isStudentRegistered(currentUser, newIndex) ) {
-			System.out.format("Already registred in requested index:%s", newindex); //else if student already in newindex
+			System.out.format("Already registred in requested index:%s\n", newindex); //else if student already in newindex
 		}
 		else if (!oldIndex.getCourseCode().equals(newIndex.getCourseCode())) {
 			System.out.println("Indexes not in same course");
