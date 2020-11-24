@@ -72,7 +72,7 @@ public class AdminProgram
      * 1: illegal input for date and time
      * 2: start time is later than end time
      */
-    void EditAccessPeriod() 
+    void editAccessPeriod() 
     {
         String date = "";
         String time = "";
@@ -199,7 +199,7 @@ public class AdminProgram
      * We allow students to have the same name but matric number has to be unique
      * the newly created student would have an empty waitlist and regisetered list
      */
-    void AddaStudent()
+    void addAStudent()
     {
     	
     	Student_details new_student = new Student_details();
@@ -248,7 +248,7 @@ public class AdminProgram
             System.out.println("Enter the student study year:");
             try {
             int year = sc.nextInt();
-            if(0<year || year>6) 
+            if(0<year && year>6) 
             {
             	System.out.println("Study year should be between 0 and 6.");
             	continue;
@@ -304,14 +304,14 @@ public class AdminProgram
         {
             starsDatabase.addUser(new_user);
             starsDatabase.addStudent(new_student);
-            DisplayStudentInfo();     	
+            displayStudentInfo();     	
         }
     }
     
     /**
      * display the information of all students currently in the system.
      */
-    public void DisplayStudentInfo()
+    public void displayStudentInfo()
     {
     	String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Student name","Student's id","User name");
     	System.out.printf(str);
@@ -342,7 +342,7 @@ public class AdminProgram
      * 
      * however, this function should be used after the student has registered, which might damage the integrity of the data
      */
-    void UpdateCourse()
+    void updateCourse()
     {
     	//before doing anything we need to figure we'are updating or adding
 		{
@@ -420,14 +420,14 @@ public class AdminProgram
 				Course newCourse = new Course(courseCode, courseName, AU);
 				courseManager.addCourse(newCourse);
 			}
-			DisplayCourseInfo();
+			displayCourseInfo();
    		}
     }
     
     /**
      * display the information of all courses
      */
-    public void DisplayCourseInfo()
+    public void displayCourseInfo()
     {
         String str = String.format("|%-20s|%-20s|%-20s|%-20s","Rows" ,"Course code","AU","Course Name");
     	System.out.printf(str);
@@ -457,7 +457,7 @@ public class AdminProgram
      *  
      * same to UpdateCourse(), this function should be used after the student has registered, which might damage the integrity of the data
      */
-    public void Update_Index()
+    public void update_Index()
     {
     	//gaining all the required info beforehand
     	//might delete later\
@@ -575,14 +575,14 @@ public class AdminProgram
     		}
     	}
     	//print all info
-    	DisplayIndexInfo();
+    	displayIndexInfo();
 		
     }
     
     /**
      * display the index's info
      */
-    public void DisplayIndexInfo()
+    public void displayIndexInfo()
     {
         String str = String.format("|%-20s|%-20s|%-20s|%-20s|","Rows" ,"Index code","Course code","Capacity");
     	System.out.printf(str);
@@ -663,7 +663,7 @@ public class AdminProgram
      *doesn't provide the delete the class
      *
      */
-    public void UpdateClass()
+    public void updateClass()
     {
     	System.out.println("Enter the index");
     	String indexCode = sc.nextLine();
@@ -755,7 +755,7 @@ public class AdminProgram
     			
     			case "q":
     			{
-    				DisplayClassesInfo(indexCode);
+    				displayClassesInfo(indexCode);
     				return;
     			}
     		}
@@ -768,7 +768,7 @@ public class AdminProgram
      *
      * @param indexCode		index of the course
      */
-    public void DisplayClassesInfo(String indexCode)
+    public void displayClassesInfo(String indexCode)
     {
         String str = String.format("|%-20s|%-60s|","Rows" ,"Class Info");
     	System.out.printf(str);
@@ -852,7 +852,7 @@ public class AdminProgram
      * @param indexCode						index of the course
      * @param newCapacity					the new Capacity for this index
      */
-    public void UpdateCapacity(String indexCode, int newCapacity)
+    public void updateCapacity(String indexCode, int newCapacity)
     {
     	Index_details index = courseManager.getIndex(indexCode);
     	if(index==null)
@@ -907,7 +907,7 @@ public class AdminProgram
      * print out the available slots for an index
      * @param indexCode		index of the course
      */
-    void CheckAvailableSlot(String indexCode)
+    void checkAvailableSlot(String indexCode)
     {
     	Index_details target = courseManager.getIndex(indexCode); 
     	if(target==null)
@@ -935,7 +935,7 @@ public class AdminProgram
      * 
      * @param indexCode		the index of the course
      */
-    void PrintStudentByIndex(String indexCode)
+    void printStudentByIndex(String indexCode)
     {
     	Index_details index = courseManager.getIndex(indexCode);
     	if(index==null)
@@ -963,7 +963,7 @@ public class AdminProgram
      * print out the student info for those who has taken courseCode
      * @param courseCode	the code of the course to print
      */
-    void PrintStudentByCourse(String courseCode)
+    void printStudentByCourse(String courseCode)
     {
         Set<String> indexlist = courseManager.getCourse(courseCode).getIndexCodes();
         Collection<Student_details> allStudents = starsDatabase.getAllStudents();
@@ -1010,23 +1010,23 @@ public class AdminProgram
 			{
 
 			case 1: {
-				EditAccessPeriod();
+				editAccessPeriod();
 			}break;
 
 			case 2: {
-				AddaStudent();
+				addAStudent();
 			}break;
 
 			case 3: {
-				UpdateCourse();
+				updateCourse();
 			}break;
 			
 			case 4: {
-				Update_Index();
+				update_Index();
 			}break;
 			
 			case 5: {
-				UpdateClass();
+				updateClass();
 			}break;
 			
 			case 6:{
@@ -1046,7 +1046,7 @@ public class AdminProgram
 					}
 					break;
 				}while(true);
-				UpdateCapacity(indexCode, newCapcity);
+				updateCapacity(indexCode, newCapcity);
 			}break;
 
 			case 7: {
@@ -1056,7 +1056,7 @@ public class AdminProgram
 					indexCode = sc.nextLine();
 					if(courseManager.checkIndexExists(indexCode))break;
 				}while(true);
-				CheckAvailableSlot(indexCode);
+				checkAvailableSlot(indexCode);
 			}break;
 
 			case 8: {
@@ -1066,7 +1066,7 @@ public class AdminProgram
 					indexCode = sc.nextLine();
 					if(courseManager.checkIndexExists(indexCode))break;
 				}while(true);
-				PrintStudentByIndex(indexCode);
+				printStudentByIndex(indexCode);
 			}break;
 
 			case 9: {
@@ -1077,20 +1077,20 @@ public class AdminProgram
 					if(courseManager.getCourse(courseCode)!=null)break;
 					System.out.println("No course with specified code exists. Please try again.");
 				}while(true);
-				PrintStudentByCourse(courseCode);
+				printStudentByCourse(courseCode);
 			} break;
 
 			case 10: {System.out.print(this.adminOptions);}break;
 
 			case 11:
 			{
-				DisplayStudentInfo();
+				displayStudentInfo();
 			}break;
 			
 			case 12:
 			{
-				DisplayCourseInfo();
-				DisplayIndexInfo();
+				displayCourseInfo();
+				displayIndexInfo();
 			}break;
 			
 			case -1: { quit = true; } break;
