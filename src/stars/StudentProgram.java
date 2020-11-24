@@ -187,6 +187,13 @@ public class StudentProgram
 	private void run_DropIndex()
 	{
 		scanner.nextLine();
+		int i=1;
+		for (String indexCode : this.currentUser.getIndexRegistered())
+		{
+			if(indexCode == FlatFileObject.EmptyString)continue;
+			System.out.format("%d. Index code:%-10s\n",i,indexCode);
+			i++;
+		}
 		Index_details index = promptForIndexCode("Please enter the code of the index that you want to drop: (Press 0 to go back) ");
 		if(index==null)return;
 		dropIndex(index.getIndexCode());
@@ -381,7 +388,7 @@ public class StudentProgram
 			System.out.format("Student is not registered in the first index:%s\n", oldindex); //else if student not in oldindex
 		}
 		else if (isStudentRegistered(currentUser, newIndex) ) {
-			System.out.format("Already registred in requested index:%s", newindex); //else if student already in newindex
+			System.out.format("Already registred in requested index:%s\n", newindex); //else if student already in newindex
 		}
 		else if (!oldIndex.getCourseCode().equals(newIndex.getCourseCode())) {
 			System.out.println("Indexes not in same course");
