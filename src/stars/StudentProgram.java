@@ -321,6 +321,7 @@ public class StudentProgram
 			{
 				System.out.format("    %s", id.getIndexCode());
 			}
+			System.out.println();
 		}
 		else {
 			int vacancy = courseManager.getVacancy(indexCode);
