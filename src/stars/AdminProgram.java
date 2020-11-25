@@ -1078,22 +1078,32 @@ public class AdminProgram
 			case 8: {
 				String indexCode = null;
 				do {
-					System.out.println("Enter the index that you wanted.");
+					System.out.println("Enter the index that you wanted. (Enter 0 to return)");
 					indexCode = sc.nextLine();
-					if(courseManager.checkIndexExists(indexCode))break;
+					if(courseManager.checkIndexExists(indexCode))
+					{
+						printStudentByIndex(indexCode);
+						break;
+					}
+					else if(indexCode.equals("0"))break;
+					System.out.println("No course with specified code exists. Please try again.");
 				}while(true);
-				printStudentByIndex(indexCode);
 			}break;
 
 			case 9: {
 				String courseCode = null;
 				do {
-					System.out.println("Enter the course code that you wanted.");
+					System.out.println("Enter the course code that you wanted. (Enter 0 to return)");
 					courseCode = sc.nextLine();
-					if(courseManager.getCourse(courseCode)!=null)break;
+					if(courseManager.getCourse(courseCode)!=null)
+					{
+						printStudentByCourse(courseCode);
+						break;
+					}
+					else if(courseCode.equals("0"))break;
 					System.out.println("No course with specified code exists. Please try again.");
 				}while(true);
-				printStudentByCourse(courseCode);
+				
 			} break;
 
 			case 10: {System.out.print(this.adminOptions);}break;

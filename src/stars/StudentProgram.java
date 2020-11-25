@@ -316,7 +316,7 @@ public class StudentProgram
 		}
 		else if( clashes.size()!=0)
 		{
-			System.out.format("Add failed: There is a clash between index %s and the follwoing indexes: \n", indexCode);
+			System.out.format("Add failed: There is a clash between index %s and the follwoing registrered indexes: \n", indexCode);
 			for(Index_details id : clashes)
 			{
 				System.out.format("    %s", id.getIndexCode());
