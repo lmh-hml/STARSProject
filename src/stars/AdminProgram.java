@@ -902,14 +902,14 @@ public class AdminProgram
     	System.out.printf(str);
     	System.out.printf("\n");
     	int rows = 1;
-		for(Student_details student_info: starsDatabase.getAllStudents())
-			if(student_info.isRegistered(indexCode)&&(!student_info.getName().equals(" ")))
-			{
-	        	String str1 = String.format(format,rows, student_info.getName(), student_info.getMatric_num(),student_info.getGender(),student_info.getNationality());
-	        	System.out.printf(str1);
-	        	rows++;
-	        	System.out.printf("\n");
-			}
+		for(String studentNum: index.getRegisteredStudents())
+		{
+			Student_details student_info = starsDatabase.getStudentbyMatric(studentNum);
+			String str1 = String.format(format,rows, student_info.getName(), student_info.getMatric_num(),student_info.getGender(),student_info.getNationality());
+			System.out.printf(str1);
+			rows++;
+			System.out.printf("\n");
+		}
     }
     
     /**
