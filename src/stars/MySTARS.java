@@ -8,6 +8,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Scanner;
+
+/**
+ * MySTARS class containing the entry point of the program.
+ * THis class represents an instance of a MySTARS program.
+ * @author Lai Ming Hui
+ * @version 1.0.0
+ * @since 10/11/2020
+ */
 public class MySTARS{
 	
 	/**Default file name of the settings file.**/
