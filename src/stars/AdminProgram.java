@@ -35,6 +35,13 @@ public class AdminProgram
     private StarsNotifier notifier = null;
     public Scanner sc;
     
+	/**Access period start date.**/
+	private LocalDateTime accessPeriodStart = null;
+	/**Access period end date.**/
+	private LocalDateTime accessPeriodEnd = null;
+    
+   
+    
 	private final String adminOptions = "1.Edit student access period\n"
 			+ "2.Add a student (name, matric number, gender, nationality, etc)\n"
 			+ "3.Add/Update a course (course code, course name).\n"
@@ -54,13 +61,17 @@ public class AdminProgram
 	 * @param StarDatabase 		a reference to StarsDatabase, used to call access and manage the data about student and user in the database
 	 * @param CourseManager		a reference to CourseManager, used to call access and manage the data about course, index and indexClass in the database
 	 * @param sc				a reference to Scanner, used to input the data
+	 * @param addDropStart      The starting date and time of the add/drop period
+	 * @param addDropEnd        The ending date and time of the add/drop period
 	 */
-    AdminProgram(StarsDatabase StarDatabase, CourseManager CourseManager, Scanner sc)
+    AdminProgram(StarsDatabase StarDatabase, CourseManager CourseManager, Scanner sc, LocalDateTime addDropStart, LocalDateTime addDropEnd)
     {
         courseManager = CourseManager;
     	starsDatabase = StarDatabase;
     	this.notifier = StarsNotifier.getNotifificationMethod(StarsNotificationType.Email);
     	this.sc =sc;
+    	accessPeriodStart = addDropStart;
+    	accessPeriodEnd = addDropEnd;
     }
 
     /**
@@ -180,7 +191,8 @@ public class AdminProgram
 		}
 		
 		String accessperiodString = "accessPeriod"+"|"+date_start_str + '|'+ time_start_str + '|'+ date_end_str+'|'+time_end_str+'|';
-		
+		accessPeriodStart = LocalDateTime.of(LocalDate.parse(date_start_str), LocalTime.parse(time_start_str));
+		accessPeriodEnd = LocalDateTime.of(LocalDate.parse(date_end_str),LocalTime.parse(time_end_str));
 		out.println(accessperiodString);
 		out.close();
 
@@ -345,7 +357,11 @@ public class AdminProgram
     void updateCourse()
     {
     	//before doing anything we need to figure we'are updating or adding
-		
+    	if(checkAccessPeriod())
+    	{
+    		System.out.format("This fucntion should not be accessed during add/drop period: %s , %s\n", accessPeriodStart, accessPeriodEnd);
+    		return;
+    	}
     	System.out.println("PLease enter the courseCode");
     	String courseCode =  sc.nextLine();
     	boolean update = false;
@@ -445,6 +461,11 @@ public class AdminProgram
      */
     public void update_Index()
     {
+    	if(checkAccessPeriod())
+    	{
+    		System.out.format("This fucntion should not be accessed during add/drop period: %s , %s\n", accessPeriodStart, accessPeriodEnd);
+    		return;
+    	}
 		//entering the index
 		String indexCode = null;
 		do {
@@ -618,6 +639,13 @@ public class AdminProgram
      */
     public void updateClass()
     {
+    	
+    	if(checkAccessPeriod())
+    	{
+    		System.out.format("This fucntion should not be accessed during add/drop period: %s , %s\n", accessPeriodStart, accessPeriodEnd);
+    		return;
+    	}
+    	
     	System.out.println("Enter the index");
     	String indexCode = sc.nextLine();
     	Index_details oldIndex = courseManager.getIndex(indexCode);
@@ -807,6 +835,7 @@ public class AdminProgram
      */
     public void updateCapacity(String indexCode, int newCapacity)
     {
+
     	Index_details index = courseManager.getIndex(indexCode);
     	if(index==null)
     	{
@@ -952,7 +981,19 @@ public class AdminProgram
     	else if(input.equals("N")) yes = false;
     	return yes;
     }
-
+    /**
+     * Check if the current date and time is within add/drop period defined between accessPeriodStart and accessPeriodEnd
+     * @return if the current date and time is within the add/drop period.
+     */
+    private boolean checkAccessPeriod()
+    {
+    	LocalDateTime now = LocalDateTime.now();
+    	if( now.isAfter(accessPeriodStart) && now.isBefore(accessPeriodEnd))
+    	{
+    		return true;
+    	}
+    	return false;
+    }
  
 
     

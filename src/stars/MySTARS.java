@@ -21,9 +21,9 @@ public class MySTARS{
 	/**Member CourseManager object. Represents the database that stores courses and index information in the system.**/
 	private CourseManager courseManager = new CourseManager("Data/TestCourses.txt","Data/TestIndexes.txt");
 	/**Member AdminProgram. Control is transferred to this object if an admin logs into the system.**/
-	private AdminProgram adminProgram = new AdminProgram(starsDatabase, courseManager, scanner);	
+	private AdminProgram adminProgram = null;
 	/**Member student program. Control is handed over to this object if a student logs into the program.**/
-	private StudentProgram studentProgram = new StudentProgram(courseManager, starsDatabase);	
+	private StudentProgram studentProgram = null;	
 	/**Access period start date.**/
 	private LocalDateTime accessPeriodStart = null;
 	/**Access period end date.**/
@@ -34,6 +34,8 @@ public class MySTARS{
 	public MySTARS() 
 	{
 		openSettingsFile(SettingsFile);
+		studentProgram = new StudentProgram(courseManager, starsDatabase);
+		adminProgram = new AdminProgram(starsDatabase, courseManager, scanner, accessPeriodStart, accessPeriodEnd);
 	}
 	/**Opens the settings file and sets up the program based on settings provided.
 	 * @param settingsFile The name of the file that contains the settings to be read from.
