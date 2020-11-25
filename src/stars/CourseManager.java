@@ -66,16 +66,23 @@ public class CourseManager{
 	
 //METHODS REGARDING INDEXES
 	/**
-	 * Add the specified index to the course with the specified course code.
+	 * Add the specified index to the course with the specified course code,
+	 * if the course exists.
 	 * @param index IndexCode of the specified index.
 	 * @param courseCode CourseCode of the specified index.
+	 * @return True is the course with index code exist and the index is added to it; False if there
+	 * is no course associated witht the course code.
 	 */
-	public void addIndex(Index_details index, String courseCode)
+	public boolean addIndex(Index_details index, String courseCode)
 	{
 		this.indexes.add(index.getIndexCode(),index);
-		Course course;
-		course = this.courses.get(courseCode);
-		course.addIndexCode(index.getIndexCode());
+		Course course = this.courses.get(courseCode);
+		if(course!=null)
+		{
+			course.addIndexCode(index.getIndexCode());
+			return true;
+		}
+		return false;
 	}
 /**
  * Removes the  specified index code from this manager.

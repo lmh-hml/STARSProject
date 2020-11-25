@@ -330,7 +330,7 @@ public class AdminProgram
     }
     
     /**
-     * add/update the course
+     * Add/update the course
      * a course contains basic information and a list of indexes
      * 
      * user will be prompt to enter the courseCode first
@@ -345,87 +345,73 @@ public class AdminProgram
     void updateCourse()
     {
     	//before doing anything we need to figure we'are updating or adding
-		{
-			//things are a bit dangerous here, cause CourseManager passes reference to entire database
-			//additional curly bracket added so reference is destroyed after using
+		
+    	System.out.println("PLease enter the courseCode");
+    	String courseCode =  sc.nextLine();
+    	boolean update = false;
 
-			Collection<Course> courseDB = null;
-			try {
-				courseDB = courseManager.getAllCourses();
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
+    	Course oldCourse = courseManager.getCourse(courseCode);
+    	if(oldCourse!=null) {
+    		System.out.println("The Course exists, your input will overwrite this Course");
+    		System.out.println("Here are the previous course information");
 
-			System.out.println("PLease enter the courseCode");
-			String courseCode =  sc.nextLine();
-			
-			boolean found = false;
-			
-			if(courseDB.size()>0)
-			{
-				for(Course c: courseDB)
-    				if(c.getcoursecode().equals(courseCode)) {
-    					System.out.println("reached");
-    					found = true;
-    					break;
-    				}
-				
-			}
-			Course oldCourse = null;
-			if(found) {
-				System.out.println("The Course exists, your input will overwrite this Course");
-				System.out.println("Here are the previous course information");
-				
-				oldCourse = courseManager.getCourse(courseCode);
-				System.out.printf("Course Code:%s\n",oldCourse.getcoursecode());
-				System.out.printf("Course Name:%s\n",oldCourse.getcourseName());
-				System.out.printf("Course AU:%d\n",oldCourse.getAU());
-			}
-			else {
-				System.out.println("The CourseCode doesn't exists previously, you will be creating a new Course");
-			}
-			
-			System.out.println("PLease enter the courseName");
-			String courseName = sc.nextLine();
-			
-			int AU = -1;
-			do {
-				try {
-    				System.out.println("PLease enter the AU");
-        			AU = sc.nextInt();	
-        			if(AU>0)break;
-        			System.out.println("Please enter a positive number.");
-    			}catch(Exception e) {
-    				System.out.println("Please enter a number.");
-    				sc.nextLine();
+    		oldCourse = courseManager.getCourse(courseCode);
+    		update = true;
+    		System.out.printf("Course Code:%s\n",oldCourse.getcoursecode());
+    		System.out.printf("Course Name:%s\n",oldCourse.getcourseName());
+    		System.out.printf("Course AU:%d\n",oldCourse.getAU());
+    	}
+    	else {
+    		System.out.println("The CourseCode doesn't exists previously, you will be creating a new Course");
+    		update = false;
+    	}
+
+
+    	System.out.println("PLease enter the courseName");
+    	String courseName = sc.nextLine();
+
+    	int AU = -1;
+    	do {
+    		try {
+    			System.out.println("PLease enter the AU");
+    			AU = sc.nextInt();	
+    			if(AU>0)break;
+    			System.out.println("Please enter a positive number.");
+    		}catch(Exception e) {
+    			System.out.println("Please enter a number.");
+    			sc.nextLine();
+    		}
+    	}while(true);
+
+  
+    	if(update)
+    	{
+    		if(oldCourse.getcoursecode().equals(courseName))
+    		{ 
+    			courseManager.removeCourse(oldCourse.getcoursecode());
+    			courseManager.addCourse(oldCourse);
+    		}
+    		//Goes through this course's indexes and updates their course codes to the new course code.	
+        	oldCourse.setcoursecode(courseCode);
+        	oldCourse.setcourseName(courseName);
+        	oldCourse.setAU(AU);
+    		Set<String> index_in_old_c= oldCourse.getIndexCodes();
+    			for(String indexCode: index_in_old_c) 
+    			{
+					Index_details index = courseManager.getIndex(indexCode);
+					if(index!=null)index.setCourseCode(courseCode);
     			}
-			}while(true);
-			
-			if(found)
-			{
-				//cause the oldCourse is a reference, it is actually refering to the data in database
-				oldCourse.setcoursecode(courseCode);
-				oldCourse.setcourseName(courseName);
-				oldCourse.setAU(AU);
-				//you will need to replace the name in the index as well
-				//lucky, can find the index using method
-				//you would also need to change the CourseCode if it exist somewhere else
-				Set<String> index_in_old_c= oldCourse.getIndexCodes();
-				if(!index_in_old_c.isEmpty()) 
-					for(String indexCode: index_in_old_c) 
-						if(!indexCode.equals(" "))
-							courseManager.getIndex(indexCode).setCourseCode(courseCode);
-			}else
-			{
-				Course newCourse = new Course(courseCode, courseName, AU);
-				courseManager.addCourse(newCourse);
-			}
-			displayCourseInfo();
-   		}
+    	}else
+    	{
+    		Course newCourse = new Course(courseCode, courseName, AU);
+    		courseManager.addCourse(newCourse);
+    	}
+    	displayCourseInfo();
+   		
     }
     
     /**
-     * display the information of all courses
+     * Display the information of all courses
      */
     public void displayCourseInfo()
     {
@@ -459,17 +445,6 @@ public class AdminProgram
      */
     public void update_Index()
     {
-    	//gaining all the required info beforehand
-    	//might delete later\
-    	Collection<Course> courseDB = null;
-		Collection<Index_details> indexDB = null;
-		try {
-			courseDB = courseManager.getAllCourses();
-			indexDB = courseManager.getAllIndexes();
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-    	
 		//entering the index
 		String indexCode = null;
 		do {
@@ -486,7 +461,7 @@ public class AdminProgram
     	if(old_idx==null)
     	{
     		//no previous idx
-    		createIndex(courseDB, indexCode);
+    		createIndex(indexCode);
     	}else
     	{
     		//has previous index, everthing is in old_idx
@@ -499,24 +474,34 @@ public class AdminProgram
     		String oldIndexCode = old_idx.getIndexCode();
     		String oldCourseCode = old_idx.getCourseCode();
     		
-    		String choice = null;
-    		System.out.println("Do you want to change the indexCode(y for yes)");
-    		choice = sc.nextLine();
+    		System.out.print("Do you want to change the indexCode(Y/N)? ");
+    		boolean choice = promptYesNo("Please input Y or N.");
     		
     		//put it outside cause if inside can be destroyed and cause nullpointer errors
-    		if(choice.equals("y"))
+    		if(choice==true)
     		{
     			String newIndexCode = new String();
     			do {
-    				System.out.println("Please enter the index");
+    				System.out.println("Please enter the new index code");
     		    	newIndexCode = sc.nextLine();
-    		    	if(!newIndexCode.equals(" ")&&(courseManager.getIndex(newIndexCode)==null))
+    		    	if(newIndexCode.equals(" "))
+    		    	{
+        				System.out.println("Index code cannot contain empty values.");
+    		    	}
+    		    	else if((courseManager.getIndex(newIndexCode)!=null))
+    		    	{
+        				System.out.println("An index with the code already exists. (Including this index.)");
+    		    	}
+    		    	else
+    		    	{
     		    		break;
+    		    	}  	
+    		    	
     			}while(true);
-    			//for index_details
+    			courseManager.removeIndex(oldIndexCode);
     			old_idx.setIndexCode(newIndexCode);
+    			courseManager.addIndex(old_idx, newIndexCode);
     			
-    			//for course
     			courseManager.getCourse(oldCourseCode).removeIndexCode(oldIndexCode);
     			courseManager.getCourse(oldCourseCode).addIndexCode(newIndexCode);
     			
@@ -525,57 +510,34 @@ public class AdminProgram
     			//will need to use the new index
     		}
     		
-    		System.out.println("Do you want to change the CourseCode(y for yes)");
-    		choice = sc.nextLine();
-    		if(choice.equals("y"))
+    		System.out.print("Do you want to change the course code(Y/N)? ");
+    		choice = promptYesNo("Please input Y or N.");
+    		
+    		if(choice==true)
     		{
     			String newCourseCode = null;
+    			Course newCourse = null;
     			boolean success = false;
     	    	do {
 			    	System.out.println("Please enter the courseCode");
 			    	newCourseCode = sc.nextLine();
-			    	for(Course c: courseDB)
+			    	newCourse = courseManager.getCourse(newCourseCode);
+			    	
+			    	if(newCourse == null)
 			    	{
-			    		if(newCourseCode.equals(c.getcoursecode()))
-			    		{
-			    			success = true;
-			    			break;
-			    		}
+			    		System.out.println("Course Code doesn't exist. Please enter course code again.");
 			    	}
-			    	if(!success)
-			    	{
-			    		System.out.println("Course Code doesn't exist.");
-			    		System.out.println("PLease enter again.");
-			    	}
+			    	else break;
     	    	}while(!success);
+    	    	
     	    	old_idx.setCourseCode(newCourseCode);
     	    	courseManager.getCourse(oldCourseCode).removeIndexCode(oldIndexCode);
     			courseManager.getCourse(newCourseCode).addIndexCode(oldIndexCode);
     		}
-    		
-    		System.out.println("Do you want to change the capacity(y for yes)");
-    		choice = sc.nextLine();
-    		if(choice.equals("y"))
-    		{
-    			//changing capacity
-    			int capacity = 0;
-    			do {
-    				try {
-        				System.out.println("PLease enter the capacity");
-        				capacity = sc.nextInt();	
-        				if(capacity> 0)break;
-        				System.out.println("Can't set the vacanacy to this");
-    					System.out.println("new vacancy has to be bigger than 0");
-        			}catch(Exception e) {
-        				System.out.println("Please enter a number.");
-        				sc.nextLine();
-        			}
-    			}while(true);
-    			old_idx.setCapacity(capacity);
-    		}
-    	}
+    	
     	//print all info
     	displayIndexInfo();
+    	}
 		
     }
     
@@ -599,12 +561,10 @@ public class AdminProgram
     
    /**
     * Method to create an index
-    * @param courseDB When creating index, this collection of courses will be referred to when user enters a course code to check if the 
-    * course with the course code is already created.
     * @param indexCode The index code of the index to be created.
     */
      
-    private void createIndex(Collection<Course> courseDB, String indexCode)
+    private void createIndex(String indexCode)
     {
     	boolean success = false;
     	
@@ -613,14 +573,7 @@ public class AdminProgram
     	do {
 	    	System.out.println("Please enter the courseCode");
 	    	courseCode = sc.nextLine();
-	    	for(Course c: courseDB)
-	    	{
-	    		if(courseCode.equals(c.getcoursecode()))
-	    		{
-	    			success = true;
-	    			break;
-	    		}
-	    	}
+	    	success = courseManager.checkCourseExists(courseCode);
 	    	if(!success)
 	    	{
 	    		System.out.println("Course Code doesn't exist.");
@@ -979,6 +932,28 @@ public class AdminProgram
     			}
     	}
     }
+    
+    /**
+     * Helper function to prompt user for a Y/N input. Y= yes, N=No.
+     * This method will loop if the user does not enter 'Y' or "N'.
+     * @param message The message to prompt the user with. It should tell the user ot enter Y or N.
+     * @return True id the user inputs 'Y', false if the user enters 'N'.
+     */
+    private boolean promptYesNo(String message)
+    {
+    	boolean yes = false;
+    	String input = "";
+    	while(!input.equals("Y") && !input.equals("N"))
+    	{
+    		System.out.println(message);
+    		input = sc.nextLine().toUpperCase();
+    	}
+    	if(input.equals("Y"))yes = true;
+    	else if(input.equals("N")) yes = false;
+    	return yes;
+    }
+
+ 
 
     
     /**
